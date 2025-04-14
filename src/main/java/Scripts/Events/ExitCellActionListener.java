@@ -6,5 +6,5 @@ import java.util.EventListener;
 
 public interface ExitCellActionListener extends EventListener
 {
-    boolean CheckGameRulesPassed(@NotNull ExitCellActionEvent event);
+    boolean fireGameRulesPassed(@NotNull ExitCellActionEvent event);
 }

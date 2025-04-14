@@ -1,18 +1,23 @@
 package Scripts.Events;
 
-import Scripts.Player;
+import Scripts.Cells.Key;
 
 import java.util.EventObject;
+import java.util.List;
 
 public class ExitCellActionEvent extends EventObject
 {
-    private Player _player;
+    private List<Key> _keys;
 
-    public void SetPlayer(Player player) { _player = player; }
+    public void SetKeys(List<Key> keys)
+    {
+        _keys = keys;
+    }
 
-    public Player GetPlayer() { return _player; }
-
-
+    public List<Key> GetKeys()
+    {
+        return _keys;
+    }
     /**
      * Constructs a prototypical Event.
      *
