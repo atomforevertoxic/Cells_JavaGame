@@ -1,4 +1,49 @@
 package Scripts.Cells;
 
-public class AbstractCell {
+import Scripts.Player;
+
+import java.util.List;
+
+public class AbstractCell
+{
+    private Player _player;
+    private boolean _isWall;
+    private List<AbstractCell> _neighbours;
+
+
+    public void SetPlayer(Player player)
+    {
+        _player = player;
+    }
+
+    public Player GetPlayer()
+    {
+        return _player;
+    }
+
+    public void SetWall()
+    {
+        _isWall = true;
+    }
+
+    public boolean IsWall()
+    {
+        return _isWall;
+    }
+
+
+    public void AddNeighbour(AbstractCell neighbour)
+    {
+        _neighbours.add(neighbour);
+    }
+
+    public List<AbstractCell> GetNeighbours()
+    {
+        return _neighbours;
+    }
+
+    public boolean IsNeighbourOf(AbstractCell cell)
+    {
+        return _neighbours.contains(cell);
+    }
 }
