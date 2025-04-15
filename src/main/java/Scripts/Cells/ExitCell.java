@@ -10,17 +10,16 @@ public class ExitCell extends AbstractCell
 {
     private List<Key> keyCounter;
 
-    public boolean CheckGameRules(List<Key> playerKeys)
+    public void CheckGameRules(List<Key> playerKeys)
     {
-        if (keyCounter.size()!=playerKeys.size()) return false;
+        if (keyCounter.size()!=playerKeys.size()) return;
 
         for (int i = 0; i<keyCounter.size(); i++)
         {
-            if (!keyCounter.get(i).equals(playerKeys.get(i))) return false;
+            if (!keyCounter.get(i).equals(playerKeys.get(i))) return;
         }
 
         fireGameRulePassed();
-        return true;
     }
 
     //Уведомить игру что условия выполнены

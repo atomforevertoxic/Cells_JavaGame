@@ -1,6 +1,8 @@
 package Scripts;
 
+import Scripts.Cells.AbstractCell;
 import Scripts.Cells.Cell;
+import Scripts.Cells.ExitCell;
 import Scripts.Cells.Key;
 
 import java.util.ArrayList;
@@ -8,27 +10,22 @@ import java.util.List;
 
 public class Player
 {
-    private Cell _cell;
+    private AbstractCell _cell;
 
     private List<Key> _keys = new ArrayList<Key>();
 
 
-    public void SetCell(Cell cell)
+    public void SetCell(AbstractCell cell)
     {
         _cell = cell;
     }
 
-    public Cell GetCell()
+    public AbstractCell GetCell()
     {
         return _cell;
     }
 
-    public boolean CanMove(Cell cell)
-    {
-        return true;
-    }
-
-    public void TakeKey(Cell cell)
+    public void TakeKeyFromCell(Cell cell)
     {
         if (cell.GetKey()!=null)
         {
@@ -41,6 +38,21 @@ public class Player
         return _keys;
     }
 
+    public void Move(AbstractCell cell)
+    {
+        SetCell(cell);
+        cell.SetPlayer(this);
+    }
 
-
+    private void ResearchCell(AbstractCell cell)
+    {
+        if (cell instanceof Cell)
+        {
+            TakeKeyFromCell((Cell)cell);
+        }
+        else if (cell instanceof ExitCell)
+        {
+            ((ExitCell) cell).CheckGameRules(GetKeys());
+        }
+    }
 }

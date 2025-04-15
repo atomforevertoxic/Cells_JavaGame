@@ -2,13 +2,14 @@ package Scripts.Cells;
 
 import Scripts.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AbstractCell
 {
     private Player _player;
     private boolean _isWall;
-    private List<AbstractCell> _neighbours;
+    private List<AbstractCell> _neighbours = new ArrayList<>();
 
 
     public void SetPlayer(Player player)
@@ -32,9 +33,13 @@ public class AbstractCell
     }
 
 
-    public void AddNeighbour(AbstractCell neighbour)
+    public void SetNeighbour(AbstractCell neighbour)
     {
-        _neighbours.add(neighbour);
+        if (!GetNeighbours().contains(neighbour))
+        {
+            _neighbours.add(neighbour);
+            neighbour.SetNeighbour(this);
+        }
     }
 
     public List<AbstractCell> GetNeighbours()

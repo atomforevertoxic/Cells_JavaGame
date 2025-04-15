@@ -3,6 +3,7 @@ package Scripts.Cells;
 public class Cell extends AbstractCell
 {
     private Key _key;
+    private boolean _isPassed = true;
 
     public boolean SetKey(Key key)
     {
@@ -24,4 +25,6 @@ public class Cell extends AbstractCell
     {
         return _key;
     }
+
+
 }

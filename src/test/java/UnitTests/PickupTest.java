@@ -1,11 +1,8 @@
 package UnitTests;
 
-import Scripts.Cells.AbstractCell;
 import Scripts.Cells.Cell;
-import Scripts.Cells.ExitCell;
 import Scripts.Cells.Key;
 import Scripts.Player;
-import org.jetbrains.annotations.TestOnly;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -36,7 +33,7 @@ public class PickupTest
         Key key = new Key();
         cell.SetKey(key);
 
-        player.TakeKey(cell);
+        player.TakeKeyFromCell(cell);
 
         List<Key> expectedKeyList = new ArrayList<>();
         expectedKeyList.add(key);
@@ -52,7 +49,7 @@ public class PickupTest
 
         Cell cell = new Cell();
 
-        player.TakeKey(cell);
+        player.TakeKeyFromCell(cell);
 
         List<Key> expectedKeyList = new ArrayList<>();
 
@@ -68,7 +65,7 @@ public class PickupTest
         Cell cell = new Cell();
         cell.SetWall();
 
-        player.TakeKey(cell);
+        player.TakeKeyFromCell(cell);
 
         List<Key> expectedKeyList = new ArrayList<>();
 
@@ -85,14 +82,14 @@ public class PickupTest
         Key key1 = new Key();
         cell1.SetKey(key1);
 
-        player.TakeKey(cell1);
+        player.TakeKeyFromCell(cell1);
 
         //Добавление второго ключа
         Cell cell2 = new Cell();
         Key key2 = new Key();
         cell2.SetKey(key2);
 
-        player.TakeKey(cell2);
+        player.TakeKeyFromCell(cell2);
 
         List<Key> expectedKeyList = new ArrayList<>();
         expectedKeyList.add(key1);
