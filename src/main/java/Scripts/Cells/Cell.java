@@ -1,6 +1,6 @@
 package Scripts.Cells;
 
-public class Cell
+public class Cell extends AbstractCell
 {
     private Key _key;
 

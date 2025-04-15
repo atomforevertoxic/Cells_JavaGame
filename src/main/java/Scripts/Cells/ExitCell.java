@@ -6,7 +6,7 @@ import Scripts.Events.ExitCellActionListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExitCell
+public class ExitCell extends AbstractCell
 {
     private List<Key> keyCounter;
 

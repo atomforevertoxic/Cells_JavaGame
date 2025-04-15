@@ -28,9 +28,12 @@ public class Player
         return true;
     }
 
-    public void TakeKey(Key key)
+    public void TakeKey(Cell cell)
     {
-        _keys.add(key);
+        if (cell.GetKey()!=null)
+        {
+            _keys.add(cell.GetKey());
+        }
     }
 
     public List<Key> GetKeys()
