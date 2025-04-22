@@ -10,7 +10,12 @@ public class ExitCell extends AbstractCell
 {
     private List<Key> _levelKeys;
 
-    //проверка неправильная т.к. может быть разный порядок добавления ключей
+    public ExitCell(List<Key> levelKeys)
+    {
+        _levelKeys = levelKeys;
+    }
+
+
     public void CheckGameRules(List<Key> playerKeys)
     {
         if (_levelKeys.size()!=playerKeys.size()) return;

@@ -78,7 +78,7 @@ public class Level
         {
             AbstractCell neighbour = new AbstractCell();
 
-            if ((_field.size()-1)==_cellCounter) neighbour = new ExitCell();
+            if ((_field.size()-1)==_cellCounter) neighbour = new ExitCell(_keys);
 
             _field.add(neighbour);
             host.SetNeighbour(neighbour);
