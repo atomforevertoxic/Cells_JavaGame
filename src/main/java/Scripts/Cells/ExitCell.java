@@ -8,18 +8,17 @@ import java.util.List;
 
 public class ExitCell extends AbstractCell
 {
-    private List<Key> keyCounter;
+    private List<Key> _levelKeys;
 
     //проверка неправильная т.к. может быть разный порядок добавления ключей
     public void CheckGameRules(List<Key> playerKeys)
     {
-        if (keyCounter.size()!=playerKeys.size()) return;
-        
-        for (int i = 0; i<keyCounter.size(); i++)
-        {
-            if (!keyCounter.get(i).equals(playerKeys.get(i))) return;
-        }
+        if (_levelKeys.size()!=playerKeys.size()) return;
 
+        for (Key keyToCheck : _levelKeys)
+        {
+            if (!playerKeys.contains(keyToCheck))    return;
+        }
         fireGameRulePassed();
     }
 
