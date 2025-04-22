@@ -1,4 +1,6 @@
 package Scripts.Game;
 
-public class Field {
+public class Field
+{
+
 }

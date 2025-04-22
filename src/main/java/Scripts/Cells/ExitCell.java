@@ -14,7 +14,7 @@ public class ExitCell extends AbstractCell
     public void CheckGameRules(List<Key> playerKeys)
     {
         if (keyCounter.size()!=playerKeys.size()) return;
-
+        
         for (int i = 0; i<keyCounter.size(); i++)
         {
             if (!keyCounter.get(i).equals(playerKeys.get(i))) return;
