@@ -30,6 +30,7 @@ public class Player
         if (cell.GetKey()!=null)
         {
             _keys.add(cell.GetKey());
+            cell.DeleteKey();
         }
     }
 

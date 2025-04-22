@@ -1,4 +1,8 @@
 package UnitTests;
 
-public class ExitTest {
+public class ExitTest
+{
+    //попал: без ключей, недостаточно ключей, достаточно ключей
+    //попал повторно
+    //ушел с клетки - она не стала неактивной
 }

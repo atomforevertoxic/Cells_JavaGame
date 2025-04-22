@@ -12,6 +12,23 @@ import java.util.ArrayList;
 public class GameManager
 {
 
+    public void Start()
+    {
+        //запуск ui
+    }
+
+    public void StartLevel(int level)
+    {
+        //Field
+    }
+
+    private Field BuildField()
+    {
+        return new Field();
+    }
+
+
+
 
     private class ExitCellObserver implements ExitCellActionListener
     {

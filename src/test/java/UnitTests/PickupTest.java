@@ -98,6 +98,27 @@ public class PickupTest
         assertTrue(CompareKeyLists(player.GetKeys(), expectedKeyList));
     }
 
+    @Test
+    public void test_TakeKeyFromCellTwice()
+    {
+        Player player = new Player();
+
+        Cell cell = new Cell();
+        Key key = new Key();
+        cell.SetKey(key);
+
+        // Игрок берет ключ первый раз
+        player.TakeKeyFromCell(cell);
+
+        // Игрок пытается взять ключ второй раз
+        player.TakeKeyFromCell(cell);
+
+        List<Key> expectedKeyList = new ArrayList<>();
+        expectedKeyList.add(key);
+
+        assertTrue(CompareKeyLists(player.GetKeys(), expectedKeyList));
+    }
+
 
 
 

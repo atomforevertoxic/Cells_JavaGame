@@ -10,6 +10,7 @@ public class ExitCell extends AbstractCell
 {
     private List<Key> keyCounter;
 
+    //проверка неправильная т.к. может быть разный порядок добавления ключей
     public void CheckGameRules(List<Key> playerKeys)
     {
         if (keyCounter.size()!=playerKeys.size()) return;

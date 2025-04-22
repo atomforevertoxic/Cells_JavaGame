@@ -1,4 +1,9 @@
 package UnitTests;
 
-public class GameTest {
+public class GameTest
+{
+    //начать уровень 1/2/...
+    //переход между уровнями
+    //завершение уровня
+    //завершение игры
 }
