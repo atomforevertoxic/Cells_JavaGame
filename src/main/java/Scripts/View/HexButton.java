@@ -1,5 +1,7 @@
 package Scripts.View;
 
+import Scripts.Cells.AbstractCell;
+
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
@@ -11,12 +13,11 @@ import java.awt.Rectangle;
 import javax.swing.JButton;
 
 public class HexButton extends JButton {
-
-    private static final long serialVersionUID = 8703517515706326251L;
     Polygon bounds;
     Character character;
     Boolean clicked;
 
+    AbstractCell _cell;
     /**
      * Создает шестиугольник с символом внутри
      * @param character
@@ -128,4 +129,13 @@ public class HexButton extends JButton {
         return this.clicked;
     }
 
+    public AbstractCell cell()
+    {
+        return _cell;
+    }
+
+    public void setCell(AbstractCell cell)
+    {
+        _cell = cell;
+    }
 }

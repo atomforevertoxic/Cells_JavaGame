@@ -7,6 +7,9 @@ import Scripts.Cells.Key;
 import Scripts.Player;
 import org.junit.Test;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
@@ -16,10 +19,10 @@ public class MovementTest
     @Test
     public void BaseTest()
     {
-        Cell currentCell = new Cell();
+        Cell currentCell = new Cell(0,0);
         player.SetCell(currentCell);
 
-        Cell nextCell = new Cell();
+        Cell nextCell = new Cell(0,0);
 
         currentCell.SetNeighbour(nextCell);
 
@@ -31,10 +34,10 @@ public class MovementTest
     @Test
     public void MoveToKeyCell()
     {
-        Cell currentCell = new Cell();
+        Cell currentCell = new Cell(0,0);
         player.SetCell(currentCell);
 
-        Cell nextCell = new Cell();
+        Cell nextCell = new Cell(0,0);
         nextCell.SetKey(new Key());
 
         currentCell.SetNeighbour(nextCell);
@@ -47,10 +50,11 @@ public class MovementTest
     @Test
     public void MoveToExitCell()
     {
-        Cell currentCell = new Cell();
+        Cell currentCell = new Cell(0,0);
         player.SetCell(currentCell);
 
-        ExitCell nextCell = new ExitCell();
+        List<Key> keyList = new ArrayList<Key>();
+        ExitCell nextCell = new ExitCell(keyList, currentCell);
 
         currentCell.SetNeighbour(nextCell);
 

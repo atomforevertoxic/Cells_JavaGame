@@ -5,6 +5,10 @@ public class Cell extends AbstractCell
     private Key _key;
     private boolean _isPassed = true;
 
+    public Cell(int q, int r) {
+        super(q, r);
+    }
+
     public boolean SetKey(Key key)
     {
         if (_key!=null) return false;

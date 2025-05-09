@@ -10,8 +10,9 @@ public class ExitCell extends AbstractCell
 {
     private List<Key> _levelKeys;
 
-    public ExitCell(List<Key> levelKeys)
+    public ExitCell(List<Key> levelKeys, AbstractCell cell)
     {
+        super(cell.getQ(), cell.getR());
         _levelKeys = levelKeys;
     }
 
@@ -43,7 +44,7 @@ public class ExitCell extends AbstractCell
     private void fireGameRulePassed() {
         for(ExitCellActionListener listener: exitCellListListener) {
             ExitCellActionEvent event = new ExitCellActionEvent(listener);
-            event.SetKeys(keyCounter);
+            event.SetKeys(_levelKeys);
             listener.fireGameRulesPassed(event);
         }
     }
