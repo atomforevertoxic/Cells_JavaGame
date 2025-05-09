@@ -46,6 +46,7 @@ public class Level
                 SetSpawnCell(spawnCell);
 
                 cellToExecute = spawnCell;
+                SetNeighboursTo(cellToExecute);
             }
             else
             {
@@ -56,12 +57,13 @@ public class Level
 
                 if (cell.GetNeighbours().isEmpty()) SetNeighboursTo(cell);
 
+                //что если рандом не поможет и не все ячейки будут с ключами и стенами
                 if (rand.nextBoolean()) SetKeyCell((Cell)cell);
-                else if (rand.nextBoolean()) cell.SetWall();;
+                else if (rand.nextBoolean()) cell.SetWall();
             }
         }
 
-
+        //добавить последнюю ячейку - выход
 
     }
 
