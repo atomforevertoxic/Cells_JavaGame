@@ -269,6 +269,15 @@ public class Level {
         return new Point((int) x, (int) y);
     }
 
+    private void setAllButtonsEnable(boolean activity)
+    {
+        for (HexButton btn : allButtons)
+        {
+            btn.setBackground(Color.ORANGE);
+            btn.setEnabled(activity);
+        }
+    }
+
     private void makeNeighboursEnabled(AbstractCell host)
     {
         List<HexButton> neighbours = getNeighborButtons(host);
@@ -292,6 +301,8 @@ public class Level {
             AbstractCell cell = getCellByButton(btn);
 
             if (cell==null) return;
+
+            setAllButtonsEnable(false);
 
             makeNeighboursEnabled(cell);
 
