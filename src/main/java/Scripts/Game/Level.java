@@ -85,6 +85,8 @@ public class Level {
 
         // Создаем графические кнопки
         drawHexButtons();
+
+        makeNeighboursEnabled(spawnCell);
     }
 
     private void setKeyCell(Cell keyCell) {
@@ -267,6 +269,16 @@ public class Level {
         return new Point((int) x, (int) y);
     }
 
+    private void makeNeighboursEnabled(AbstractCell host)
+    {
+        List<HexButton> neighbours = getNeighborButtons(host);
+
+        for (HexButton button : neighbours)
+        {
+            button.setEnabled(true);
+            button.setBackground(Color.BLUE);
+        }
+    }
 
     // ------------------------- Реагируем на действия игрока ----------------------
 
@@ -276,37 +288,15 @@ public class Level {
         {
             HexButton btn = (HexButton) e.getSource();
             btn.click();
+
+            AbstractCell cell = getCellByButton(btn);
+
+            if (cell==null) return;
+
+            makeNeighboursEnabled(cell);
+
         }
-//        public void actionPerformed(ActionEvent e) {
-//            HexButton btn = (HexButton) e.getSource();
-//
-//            // Получить клетку по кнопке
-//            AbstractCell cell = null;
-//            for (AbstractCell c : field) {
-//                String key = c.getQ() + "," + c.getR();
-//                if (buttonMap.get(key) == btn) {
-//                    cell = c;
-//                    break;
-//                }
-//            }
-//
-//            if (cell == null) return;
-//
-//            // Ваш существующий код
-//            if (activeButton != null) {
-//                if (!isNeighbor(cell, getCellByButton(activeButton))) {
-//                    return;
-//                }
-//                activeButton.setBackground(Color.LIGHT_GRAY);
-//            }
-//
-//            activeButton = btn;
-//            btn.setBackground(Color.YELLOW);
-//
-//            //setAllButtonsEnabled(false);
-//            for (HexButton neighborBtn : getNeighborButtons(cell)) {
-//                neighborBtn.setEnabled(true);
-//            }
-//        }
+
+
     }
 }
