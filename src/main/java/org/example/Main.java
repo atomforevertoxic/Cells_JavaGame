@@ -1,9 +1,16 @@
 package org.example;
 
 import Scripts.Game.Level;
+import Scripts.View.HexButton;
+
+import javax.swing.*;
+import java.awt.*;
 
 public class Main {
+
+
     public static void main(String[] args) {
-        Level level = new Level(0, 8);
+        new Level(3, 30);
+
     }
 }

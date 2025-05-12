@@ -138,4 +138,9 @@ public class HexButton extends JButton {
     {
         _cell = cell;
     }
+
+    public void setCharacter(char ch)
+    {
+        character = ch;
+    }
 }
