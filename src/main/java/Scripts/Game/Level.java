@@ -162,6 +162,7 @@ public class Level {
                 btn.setBackground(Color.RED);
             } else if (cell instanceof ExitCell) {
                 btn.setBackground(Color.GREEN);
+                btn.setCharacter('^');
             } else if (cell.IsWall()) {
                 btn.setBackground(Color.GRAY);
             } else {
@@ -249,6 +250,10 @@ public class Level {
                 if (btn.getBackground()==Color.BLUE)
                 {
                     btn.setBackground(Color.ORANGE);
+                    if (getCellByButton(btn) instanceof ExitCell)
+                    {
+                        btn.setBackground(Color.GREEN);
+                    }
                 }
                 if (btn.getBackground()==Color.RED)
                 {
