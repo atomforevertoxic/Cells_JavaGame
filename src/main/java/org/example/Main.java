@@ -8,6 +8,7 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) {
 
+
         int rows = 6;
         int cols = 8;
 
@@ -30,6 +31,6 @@ public class Main {
         Point exit = new Point(6,4);
 
 
-        new Level(2, rows, cols, walls, keys, start, exit);
+        new Level(rows, cols, walls, keys, start, exit);
     }
 }

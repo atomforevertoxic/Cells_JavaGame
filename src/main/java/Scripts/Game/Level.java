@@ -17,8 +17,6 @@ import java.util.List;
 
 public class Level {
 
-    private int keyCounter;
-
     private List<AbstractCell> field = new ArrayList<>();
     private List<Key> keys = new ArrayList<>();
     private Player player;
@@ -34,17 +32,16 @@ public class Level {
     private Map<String, HexButton> buttonMap = new HashMap<>();
 
     private List<Point> wallPositions;
-    private List<Point> keyPositions;
+    private List<Point> keyPositions; // потом и тип ключа сюда можно добавить
     private Point startPosition;
     private Point exitPosition;
 
-    public Level(int keyCounter, int rows, int cols,
+    public Level(int rows, int cols,
                  List<Point> wallPositions,
                  List<Point> keyPositions,
                  Point startPosition,
                  Point exitPosition
                  ) {
-        this.keyCounter = keyCounter;
         this.wallPositions = wallPositions != null ? wallPositions : new ArrayList<>();
         this.keyPositions = keyPositions != null ? keyPositions : new ArrayList<>();
         this.startPosition = startPosition;
@@ -66,6 +63,7 @@ public class Level {
     }
 
     private void generateField() {
+
         for (int r = 0; r < rows; r++) {
             for (int q = 0; q < cols; q++) {
                 Cell cell = new Cell(q, r);
@@ -74,47 +72,7 @@ public class Level {
         }
 
         // Установка стен по заданным позициям
-        for (Point p : wallPositions) {
-            for (AbstractCell c : field) {
-                if (c.getQ() == p.x && c.getR() == p.y) {
-                    c.SetWall();
-                    break;
-                }
-            }
-        }
-
-        // Установка ключей по заданным позициям
-        for (Point p : keyPositions) {
-            for (AbstractCell c : field) {
-                if (c.getQ() == p.x && c.getR() == p.y) {
-                    setKeyCell((Cell) c);
-                    break;
-                }
-            }
-        }
-
-        // Установка стартовой позиции
-        if (startPosition != null) {
-            for (AbstractCell c : field) {
-                if (c.getQ() == startPosition.x && c.getR() == startPosition.y) {
-                    ((Cell) c).SetPlayer(player);
-                    break;
-                }
-            }
-        }
-
-        // Установка выходной клетки
-        if (exitPosition != null) {
-            for (int i=0; i<field.size(); i++) {
-                AbstractCell c = field.get(i);
-                if (c.getQ() == exitPosition.x && c.getR() == exitPosition.y) {
-                    ExitCell exitCell = new ExitCell(keys, c);
-                    field.set(i, exitCell);
-                    break;
-                }
-            }
-        }
-
+        placeObjectsOnField();
 
         List<AbstractCell> allCells = new ArrayList<>(field);
         for (AbstractCell c : field) {
@@ -124,20 +82,34 @@ public class Level {
 
         drawHexButtons();
 
+    }
 
-        if (startPosition != null) {
-            for (AbstractCell c : field) {
-                if (c.getQ() == startPosition.x && c.getR() == startPosition.y) {
-                    makeNeighboursEnabled(c);
-                    break;
-                }
+    private void placeObjectsOnField()
+    {
+        for (int i = 0; i < field.size(); i++)
+        {
+            AbstractCell c = field.get(i);
+            if (wallPositions.contains(new Point(c.getQ(), c.getR())))
+            {
+                c.SetWall();
+            }
+            else if (keyPositions.contains(new Point(c.getQ(), c.getR())))
+            {
+                setKeyCell((Cell)c);
+            }
+            else if (c.getQ() == startPosition.x && c.getR() == startPosition.y)
+            {
+                ((Cell) c).SetPlayer(player);
+            }
+            else if(c.getQ() == exitPosition.x && c.getR() == exitPosition.y)
+            {
+                ExitCell exitCell = new ExitCell(keys, c);
+                field.set(i, exitCell);
             }
         }
     }
 
     private void setKeyCell(Cell keyCell) {
-        if (keyCounter <= 0) return;
-        keyCounter--;
         Key key = new Key();
         keyCell.SetKey(key);
         keys.add(key);
@@ -156,11 +128,10 @@ public class Level {
                 continue;
             }
 
-            // Ищем уже существующую клетку-соседа
             for (AbstractCell c : field) {
                 if (c.getQ() == neighborQ && c.getR() == neighborR) {
                     host.SetNeighbour(c);
-                    break; 
+                    break;
                 }
             }
         }
@@ -173,6 +144,8 @@ public class Level {
 
         int size = 30; // радиус гексагона
         int btnSize = size * 2;
+
+        AbstractCell player = new AbstractCell(0,0);
 
         for (AbstractCell cell : field) {
             Point center = axialToPixel(cell, size);
@@ -204,6 +177,8 @@ public class Level {
             panel.add(btn);
         }
 
+        handleButtonClick(getButtonByPosition(startPosition));
+
         panel.revalidate();
         panel.repaint();
     }
@@ -218,22 +193,9 @@ public class Level {
         return null;
     }
 
-    private boolean isNeighbor(AbstractCell c1, AbstractCell c2) {
-        if (c1 == null || c2 == null) return false;
-        int q1 = c1.getQ(), r1 = c1.getR();
-        int q2 = c2.getQ(), r2 = c2.getR();
-
-        for (Direction dir : Direction.values()) {
-            if (q1 + dir.getDQ() == q2 && r1 + dir.getDR() == r2) {
-                return true;
-            }
-        }
-        return false;
-    }
-
     private List<HexButton> getNeighborButtons(AbstractCell cell) {
-        List<HexButton> neighbors = new ArrayList<>();
-        if (cell == null) return neighbors;
+        List<HexButton> neighbours = new ArrayList<>();
+        if (cell == null) return neighbours;
 
         int q = cell.getQ();
         int r = cell.getR();
@@ -244,10 +206,10 @@ public class Level {
             String key = neighborQ + "," + neighborR;
             HexButton neighborBtn = buttonMap.get(key);
             if (neighborBtn != null) {
-                neighbors.add(neighborBtn);
+                neighbours.add(neighborBtn);
             }
         }
-        return neighbors;
+        return neighbours;
     }
 
     private Point axialToPixel(AbstractCell cell, int size) {
@@ -257,6 +219,22 @@ public class Level {
         double x = size * 3.0 / 2.0 * q + offsetX;
         double y = -size * Math.sqrt(3) * (r + q / 2.0) + offsetY;
         return new Point((int) x, (int) y);
+    }
+
+    private HexButton getButtonByPosition(Point position) {
+        if (position == null) return null;
+        String key = position.x + "," + position.y;
+        return buttonMap.get(key);
+    }
+
+    private void handleButtonClick(HexButton btn) {
+        btn.click();
+
+        AbstractCell cell = getCellByButton(btn);
+        if (cell == null) return;
+
+        setAllButtonsEnable(false);
+        makeNeighboursEnabled(cell);
     }
 
     private void setAllButtonsEnable(boolean activity) {
@@ -280,13 +258,7 @@ public class Level {
         @Override
         public void actionPerformed(ActionEvent e) {
             HexButton btn = (HexButton) e.getSource();
-            btn.click();
-
-            AbstractCell cell = getCellByButton(btn);
-            if (cell == null) return;
-
-            setAllButtonsEnable(false);
-            makeNeighboursEnabled(cell);
+            handleButtonClick(btn);
         }
     }
 }
