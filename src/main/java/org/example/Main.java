@@ -1,16 +1,35 @@
 package org.example;
 
 import Scripts.Game.Level;
-import Scripts.View.HexButton;
-
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Point;
+import java.util.Arrays;
+import java.util.List;
 
 public class Main {
-
-
     public static void main(String[] args) {
-        new Level(3, 30);
 
+        int rows = 6;
+        int cols = 8;
+
+        List<Point> walls = Arrays.asList(
+                new Point(1,1),
+                new Point(2,2),
+                new Point(3,1)
+        );
+
+
+        List<Point> keys = Arrays.asList(
+                new Point(0,3),
+                new Point(4,2)
+        );
+
+
+        Point start = new Point(0,0);
+
+
+        Point exit = new Point(6,4);
+
+
+        new Level(2, rows, cols, walls, keys, start, exit);
     }
 }

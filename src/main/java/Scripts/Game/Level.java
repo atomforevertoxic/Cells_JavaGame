@@ -8,7 +8,6 @@ import Scripts.Player;
 import Scripts.View.HexButton;
 import Scripts.Direction;
 
-import javax.print.attribute.standard.PresentationDirection;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -19,44 +18,54 @@ import java.util.List;
 public class Level {
 
     private int keyCounter;
-    private int cellCounter;
 
     private List<AbstractCell> field = new ArrayList<>();
     private List<Key> keys = new ArrayList<>();
     private Player player;
 
+    private int rows;
+    private int cols;
+
     private int offsetX = 150; // смещение слева
     private int offsetY = 450; // смещение сверху
 
     private JPanel panel;
-    private HexButton activeButton = null;
     private List<HexButton> allButtons = new ArrayList<>();
     private Map<String, HexButton> buttonMap = new HashMap<>();
 
-    public Level(int keyCounter, int cellCounter) {
+    private List<Point> wallPositions;
+    private List<Point> keyPositions;
+    private Point startPosition;
+    private Point exitPosition;
+
+    public Level(int keyCounter, int rows, int cols,
+                 List<Point> wallPositions,
+                 List<Point> keyPositions,
+                 Point startPosition,
+                 Point exitPosition
+                 ) {
         this.keyCounter = keyCounter;
-        this.cellCounter = cellCounter;
+        this.wallPositions = wallPositions != null ? wallPositions : new ArrayList<>();
+        this.keyPositions = keyPositions != null ? keyPositions : new ArrayList<>();
+        this.startPosition = startPosition;
+        this.exitPosition = exitPosition;
+        this.rows = rows;
+        this.cols = cols;
 
         this.player = new Player();
 
         JFrame frame = new JFrame("Hexagonal Level");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 800);
-        panel = new JPanel(null); // абсолютное позиционирование
+        panel = new JPanel(null);
         frame.add(panel);
 
         generateField();
 
         frame.setVisible(true);
-
-
     }
 
     private void generateField() {
-        int rows = 5; // количество строк
-        int cols = 7; // количество ячеек в строке
-
-        // Создаем клетки построчно
         for (int r = 0; r < rows; r++) {
             for (int q = 0; q < cols; q++) {
                 Cell cell = new Cell(q, r);
@@ -64,23 +73,64 @@ public class Level {
             }
         }
 
-
-
-        for (AbstractCell c : field) {
-            if (c.getQ() == cols - 1 && c.getR() == rows - 1) {
-                int index = field.indexOf(c);
-                ExitCell exitCell = new ExitCell(keys, c);
-                field.set(index, exitCell);
-                break;
+        // Установка стен по заданным позициям
+        for (Point p : wallPositions) {
+            for (AbstractCell c : field) {
+                if (c.getQ() == p.x && c.getR() == p.y) {
+                    c.SetWall();
+                    break;
+                }
             }
         }
 
+        // Установка ключей по заданным позициям
+        for (Point p : keyPositions) {
+            for (AbstractCell c : field) {
+                if (c.getQ() == p.x && c.getR() == p.y) {
+                    setKeyCell((Cell) c);
+                    break;
+                }
+            }
+        }
+
+        // Установка стартовой позиции
+        if (startPosition != null) {
+            for (AbstractCell c : field) {
+                if (c.getQ() == startPosition.x && c.getR() == startPosition.y) {
+                    ((Cell) c).SetPlayer(player);
+                    break;
+                }
+            }
+        }
+
+        // Установка выходной клетки
+        if (exitPosition != null) {
+            for (int i=0; i<field.size(); i++) {
+                AbstractCell c = field.get(i);
+                if (c.getQ() == exitPosition.x && c.getR() == exitPosition.y) {
+                    ExitCell exitCell = new ExitCell(keys, c);
+                    field.set(i, exitCell);
+                    break;
+                }
+            }
+        }
+
+
+        List<AbstractCell> allCells = new ArrayList<>(field);
+        for (AbstractCell c : field) {
+            setNeighboursTo(c);
+        }
+
+
         drawHexButtons();
 
-        for (AbstractCell c : field) {
-            if (c.getQ() == 0 && c.getR() == 0) {
-                makeNeighboursEnabled(c);
-                break;
+
+        if (startPosition != null) {
+            for (AbstractCell c : field) {
+                if (c.getQ() == startPosition.x && c.getR() == startPosition.y) {
+                    makeNeighboursEnabled(c);
+                    break;
+                }
             }
         }
     }
@@ -101,21 +151,18 @@ public class Level {
             int neighborQ = q + dir.getDQ();
             int neighborR = r + dir.getDR();
 
-            // Проверка, что такой клетки еще нет в списке
-            String key = neighborQ + "," + neighborR;
-            boolean exists = false;
+            // Проверяем, что сосед внутри границ
+            if (neighborQ < 0 || neighborQ >= cols || neighborR < 0 || neighborR >= rows) {
+                continue;
+            }
+
+            // Ищем уже существующую клетку-соседа
             for (AbstractCell c : field) {
                 if (c.getQ() == neighborQ && c.getR() == neighborR) {
-                    exists = true;
-                    break;
+                    host.SetNeighbour(c);
+                    break; 
                 }
             }
-            if (exists || field.size() >= cellCounter) continue;
-
-            // Создаем новую клетку
-            Cell neighborCell = new Cell(neighborQ, neighborR);
-            field.add(neighborCell);
-            host.SetNeighbour(neighborCell);
         }
     }
 
@@ -132,7 +179,6 @@ public class Level {
             int x = 300 + (int) center.x;
             int y = 50 + (int) center.y;
 
-
             HexButton btn = new HexButton(' ');
             btn.setBounds(x - btnSize / 2, y - btnSize / 2, btnSize, btnSize);
 
@@ -145,29 +191,22 @@ public class Level {
                 btn.setBackground(Color.RED);
             } else if (cell instanceof ExitCell) {
                 btn.setBackground(Color.GREEN);
-            } else if (cell.IsWall())
-            {
+            } else if (cell.IsWall()) {
                 btn.setBackground(Color.LIGHT_GRAY);
-            }
-            else {
+            } else {
                 btn.setBackground(Color.ORANGE);
-                if (cell instanceof Cell && ((Cell) cell).GetKey()!=null)
-                {
+                if (cell instanceof Cell && ((Cell) cell).GetKey() != null) {
                     btn.setCharacter('l');
                 }
             }
 
             btn.addActionListener(new ClickListener());
-
-
             panel.add(btn);
         }
 
         panel.revalidate();
         panel.repaint();
-
     }
-
 
     private AbstractCell getCellByButton(HexButton btn) {
         for (AbstractCell cell : field) {
@@ -220,21 +259,16 @@ public class Level {
         return new Point((int) x, (int) y);
     }
 
-    private void setAllButtonsEnable(boolean activity)
-    {
-        for (HexButton btn : allButtons)
-        {
+    private void setAllButtonsEnable(boolean activity) {
+        for (HexButton btn : allButtons) {
             btn.setBackground(Color.ORANGE);
             btn.setEnabled(activity);
         }
     }
 
-    private void makeNeighboursEnabled(AbstractCell host)
-    {
-        List<HexButton> neighbours = getNeighborButtons(host);
-
-        for (HexButton button : neighbours)
-        {
+    private void makeNeighboursEnabled(AbstractCell host) {
+        List<HexButton> neighbors = getNeighborButtons(host);
+        for (HexButton button : neighbors) {
             button.setEnabled(true);
             button.setBackground(Color.BLUE);
         }
@@ -244,21 +278,15 @@ public class Level {
 
     private class ClickListener implements ActionListener {
         @Override
-        public void actionPerformed(ActionEvent e)
-        {
+        public void actionPerformed(ActionEvent e) {
             HexButton btn = (HexButton) e.getSource();
             btn.click();
 
             AbstractCell cell = getCellByButton(btn);
-
-            if (cell==null) return;
+            if (cell == null) return;
 
             setAllButtonsEnable(false);
-
             makeNeighboursEnabled(cell);
-
         }
-
-
     }
 }
