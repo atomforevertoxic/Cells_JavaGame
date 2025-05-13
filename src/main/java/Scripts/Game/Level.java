@@ -25,8 +25,8 @@ public class Level {
     private List<Key> keys = new ArrayList<>();
     private Player player;
 
-    private int offsetX = 50; // смещение слева
-    private int offsetY = 50; // смещение сверху
+    private int offsetX = 150; // смещение слева
+    private int offsetY = 450; // смещение сверху
 
     private JPanel panel;
     private HexButton activeButton = null;
@@ -53,42 +53,36 @@ public class Level {
     }
 
     private void generateField() {
-        Random rand = new Random();
+        int rows = 5; // количество строк
+        int cols = 7; // количество ячеек в строке
 
-        // Создаем стартовую клетку
-        Cell spawnCell = new Cell(0, 0);
-        spawnCell.SetPlayer(player);
-        field.add(spawnCell);
-
-        // Генерация остальных клеток
-        while (field.size() < cellCounter) {
-            // Выбираем случайную существующую клетку
-            int randIndex = rand.nextInt(field.size());
-            AbstractCell currentCell = field.get(randIndex);
-
-            // Определяем случайно, что добавить: ключ или стена
-            if (rand.nextBoolean() && currentCell instanceof Cell) {
-                setKeyCell((Cell) currentCell);
-            } else if (rand.nextBoolean() && currentCell instanceof Cell) {
-                currentCell.SetWall();
+        // Создаем клетки построчно
+        for (int r = 0; r < rows; r++) {
+            for (int q = 0; q < cols; q++) {
+                Cell cell = new Cell(q, r);
+                field.add(cell);
             }
-
-            // Расширяем сеть соседних клеток
-            setNeighboursTo(currentCell);
         }
 
-        // Устанавливаем клетку выхода
-        if (!field.isEmpty()) {
-            AbstractCell lastCell = field.get(field.size() - 1);
-            int index = field.indexOf(lastCell);
-            ExitCell exitCell = new ExitCell(keys, lastCell);
-            field.set(index, exitCell);
+
+
+        for (AbstractCell c : field) {
+            if (c.getQ() == cols - 1 && c.getR() == rows - 1) {
+                int index = field.indexOf(c);
+                ExitCell exitCell = new ExitCell(keys, c);
+                field.set(index, exitCell);
+                break;
+            }
         }
 
-        // Создаем графические кнопки
         drawHexButtons();
 
-        makeNeighboursEnabled(spawnCell);
+        for (AbstractCell c : field) {
+            if (c.getQ() == 0 && c.getR() == 0) {
+                makeNeighboursEnabled(c);
+                break;
+            }
+        }
     }
 
     private void setKeyCell(Cell keyCell) {
@@ -163,7 +157,6 @@ public class Level {
                 }
             }
 
-            // Вместо лямбды добавляем ваш ClickListener
             btn.addActionListener(new ClickListener());
 
 
@@ -173,29 +166,8 @@ public class Level {
         panel.revalidate();
         panel.repaint();
 
-        // Отключить все кнопки по умолчанию
-        //setAllButtonsEnabled(false);
     }
 
-    private void handleButtonClick(AbstractCell cell, HexButton btn) {
-        if (activeButton != null) {
-            // Проверка, что кликнули по соседней
-            if (!isNeighbor(cell, getCellByButton(activeButton))) {
-                return;
-            }
-
-            activeButton.setBackground(Color.LIGHT_GRAY);
-        }
-
-        activeButton = btn;
-        btn.setBackground(Color.YELLOW);
-
-        // Разрешаем только соседние кнопки
-        //setAllButtonsEnabled(false);
-        for (HexButton neighborBtn : getNeighborButtons(cell)) {
-            neighborBtn.setEnabled(true);
-        }
-    }
 
     private AbstractCell getCellByButton(HexButton btn) {
         for (AbstractCell cell : field) {
