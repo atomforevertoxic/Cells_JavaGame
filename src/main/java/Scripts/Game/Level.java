@@ -6,7 +6,9 @@ import Scripts.Cells.ExitCell;
 import Scripts.Cells.Key;
 import Scripts.Player;
 import Scripts.View.HexButton;
+import Scripts.Direction;
 
+import javax.print.attribute.standard.PresentationDirection;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -101,18 +103,9 @@ public class Level {
         int q = host.getQ();
         int r = host.getR();
 
-        int[][] directions = {
-                {0, -1},    // top
-                {1, -1},    // top-right
-                {1, 0},     // right
-                {0, 1},     // bottom
-                {-1, 1},    // bottom-left
-                {-1, 0}     // left
-        };
-
-        for (int[] dir : directions) {
-            int neighborQ = q + dir[0];
-            int neighborR = r + dir[1];
+        for (Direction dir : Direction.values()) {
+            int neighborQ = q + dir.getDQ();
+            int neighborR = r + dir.getDR();
 
             // Проверка, что такой клетки еще нет в списке
             String key = neighborQ + "," + neighborR;
@@ -219,13 +212,8 @@ public class Level {
         int q1 = c1.getQ(), r1 = c1.getR();
         int q2 = c2.getQ(), r2 = c2.getR();
 
-        int[][] directions = {
-                {0, -1}, {1, -1}, {1, 0},
-                {0, 1}, {-1, 1}, {-1, 0}
-        };
-
-        for (int[] dir : directions) {
-            if (q1 + dir[0] == q2 && r1 + dir[1] == r2) {
+        for (Direction dir : Direction.values()) {
+            if (q1 + dir.getDQ() == q2 && r1 + dir.getDR() == r2) {
                 return true;
             }
         }
@@ -239,18 +227,9 @@ public class Level {
         int q = cell.getQ();
         int r = cell.getR();
 
-        int[][] directions = {
-                {0, -1},  // top
-                {1, -1},  // top-right
-                {1, 0},   // right
-                {0, 1},   // bottom
-                {-1, 1},  // bottom-left
-                {-1, 0}   // left
-        };
-
-        for (int[] dir : directions) {
-            int neighborQ = q + dir[0];
-            int neighborR = r + dir[1];
+        for (Direction dir : Direction.values()) {
+            int neighborQ = q + dir.getDQ();
+            int neighborR = r + dir.getDR();
             String key = neighborQ + "," + neighborR;
             HexButton neighborBtn = buttonMap.get(key);
             if (neighborBtn != null) {
