@@ -74,7 +74,6 @@ public class Level {
         // Установка стен по заданным позициям
         placeObjectsOnField();
 
-        List<AbstractCell> allCells = new ArrayList<>(field);
         for (AbstractCell c : field) {
             setNeighboursTo(c);
         }
@@ -145,7 +144,6 @@ public class Level {
         int size = 30; // радиус гексагона
         int btnSize = size * 2;
 
-        AbstractCell player = new AbstractCell(0,0);
 
         for (AbstractCell cell : field) {
             Point center = axialToPixel(cell, size);
@@ -165,7 +163,7 @@ public class Level {
             } else if (cell instanceof ExitCell) {
                 btn.setBackground(Color.GREEN);
             } else if (cell.IsWall()) {
-                btn.setBackground(Color.LIGHT_GRAY);
+                btn.setBackground(Color.GRAY);
             } else {
                 btn.setBackground(Color.ORANGE);
                 if (cell instanceof Cell && ((Cell) cell).GetKey() != null) {
@@ -228,25 +226,53 @@ public class Level {
     }
 
     private void handleButtonClick(HexButton btn) {
-        btn.click();
+        //btn.click();
 
         AbstractCell cell = getCellByButton(btn);
         if (cell == null) return;
 
+        if (cell instanceof Cell)
+        {
+            ((Cell) cell).setPassed();
+        }
         setAllButtonsEnable(false);
+        btn.setBackground(Color.RED);
         makeNeighboursEnabled(cell);
     }
 
     private void setAllButtonsEnable(boolean activity) {
         for (HexButton btn : allButtons) {
-            btn.setBackground(Color.ORANGE);
-            btn.setEnabled(activity);
+
+            if (btn.getBackground()==Color.BLUE
+                || btn.getBackground()==Color.RED)
+            {
+                if (btn.getBackground()==Color.BLUE)
+                {
+                    btn.setBackground(Color.ORANGE);
+                }
+                if (btn.getBackground()==Color.RED)
+                {
+                    btn.setBackground(Color.LIGHT_GRAY);
+                }
+                btn.setEnabled(activity);
+            }
+
         }
     }
 
     private void makeNeighboursEnabled(AbstractCell host) {
         List<HexButton> neighbors = getNeighborButtons(host);
         for (HexButton button : neighbors) {
+            //в hexbutton есть cell() - на будущее
+            AbstractCell neighbour = getCellByButton(button);
+
+            if (neighbour instanceof Cell
+                    && (((Cell) neighbour).getPassedInfo()
+                    || neighbour.IsWall()))
+            {
+                continue;
+            }
+
             button.setEnabled(true);
             button.setBackground(Color.BLUE);
         }
