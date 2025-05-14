@@ -230,12 +230,18 @@ public class Level {
         //btn.click();
 
         AbstractCell cell = getCellByButton(btn);
-        if (cell == null) return;
 
-        if (cell instanceof Cell)
+        if (cell instanceof Cell c)
         {
-            ((Cell) cell).setPassed();
+            if (c.GetKey()!=null)
+            {
+                player.TakeKeyFromCell(c);
+                btn.setCharacter(' ');
+            }
+            c.setPassed();
+
         }
+
         setAllButtonsEnable(false);
         btn.setBackground(Color.RED);
         makeNeighboursEnabled(cell);
