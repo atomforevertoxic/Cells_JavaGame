@@ -4,6 +4,7 @@ import Scripts.Events.ExitCellActionEvent;
 import Scripts.Events.ExitCellActionListener;
 import Scripts.Events.GameActionEvent;
 import Scripts.Events.GameActionListener;
+import Scripts.View.LevelSelectWindow;
 import Scripts.View.MainMenuWindow;
 import org.jetbrains.annotations.NotNull;
 
@@ -24,22 +25,32 @@ public class GameManager {
 
     public void startGame() {
         mainMenu = new MainMenuWindow(this);
-        mainMenu.showWindow();
+        openMainMenu();
 
         //isGameRunning = true;
         //startLevel(currentLevel);
     }
 
-    public void openLevelSelect() {
-        mainMenu.dispose();
-        System.out.println("Открываем выбор уровня...");
+    public void openMainMenu()
+    {
+        mainMenu.showWindow();
     }
 
-    public void startLevel(int level) {
-        this.currentLevel = level;
-        System.out.println("Starting level " + level);
-        // Здесь можно добавить логику загрузки уровня
+
+    private LevelSelectWindow levelSelectWindow;
+
+    public void openLevelSelect() {
+        if (mainMenu != null) mainMenu.dispose();
+        levelSelectWindow = new LevelSelectWindow(this);
+        levelSelectWindow.showWindow();
     }
+
+    public void startLevel(int levelNum) {
+        if (levelSelectWindow != null) levelSelectWindow.dispose();
+        // Ваша логика загрузки уровня
+        System.out.println("Загрузка уровня " + levelNum);
+    }
+
 
     public void endGame(boolean isVictory) {
         if (!isGameRunning) return;
