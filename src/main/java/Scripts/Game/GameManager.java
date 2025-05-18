@@ -6,56 +6,79 @@ import Scripts.Events.GameActionEvent;
 import Scripts.Events.GameActionListener;
 import org.jetbrains.annotations.NotNull;
 
-import java.beans.ExceptionListener;
 import java.util.ArrayList;
+import java.util.List;
 
-public class GameManager
-{
+public class GameManager {
+    // Состояние игры
+    private boolean isGameRunning = true;
+    private int currentLevel = 1;
 
-    public void Start()
-    {
-        //запуск ui
+    // Подсистемы
+    private final ExitCellObserver exitCellObserver = new ExitCellObserver();
+    private final List<GameActionListener> gameActionListeners = new ArrayList<>();
+
+    // Основные методы управления игрой
+    public void startGame() {
+        isGameRunning = true;
+        startLevel(currentLevel);
     }
 
-    public void StartLevel(int level)
-    {
-        //Field
+    public void startLevel(int level) {
+        this.currentLevel = level;
+        System.out.println("Starting level " + level);
+        // Здесь можно добавить логику загрузки уровня
     }
 
-    private Field BuildField()
-    {
-        return new Field();
+    public void endGame(boolean isVictory) {
+        if (!isGameRunning) return;
+
+        isGameRunning = false;
+        fireGameEnded(isVictory);
     }
 
-
-
-
-    private class ExitCellObserver implements ExitCellActionListener
-    {
+    // Обработка событий от ExitCell
+    private class ExitCellObserver implements ExitCellActionListener {
         @Override
         public boolean fireGameRulesPassed(@NotNull ExitCellActionEvent event) {
-            fireGameEnded();
-
-            //закончить игру и вывести результат
+            if (isGameRunning) { // Добавляем очки за уровень
+                endGame(true); // Победа
+                return true;
+            }
             return false;
         }
     }
 
-    private ArrayList<GameActionListener> gameActionListeners = new ArrayList<>();
-
+    // Управление слушателями событий
     public void addGameActionListener(@NotNull GameActionListener listener) {
-        gameActionListeners.add(listener);
+        if (!gameActionListeners.contains(listener)) {
+            gameActionListeners.add(listener);
+        }
     }
 
     public void removeGameActionListener(@NotNull GameActionListener listener) {
         gameActionListeners.remove(listener);
     }
 
-    private void fireGameEnded() {
-        for(GameActionListener listener: gameActionListeners) {
-            GameActionEvent event = new GameActionEvent(listener);
-            //Для тестирования
-            listener.GameEnded(event);
-        }
+    private void fireGameEnded(boolean isVictory) {
+        GameActionEvent event = isVictory
+                ? GameActionEvent.createVictoryEvent(this)
+                : GameActionEvent.createDefeatEvent(this);
+
+        event.setLevelCompleted(currentLevel);
     }
+
+    // Геттеры
+    public ExitCellObserver getExitCellObserver() {
+        return exitCellObserver;
+    }
+
+    public boolean isGameRunning() {
+        return isGameRunning;
+    }
+
+    public int getCurrentLevel() {
+        return currentLevel;
+    }
+
 }

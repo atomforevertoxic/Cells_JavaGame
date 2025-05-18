@@ -1,5 +1,6 @@
 package org.example;
 
+import Scripts.Game.GameManager;
 import Scripts.Game.Level;
 import java.awt.Point;
 import java.util.Arrays;
@@ -31,6 +32,8 @@ public class Main {
         Point exit = new Point(6,4);
 
 
-        new Level(rows, cols, walls, keys, start, exit);
+        GameManager gm = new GameManager();
+
+        new Level(rows, cols, walls, keys, start, exit, gm);
     }
 }

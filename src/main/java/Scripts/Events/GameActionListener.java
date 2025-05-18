@@ -7,4 +7,5 @@ import java.util.EventListener;
 public interface GameActionListener extends EventListener {
 
     void GameEnded(@NotNull GameActionEvent event);
+
 }

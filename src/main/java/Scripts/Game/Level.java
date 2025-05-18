@@ -4,9 +4,12 @@ import Scripts.Cells.AbstractCell;
 import Scripts.Cells.Cell;
 import Scripts.Cells.ExitCell;
 import Scripts.Cells.Key;
+import Scripts.Events.ExitCellActionEvent;
+import Scripts.Events.ExitCellActionListener;
 import Scripts.Player;
 import Scripts.View.HexButton;
 import Scripts.Direction;
+import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +18,7 @@ import java.awt.event.ActionListener;
 import java.util.*;
 import java.util.List;
 
-public class Level {
+public class Level{
 
     private List<AbstractCell> field = new ArrayList<>();
     private List<Key> keys = new ArrayList<>();
@@ -36,12 +39,15 @@ public class Level {
     private Point startPosition;
     private Point exitPosition;
 
+    private GameManager gameManager;
+
+
     public Level(int rows, int cols,
                  List<Point> wallPositions,
                  List<Point> keyPositions,
                  Point startPosition,
-                 Point exitPosition
-                 ) {
+                 Point exitPosition,
+                 GameManager gameManager) {
         this.wallPositions = wallPositions != null ? wallPositions : new ArrayList<>();
         this.keyPositions = keyPositions != null ? keyPositions : new ArrayList<>();
         this.startPosition = startPosition;
@@ -51,9 +57,12 @@ public class Level {
 
         this.player = new Player();
 
+        this.gameManager = gameManager;
+
         JFrame frame = new JFrame("Hexagonal Level");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(1200, 800);
+        frame.setResizable(false);
         panel = new JPanel(null);
         frame.add(panel);
 
@@ -100,9 +109,9 @@ public class Level {
             {
                 ((Cell) c).SetPlayer(player);
             }
-            else if(c.getQ() == exitPosition.x && c.getR() == exitPosition.y)
-            {
+            else if(c.getQ() == exitPosition.x && c.getR() == exitPosition.y) {
                 ExitCell exitCell = new ExitCell(keys, c);
+                exitCell.addExitCellActionListener(gameManager.getExitCellObserver()); // Добавляем подписку
                 field.set(i, exitCell);
             }
         }
@@ -227,19 +236,18 @@ public class Level {
     }
 
     private void handleButtonClick(HexButton btn) {
-        //btn.click();
-
         AbstractCell cell = getCellByButton(btn);
 
-        if (cell instanceof Cell c)
-        {
-            if (c.GetKey()!=null)
-            {
+        if (cell instanceof Cell c) {
+            if (c.GetKey() != null) {
                 player.TakeKeyFromCell(c);
                 btn.setCharacter(' ');
             }
             c.setPassed();
-
+        }
+        else if (cell instanceof ExitCell exitCell) {
+            // Проверяем, есть ли у игрока все ключи
+            exitCell.CheckGameRules(player.GetKeys());
         }
 
         setAllButtonsEnable(false);
@@ -288,6 +296,7 @@ public class Level {
             button.setBackground(Color.BLUE);
         }
     }
+
 
     // ------------------------- Реагируем на действия игрока ----------------------
 
