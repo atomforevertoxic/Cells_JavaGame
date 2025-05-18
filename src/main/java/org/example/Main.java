@@ -34,6 +34,8 @@ public class Main {
 
         GameManager gm = new GameManager();
 
-        new Level(rows, cols, walls, keys, start, exit, gm);
+        gm.startGame();
+
+        //new Level(rows, cols, walls, keys, start, exit, gm);
     }
 }

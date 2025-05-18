@@ -4,24 +4,35 @@ import Scripts.Events.ExitCellActionEvent;
 import Scripts.Events.ExitCellActionListener;
 import Scripts.Events.GameActionEvent;
 import Scripts.Events.GameActionListener;
+import Scripts.View.MainMenuWindow;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class GameManager {
-    // Состояние игры
+    private MainMenuWindow mainMenu;
+
     private boolean isGameRunning = true;
     private int currentLevel = 1;
 
-    // Подсистемы
+
     private final ExitCellObserver exitCellObserver = new ExitCellObserver();
     private final List<GameActionListener> gameActionListeners = new ArrayList<>();
 
-    // Основные методы управления игрой
+
+
     public void startGame() {
-        isGameRunning = true;
-        startLevel(currentLevel);
+        mainMenu = new MainMenuWindow(this);
+        mainMenu.showWindow();
+
+        //isGameRunning = true;
+        //startLevel(currentLevel);
+    }
+
+    public void openLevelSelect() {
+        mainMenu.dispose();
+        System.out.println("Открываем выбор уровня...");
     }
 
     public void startLevel(int level) {
@@ -37,19 +48,18 @@ public class GameManager {
         fireGameEnded(isVictory);
     }
 
-    // Обработка событий от ExitCell
+
     private class ExitCellObserver implements ExitCellActionListener {
         @Override
         public boolean fireGameRulesPassed(@NotNull ExitCellActionEvent event) {
-            if (isGameRunning) { // Добавляем очки за уровень
-                endGame(true); // Победа
+            if (isGameRunning) {
+                endGame(true);
                 return true;
             }
             return false;
         }
     }
 
-    // Управление слушателями событий
     public void addGameActionListener(@NotNull GameActionListener listener) {
         if (!gameActionListeners.contains(listener)) {
             gameActionListeners.add(listener);
@@ -68,7 +78,7 @@ public class GameManager {
         event.setLevelCompleted(currentLevel);
     }
 
-    // Геттеры
+
     public ExitCellObserver getExitCellObserver() {
         return exitCellObserver;
     }
