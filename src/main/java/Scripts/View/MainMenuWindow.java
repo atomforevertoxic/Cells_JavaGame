@@ -37,23 +37,21 @@ public class MainMenuWindow extends JFrame {
         gbc.fill = GridBagConstraints.HORIZONTAL;
         gbc.insets = new Insets(15, 100, 15, 100);
 
-        // Заголовок
         JLabel title = new JLabel("ГЕКСАГОНАЛЬНЫЙ ЛАБИРИНТ", SwingConstants.CENTER);
         title.setFont(new Font("Roboto", Font.BOLD, 32));
         title.setForeground(Color.WHITE);
         panel.add(title, gbc);
 
-        // Кнопка "Выбор уровня"
+
         JButton levelSelectButton = createMenuButton("ВЫБОР УРОВНЯ");
         levelSelectButton.addActionListener(e -> gameManager.openLevelSelect());
         panel.add(levelSelectButton, gbc);
 
-        // Кнопка "Выход"
+
         JButton exitButton = createMenuButton("ВЫХОД");
         exitButton.addActionListener(e -> System.exit(0));
         panel.add(exitButton, gbc);
 
-        // Добавляем панель с анимацией фона
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(800, 600));
 
