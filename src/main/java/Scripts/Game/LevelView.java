@@ -34,6 +34,7 @@ public class LevelView {
             buttonMap.put(getCellKey(cell.getQ(), cell.getR()), btn);
             panel.add(btn);
         }
+
         panel.revalidate();
         panel.repaint();
     }
@@ -51,8 +52,31 @@ public class LevelView {
         HexButton btn = new HexButton(' ');
         btn.setBounds(x - btnSize/2, y - btnSize/2, btnSize, btnSize);
         updateButtonAppearance(btn, cell);
-        btn.addActionListener(e -> inputHandler.handleCellClick(cell));
+        btn.addActionListener(e -> inputHandler.handleCellClick(btn));
         return btn;
+    }
+
+    public void setAllButtonsEnable(boolean activity) {
+        for (HexButton btn : buttonMap.values()) {
+            AbstractCell cell = getCellByButton(btn);
+            if (cell != null) {
+                btn.setEnabled(activity && shouldEnableButton(cell));
+            }
+        }
+    }
+
+    private boolean shouldEnableButton(AbstractCell cell) {
+        return !(cell instanceof Cell && ((Cell)cell).getPassedInfo())
+                && !cell.IsWall();
+    }
+
+
+
+    public void updateAllButtons() {
+        model.getField().forEach(cell -> {
+            HexButton btn = buttonMap.get(getCellKey(cell.getQ(), cell.getR()));
+            if (btn != null) updateButtonAppearance(btn, cell);
+        });
     }
 
     public void updateButtonAppearance(HexButton btn, AbstractCell cell) {
@@ -65,6 +89,8 @@ public class LevelView {
             btn.setCharacter('^');
         } else if (cell.IsWall()) {
             btn.setBackground(Color.GRAY);
+        } else if (cell instanceof Cell && ((Cell)cell).getPassedInfo()) {
+            btn.setBackground(Color.LIGHT_GRAY); // Пройденные клетки
         } else {
             btn.setBackground(Color.ORANGE);
             if (cell instanceof Cell && ((Cell)cell).GetKey() != null) {
@@ -73,10 +99,19 @@ public class LevelView {
         }
     }
 
-    public void updateAllButtons() {
-        model.getField().forEach(cell -> {
-            HexButton btn = buttonMap.get(getCellKey(cell.getQ(), cell.getR()));
-            if (btn != null) updateButtonAppearance(btn, cell);
-        });
+    public AbstractCell getCellByButton(HexButton btn) {
+        for (AbstractCell cell : model.getField()) {
+            String key = getCellKey(cell.getQ(), cell.getR());
+            if (buttonMap.get(key) == btn) {
+                return cell;
+            }
+        }
+        return null;
+    }
+
+    public HexButton getStartButton()
+    {
+        AbstractCell cell = model.getStartPosition();
+        return buttonMap.get(getCellKey(cell.getQ(), cell.getR()));
     }
 }

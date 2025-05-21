@@ -42,6 +42,11 @@ public class AbstractCell
         _player = player;
     }
 
+    public void unsetPlayer()
+    {
+        _player = null;
+    }
+
     public Player GetPlayer()
     {
         return _player;

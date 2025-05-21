@@ -35,6 +35,6 @@ public class Main {
 
         new Level(rows, cols, walls, keys, start, exit, gm);
 
-        gm.startGame();
+        //gm.startGame();
     }
 }

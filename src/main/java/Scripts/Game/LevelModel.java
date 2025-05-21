@@ -15,6 +15,7 @@ public class LevelModel {
     private final int hexSize = 30;
     private final int offsetX = 150;
     private final int offsetY = 450;
+    private AbstractCell startCell;
 
     public LevelModel(int rows, int cols,
                       List<Point> wallPositions,
@@ -50,6 +51,7 @@ public class LevelModel {
                 setKeyCell((Cell)c);
             } else if (pos.equals(start)) {
                 ((Cell)c).SetPlayer(player);
+                startCell = c;
             } else if (pos.equals(exit)) {
                 ExitCell exitCell = new ExitCell(keys, c);
                 field.set(i, exitCell);
@@ -96,4 +98,14 @@ public class LevelModel {
     public Player getPlayer() { return player; }
     public List<Key> getKeys() { return Collections.unmodifiableList(keys); }
     public int getHexSize() { return hexSize; }
+
+    public void movePlayerTo(AbstractCell cell)
+    {
+        player.Move(cell);
+    }
+
+    public AbstractCell getStartPosition()
+    {
+        return startCell;
+    }
 }

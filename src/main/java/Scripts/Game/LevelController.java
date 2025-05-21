@@ -21,6 +21,7 @@ public class LevelController implements LevelInputHandler {
         this.view = view;
         this.gameManager = gameManager;
         setupExitCellListeners();
+        handleCellClick(view.getStartButton());
     }
 
     private void setupExitCellListeners() {
@@ -34,13 +35,19 @@ public class LevelController implements LevelInputHandler {
     }
 
     @Override
-    public void handleCellClick(AbstractCell cell) {
+    public void handleCellClick(HexButton btn) {
+        AbstractCell cell = view.getCellByButton(btn);
+
+        model.movePlayerTo(cell);
         if (cell instanceof Cell c) {
             handleRegularCell(c);
-        } else if (cell instanceof ExitCell exitCell) {
+            btn.setCharacter(' '); // очищает ячейку от символа в ней
+        }
+        else if (cell instanceof ExitCell exitCell) {
             exitCell.CheckGameRules(model.getPlayer().GetKeys());
         }
-        updateView();
+
+        updateViewByCell(btn);
     }
 
     private void handleRegularCell(Cell cell) {
@@ -50,31 +57,27 @@ public class LevelController implements LevelInputHandler {
         cell.setPassed();
     }
 
-    private void updateView() {
+    private void updateViewByCell(HexButton btn) {
+        view.setAllButtonsEnable(false);
         view.updateAllButtons();
-        enableNeighborButtons();
+        enableAdjacentButtons(view.getCellByButton(btn));
     }
 
-    void enableNeighborButtons() {
-        model.getField().forEach(cell -> {
-            if (cell.GetPlayer() != null) {
-                HexButton btn = view.getButtonMap().get(cell.getQ() + "," + cell.getR());
-                if (btn != null) {
-                    btn.setBackground(Color.RED);
-                    enableAdjacentButtons(cell);
-                }
-            }
-        });
-    }
 
-    private void enableAdjacentButtons(AbstractCell cell) {
-        cell.GetNeighbours().forEach(neighbor -> {
-            HexButton btn = view.getButtonMap().get(neighbor.getQ() + "," + neighbor.getR());
-            if (btn != null && !neighbor.IsWall() &&
-                    (!(neighbor instanceof Cell) || !((Cell)neighbor).getPassedInfo())) {
-                btn.setEnabled(true);
-                btn.setBackground(Color.BLUE);
+    public void enableAdjacentButtons(AbstractCell host) {
+        List<AbstractCell> neighbours = host.GetNeighbours();
+        for (AbstractCell neighbour : neighbours)
+        {
+            HexButton btn = view.getButtonMap().get(neighbour.getQ() + "," + neighbour.getR());
+            if (neighbour instanceof Cell
+                    && (((Cell) neighbour).getPassedInfo()
+                    || neighbour.IsWall()))
+            {
+                continue;
             }
-        });
+
+            btn.setEnabled(true);
+            btn.setBackground(Color.BLUE);
+        }
     }
 }

@@ -41,6 +41,7 @@ public class Player
 
     public void Move(AbstractCell cell)
     {
+        if (_cell!=null) _cell.unsetPlayer();
         SetCell(cell);
         cell.SetPlayer(this);
     }

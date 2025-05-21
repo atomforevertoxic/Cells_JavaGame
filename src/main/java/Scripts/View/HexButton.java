@@ -18,10 +18,7 @@ public class HexButton extends JButton {
     Boolean clicked;
 
     AbstractCell _cell;
-    /**
-     * Создает шестиугольник с символом внутри
-     * @param character
-     */
+
     public HexButton(Character character) {
         this.calculateBounds();
         this.setBackground(Color.YELLOW);
@@ -33,13 +30,7 @@ public class HexButton extends JButton {
         this.setContentAreaFilled(false);
     }
 
-    /**
-     * Создает шестиугольник
-     * @param width
-     * @param height
-     * @param ratio
-     * @return
-     */
+
     private Polygon hexagon(int width, int height, double ratio) {
         Polygon hexagon = new Polygon();
         for (int i = 0; i < 6; i++) {
@@ -88,9 +79,6 @@ public class HexButton extends JButton {
         this.calculateBounds();
     }
 
-    /**
-     * Отрисовывает кнопку
-     */
     @Override
     protected void paintComponent(Graphics graphics) {
 
@@ -119,15 +107,6 @@ public class HexButton extends JButton {
 
     }
 
-    public void click() {
-        this.clicked = true;
-        this.setBackground(Color.MAGENTA);
-        this.setForeground(Color.BLACK);
-    }
-
-    public Boolean isClicked() {
-        return this.clicked;
-    }
 
     public AbstractCell cell()
     {

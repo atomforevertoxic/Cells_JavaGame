@@ -1,8 +1,9 @@
 package Scripts.Events;
 
 import Scripts.Cells.AbstractCell;
+import Scripts.View.HexButton;
 
 @FunctionalInterface
 public interface LevelInputHandler {
-    void handleCellClick(AbstractCell cell);
+    public void handleCellClick(HexButton btn);
 }

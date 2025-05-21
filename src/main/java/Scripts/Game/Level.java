@@ -22,7 +22,7 @@ public class Level {
         this.view = new LevelView(model, null);
         this.controller = new LevelController(model, view, gameManager);
 
-        view.renderField(controller::handleCellClick);
+        view.renderField(controller);
 
         JFrame frame = new JFrame("Hexagonal Level");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -35,7 +35,7 @@ public class Level {
         model.getCell(startPosition.x, startPosition.y).ifPresent(cell -> {
             if (cell instanceof Cell) ((Cell)cell).SetPlayer(model.getPlayer());
             view.updateAllButtons();
-            controller.enableNeighborButtons();
+            controller.enableAdjacentButtons(cell);
         });
     }
 }
