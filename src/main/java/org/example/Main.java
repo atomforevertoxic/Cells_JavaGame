@@ -31,11 +31,10 @@ public class Main {
 
         Point exit = new Point(6,4);
 
-
         GameManager gm = new GameManager();
 
-        gm.startGame();
+        new Level(rows, cols, walls, keys, start, exit, gm);
 
-        //new Level(rows, cols, walls, keys, start, exit, gm);
+        gm.startGame();
     }
 }
