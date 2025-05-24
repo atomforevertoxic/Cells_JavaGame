@@ -28,14 +28,14 @@ public class LevelModel {
     }
 
     private void initializeField(List<Point> walls, List<Point> keys, Point start, Point exit) {
-        // Создание базовых клеток
+
         for (int r = 0; r < rows; r++) {
             for (int q = 0; q < cols; q++) {
                 field.add(new Cell(q, r));
             }
         }
 
-        // Размещение объектов
+
         placeObjects(walls, keys, start, exit);
         connectNeighbors();
     }
@@ -93,7 +93,7 @@ public class LevelModel {
         return new Point((int)x, (int)y);
     }
 
-    // Геттеры
+
     public List<AbstractCell> getField() { return Collections.unmodifiableList(field); }
     public Player getPlayer() { return player; }
     public List<Key> getKeys() { return Collections.unmodifiableList(keys); }
