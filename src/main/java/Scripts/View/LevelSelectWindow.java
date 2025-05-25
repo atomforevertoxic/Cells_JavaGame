@@ -5,8 +5,6 @@ import Scripts.Utils.LevelLoader;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 public class LevelSelectWindow extends JFrame {
@@ -27,9 +25,8 @@ public class LevelSelectWindow extends JFrame {
             return new boolean[0];
         }
 
-        // Первый уровень всегда разблокирован, остальные - заблокированы
         boolean[] unlocked = new boolean[levels.size()];
-        unlocked[0] = true;
+        unlocked[0] = true; // Только первый уровень разблокирован
         return unlocked;
     }
 
@@ -38,7 +35,7 @@ public class LevelSelectWindow extends JFrame {
         setSize(800, 600);
         setLocationRelativeTo(null);
         setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setBackground(new Color(30, 30, 35));
     }
 
@@ -67,7 +64,10 @@ public class LevelSelectWindow extends JFrame {
 
         // Кнопка "Назад"
         JButton backButton = new JButton("Назад");
-        backButton.addActionListener(e -> gameManager.openMainMenu());
+        backButton.addActionListener(e -> {
+            dispose();
+            gameManager.openMainMenu();
+        });
         styleButton(backButton);
 
         JPanel bottomPanel = new JPanel();
@@ -86,7 +86,6 @@ public class LevelSelectWindow extends JFrame {
         button.setLayout(new BorderLayout());
         button.setPreferredSize(new Dimension(200, 200));
 
-        // Основная информация об уровне
         JPanel infoPanel = new JPanel(new BorderLayout());
         infoPanel.setOpaque(false);
 
@@ -100,14 +99,15 @@ public class LevelSelectWindow extends JFrame {
         infoPanel.add(nameLabel, BorderLayout.SOUTH);
         button.add(infoPanel, BorderLayout.CENTER);
 
-        // Стилизация в зависимости от статуса уровня
         if (unlocked) {
             button.setBackground(new Color(70, 70, 80));
-            button.addActionListener(e -> gameManager.startLevelFromJson(level.id));
+            button.addActionListener(e -> {
+                dispose(); // Закрываем текущее окно
+                gameManager.startLevelFromJson(level.id);
+            });
             numberLabel.setForeground(Color.WHITE);
             nameLabel.setForeground(Color.LIGHT_GRAY);
 
-            // Эффекты при наведении
             button.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
                     button.setBackground(new Color(90, 90, 100));
@@ -121,11 +121,6 @@ public class LevelSelectWindow extends JFrame {
             button.setEnabled(false);
             numberLabel.setForeground(new Color(100, 100, 100));
             nameLabel.setForeground(new Color(80, 80, 80));
-
-            // Иконка замка для заблокированных уровней
-            JLabel lockIcon = new JLabel(new ImageIcon("path_to_lock_icon.png")); // Замените на реальный путь
-            lockIcon.setHorizontalAlignment(SwingConstants.CENTER);
-            button.add(lockIcon, BorderLayout.SOUTH);
         }
 
         return button;

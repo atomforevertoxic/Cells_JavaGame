@@ -24,8 +24,18 @@ public class Level {
 
         view.renderField(controller);
 
-        JFrame frame = new JFrame("Hexagonal Level");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        JFrame frame = new JFrame("Hexagonal Level - Level " + gameManager.getCurrentLevel());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+        // Добавляем обработчик закрытия окна
+        frame.addWindowListener(new java.awt.event.WindowAdapter() {
+            @Override
+            public void windowClosed(java.awt.event.WindowEvent e) {
+                // При закрытии уровня возвращаемся в главное меню
+                gameManager.openMainMenu();
+            }
+        });
+
         frame.setSize(1200, 800);
         frame.setResizable(false);
         frame.add(view.getPanel());
