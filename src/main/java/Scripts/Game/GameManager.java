@@ -4,10 +4,12 @@ import Scripts.Events.ExitCellActionEvent;
 import Scripts.Events.ExitCellActionListener;
 import Scripts.Events.GameActionEvent;
 import Scripts.Events.GameActionListener;
+import Scripts.Utils.LevelLoader;
 import Scripts.View.LevelSelectWindow;
 import Scripts.View.MainMenuWindow;
 import org.jetbrains.annotations.NotNull;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -100,6 +102,39 @@ public class GameManager {
 
     public int getCurrentLevel() {
         return currentLevel;
+    }
+
+    public void startLevelFromJson(int levelId) {
+        List<LevelLoader.LevelConfig> levels = LevelLoader.loadLevels();
+        if (levels == null) {
+            System.err.println("Не удалось загрузить уровни!");
+            return;
+        }
+
+        LevelLoader.LevelConfig config = levels.stream()
+                .filter(l -> l.id == levelId)
+                .findFirst()
+                .orElse(null);
+
+        if (config == null) {
+            System.err.println("Уровень с ID " + levelId + " не найден!");
+            return;
+        }
+
+        // Преобразование данных из JSON в параметры уровня
+        List<Point> walls = config.walls.stream()
+                .map(w -> new Point(w.q, w.r))
+                .toList();
+
+        List<Point> keys = config.keys.stream()
+                .map(k -> new Point(k.q, k.r))
+                .toList();
+
+        Point start = new Point(config.start.q, config.start.r);
+        Point exit = new Point(config.exit.q, config.exit.r);
+
+        // Создание уровня
+        new Level(config.rows, config.cols, walls, keys, start, exit, this);
     }
 
 }

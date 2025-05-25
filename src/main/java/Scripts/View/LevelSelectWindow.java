@@ -1,21 +1,36 @@
 package Scripts.View;
 
 import Scripts.Game.GameManager;
+import Scripts.Utils.LevelLoader;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.List;
 
 public class LevelSelectWindow extends JFrame {
     private final GameManager gameManager;
-    private final int totalLevels = 5;
-    private final boolean[] unlockedLevels = {true, false, false, false, false}; // Первые 3 уровня открыты
+    private List<LevelLoader.LevelConfig> levels;
+    private final boolean[] unlockedLevels;
 
     public LevelSelectWindow(GameManager gameManager) {
         this.gameManager = gameManager;
+        this.levels = LevelLoader.loadLevels();
+        this.unlockedLevels = initializeUnlockedLevels();
         setupWindow();
         initUI();
+    }
+
+    private boolean[] initializeUnlockedLevels() {
+        if (levels == null || levels.isEmpty()) {
+            return new boolean[0];
+        }
+
+        // Первый уровень всегда разблокирован, остальные - заблокированы
+        boolean[] unlocked = new boolean[levels.size()];
+        unlocked[0] = true;
+        return unlocked;
     }
 
     private void setupWindow() {
@@ -39,63 +54,60 @@ public class LevelSelectWindow extends JFrame {
         title.setBorder(BorderFactory.createEmptyBorder(0, 0, 30, 0));
 
         // Панель с кнопками уровней
-        JPanel levelsPanel = new JPanel(new GridLayout(2, 3, 20, 20));
+        JPanel levelsPanel = new JPanel(new GridLayout(0, 3, 20, 20));
         levelsPanel.setOpaque(false);
 
-        for (int i = 0; i < totalLevels; i++) {
-            JButton levelButton = createLevelButton(i + 1, unlockedLevels[i]);
-            levelsPanel.add(levelButton);
-        }
-
-        // Заполнители для центрирования
-        if (totalLevels % 3 != 0) {
-            for (int i = 0; i < 3 - (totalLevels % 3); i++) {
-                levelsPanel.add(Box.createGlue());
+        if (levels != null) {
+            for (int i = 0; i < levels.size(); i++) {
+                LevelLoader.LevelConfig level = levels.get(i);
+                JButton levelButton = createLevelButton(level, unlockedLevels[i]);
+                levelsPanel.add(levelButton);
             }
         }
 
-
-        JPanel bottomPanel = new JPanel();
-        bottomPanel.setLayout(new BoxLayout(bottomPanel, BoxLayout.Y_AXIS));
-        bottomPanel.setOpaque(false);
-
-        bottomPanel.add(Box.createVerticalStrut(40));
-
+        // Кнопка "Назад"
         JButton backButton = new JButton("Назад");
         backButton.addActionListener(e -> gameManager.openMainMenu());
-        backButton.setAlignmentX(Component.CENTER_ALIGNMENT);
         styleButton(backButton);
 
+        JPanel bottomPanel = new JPanel();
+        bottomPanel.setOpaque(false);
         bottomPanel.add(backButton);
 
         mainPanel.add(title, BorderLayout.NORTH);
         mainPanel.add(levelsPanel, BorderLayout.CENTER);
-        mainPanel.add(bottomPanel, BorderLayout.SOUTH); // Используем панель с отступом
+        mainPanel.add(bottomPanel, BorderLayout.SOUTH);
 
         add(mainPanel);
     }
 
-    private JButton createLevelButton(int levelNum, boolean unlocked) {
+    private JButton createLevelButton(LevelLoader.LevelConfig level, boolean unlocked) {
         JButton button = new JButton();
         button.setLayout(new BorderLayout());
         button.setPreferredSize(new Dimension(200, 200));
 
+        // Основная информация об уровне
+        JPanel infoPanel = new JPanel(new BorderLayout());
+        infoPanel.setOpaque(false);
+
+        JLabel numberLabel = new JLabel(String.valueOf(level.id), SwingConstants.CENTER);
+        numberLabel.setFont(new Font("Roboto", Font.BOLD, 48));
+
+        JLabel nameLabel = new JLabel(level.name, SwingConstants.CENTER);
+        nameLabel.setFont(new Font("Roboto", Font.PLAIN, 16));
+
+        infoPanel.add(numberLabel, BorderLayout.CENTER);
+        infoPanel.add(nameLabel, BorderLayout.SOUTH);
+        button.add(infoPanel, BorderLayout.CENTER);
+
         // Стилизация в зависимости от статуса уровня
         if (unlocked) {
             button.setBackground(new Color(70, 70, 80));
-            button.addActionListener(e -> gameManager.startLevel(levelNum));
-        } else {
-            button.setBackground(new Color(40, 40, 45));
-            button.setEnabled(false);
-        }
+            button.addActionListener(e -> gameManager.startLevelFromJson(level.id));
+            numberLabel.setForeground(Color.WHITE);
+            nameLabel.setForeground(Color.LIGHT_GRAY);
 
-        JLabel numberLabel = new JLabel(String.valueOf(levelNum), SwingConstants.CENTER);
-        numberLabel.setFont(new Font("Roboto", Font.BOLD, 48));
-        numberLabel.setForeground(unlocked ? Color.WHITE : new Color(100, 100, 100));
-        button.add(numberLabel, BorderLayout.CENTER);
-
-        // Эффекты при наведении
-        if (unlocked) {
+            // Эффекты при наведении
             button.addMouseListener(new java.awt.event.MouseAdapter() {
                 public void mouseEntered(java.awt.event.MouseEvent evt) {
                     button.setBackground(new Color(90, 90, 100));
@@ -104,6 +116,16 @@ public class LevelSelectWindow extends JFrame {
                     button.setBackground(new Color(70, 70, 80));
                 }
             });
+        } else {
+            button.setBackground(new Color(40, 40, 45));
+            button.setEnabled(false);
+            numberLabel.setForeground(new Color(100, 100, 100));
+            nameLabel.setForeground(new Color(80, 80, 80));
+
+            // Иконка замка для заблокированных уровней
+            JLabel lockIcon = new JLabel(new ImageIcon("path_to_lock_icon.png")); // Замените на реальный путь
+            lockIcon.setHorizontalAlignment(SwingConstants.CENTER);
+            button.add(lockIcon, BorderLayout.SOUTH);
         }
 
         return button;

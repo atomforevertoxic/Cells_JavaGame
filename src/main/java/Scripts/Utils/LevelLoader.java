@@ -1,39 +1,47 @@
 package Scripts.Utils;
 
 import com.google.gson.Gson;
-import java.io.FileReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.List;
 
 public class LevelLoader {
     private static class LevelData {
-        List<LevelInfo> levels;
+        List<LevelConfig> levels;
     }
 
-    private static class LevelInfo {
-        int id;
-        String name;
-        int rows;
-        int cols;
-        List<WallPosition> walls;
-        List<KeyPosition> keys;
-        StartPosition start;
-        ExitPosition exit;
+    public static class LevelConfig {
+        public int id;
+        public String name;
+        public int rows;
+        public int cols;
+        public List<WallPosition> walls;
+        public List<KeyPosition> keys;
+        public StartPosition start;
+        public ExitPosition exit;
     }
 
-    private static class WallPosition { int q; int r; }
-    private static class KeyPosition { int q; int r; }
-    private static class StartPosition { int q; int r; }
-    private static class ExitPosition { int q; int r; }
+    // потом getter и setter поставь
+    public static class WallPosition { public int q; public int r; }
+    public static class KeyPosition { public int q; public int r; }
+    public static class StartPosition { public int q; public int r; }
+    public static class ExitPosition { public int q; public int r; }
 
-    public static LevelInfo loadLevel(int levelId, String filePath) {
-        try (FileReader reader = new FileReader(filePath)) {
+    public static List<LevelConfig> loadLevels() {
+        try {
+            InputStream inputStream = LevelLoader.class
+                    .getClassLoader()
+                    .getResourceAsStream("levels.json");
+
+            if (inputStream == null) {
+                throw new RuntimeException("Файл levels.json не найден в classpath!");
+            }
+            InputStreamReader reader = new InputStreamReader(inputStream);
             LevelData data = new Gson().fromJson(reader, LevelData.class);
-            return data.levels.stream()
-                    .filter(level -> level.id == levelId)
-                    .findFirst()
-                    .orElseThrow(() -> new RuntimeException("Level not found"));
+            return data.levels;
         } catch (Exception e) {
-            throw new RuntimeException("Failed to load level", e);
+            e.printStackTrace();
+            return null;
         }
     }
 }
