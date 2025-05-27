@@ -30,7 +30,7 @@ public class GameManager {
 
     public ExitCellActionListener getExitCellObserver()
     {
-        return (ExitCellActionListener) exitCellObserver;
+        return exitCellObserver;
     }
 
     public void startGame() {
@@ -51,19 +51,6 @@ public class GameManager {
         });
     }
 
-    // переписать
-    public List<Point> convertPoints(List<LevelLoader.KeyPosition> positions) {
-        return positions.stream()
-                .map(w -> new Point(w.q, w.r))
-                .toList();
-    }
-
-    // потом удалить
-    public List<Point> convertPoints2(List<LevelLoader.WallPosition> positions) {
-        return positions.stream()
-                .map(w -> new Point(w.q, w.r))
-                .toList();
-    }
 
     private void switchWindow(WindowCreator creator) {
         closeCurrentWindow();

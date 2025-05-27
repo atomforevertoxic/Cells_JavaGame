@@ -23,18 +23,11 @@ public class LevelLoader {
         public String name;
         public int rows;
         public int cols;
-        public List<WallPosition> walls;
-        public List<KeyPosition> keys;
-        public StartPosition start;
-        public ExitPosition exit;
+        public List<Point> walls;
+        public List<Point> keys;
+        public Point start;
+        public Point exit;
     }
-
-    // потом getter и setter поставь
-    public static class WallPosition { public int q; public int r; }
-    public static class KeyPosition { public int q; public int r; }
-    public static class StartPosition { public int q; public int r; }
-    public static class ExitPosition { public int q; public int r; }
-
 
     private final GameManager gameManager;
 
@@ -67,22 +60,22 @@ public class LevelLoader {
         new Level( config.id,
                 config.rows,
                 config.cols,
-                gameManager.convertPoints2(config.walls),
-                gameManager.convertPoints(config.keys),
-                new Point(config.start.q, config.start.r),
-                new Point(config.exit.q, config.exit.r),
+                config.walls,
+                config.keys,
+                config.start,
+                config.exit,
                 gameManager
         );
     }
 
-    private LevelLoader.LevelConfig loadLevelConfig(int levelId) {
-        List<LevelLoader.LevelConfig> levels = LevelLoader.loadLevels();
+    private LevelConfig loadLevelConfig(int levelId) {
+        List<LevelConfig> levels = loadLevels();
         if (levels == null) {
             System.err.println("Не удалось загрузить уровни!");
             return null;
         }
 
-        LevelLoader.LevelConfig config = levels.stream()
+        LevelConfig config = levels.stream()
                 .filter(l -> l.id == levelId)
                 .findFirst()
                 .orElse(null);
@@ -93,4 +86,5 @@ public class LevelLoader {
 
         return config;
     }
+
 }
