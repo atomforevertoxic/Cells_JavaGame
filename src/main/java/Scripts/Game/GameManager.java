@@ -51,54 +51,15 @@ public class GameManager {
         });
     }
 
-    public void startLevelFromJson(int levelId) {
-        closeCurrentWindow();
-        this.currentLevel = levelId;
-
-        LevelLoader.LevelConfig config = loadLevelConfig(levelId);
-        if (config == null) {
-            openMainMenu(); // Возвращаем в меню при ошибке
-            return;
-        }
-
-        new Level(
-                config.rows,
-                config.cols,
-                convertPoints2(config.walls),
-                convertPoints(config.keys),
-                new Point(config.start.q, config.start.r),
-                new Point(config.exit.q, config.exit.r),
-                this
-        );
-    }
-
-    private LevelLoader.LevelConfig loadLevelConfig(int levelId) {
-        List<LevelLoader.LevelConfig> levels = LevelLoader.loadLevels();
-        if (levels == null) {
-            System.err.println("Не удалось загрузить уровни!");
-            return null;
-        }
-
-        LevelLoader.LevelConfig config = levels.stream()
-                .filter(l -> l.id == levelId)
-                .findFirst()
-                .orElse(null);
-
-        if (config == null) {
-            System.err.println("Уровень с ID " + levelId + " не найден!");
-        }
-
-        return config;
-    }
-
     // переписать
-    private List<Point> convertPoints(List<LevelLoader.KeyPosition> positions) {
+    public List<Point> convertPoints(List<LevelLoader.KeyPosition> positions) {
         return positions.stream()
                 .map(w -> new Point(w.q, w.r))
                 .toList();
     }
 
-    private List<Point> convertPoints2(List<LevelLoader.WallPosition> positions) {
+    // потом удалить
+    public List<Point> convertPoints2(List<LevelLoader.WallPosition> positions) {
         return positions.stream()
                 .map(w -> new Point(w.q, w.r))
                 .toList();
@@ -133,7 +94,7 @@ public class GameManager {
     public void startNextLevel() {
         currentLevel++;
         if (isLevelExists(currentLevel)) {
-            startLevelFromJson(currentLevel);
+            //startLevelFromJson(currentLevel);
         } else {
             JOptionPane.showMessageDialog(null,
                     "Поздравляем! Вы прошли все уровни!",

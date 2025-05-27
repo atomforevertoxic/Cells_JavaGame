@@ -10,14 +10,16 @@ public class Level {
     private final LevelModel model;
     private final LevelView view;
     private final LevelController controller;
+    private int number;
 
-    public Level(int rows, int cols,
+    public Level(int levelNumber, int rows, int cols,
                  List<Point> wallPositions,
                  List<Point> keyPositions,
                  Point startPosition,
                  Point exitPosition,
                  GameManager gameManager) {
 
+        number = levelNumber;
         this.model = new LevelModel(rows, cols, wallPositions, keyPositions, startPosition, exitPosition);
 
         JFrame frame = new JFrame("Hexagonal Level - Level " + gameManager.getCurrentLevel());

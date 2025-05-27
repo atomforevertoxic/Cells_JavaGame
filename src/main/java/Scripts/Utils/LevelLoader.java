@@ -1,11 +1,19 @@
 package Scripts.Utils;
 
+import Scripts.Game.GameManager;
+import Scripts.Game.Level;
 import com.google.gson.Gson;
+
+import java.awt.*;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.List;
 
 public class LevelLoader {
+    public LevelLoader(GameManager gameManager) {
+        this.gameManager = gameManager;
+    }
+
     private static class LevelData {
         List<LevelConfig> levels;
     }
@@ -27,6 +35,10 @@ public class LevelLoader {
     public static class StartPosition { public int q; public int r; }
     public static class ExitPosition { public int q; public int r; }
 
+
+    private final GameManager gameManager;
+
+
     public static List<LevelConfig> loadLevels() {
         try {
             InputStream inputStream = LevelLoader.class
@@ -43,5 +55,42 @@ public class LevelLoader {
             e.printStackTrace();
             return null;
         }
+    }
+
+    public void startLevelFromJson(int levelId) {
+        LevelConfig config = loadLevelConfig(levelId);
+        if (config == null) {
+            gameManager.openMainMenu(); // Возвращаем в меню при ошибке
+            return;
+        }
+
+        new Level( config.id,
+                config.rows,
+                config.cols,
+                gameManager.convertPoints2(config.walls),
+                gameManager.convertPoints(config.keys),
+                new Point(config.start.q, config.start.r),
+                new Point(config.exit.q, config.exit.r),
+                gameManager
+        );
+    }
+
+    private LevelLoader.LevelConfig loadLevelConfig(int levelId) {
+        List<LevelLoader.LevelConfig> levels = LevelLoader.loadLevels();
+        if (levels == null) {
+            System.err.println("Не удалось загрузить уровни!");
+            return null;
+        }
+
+        LevelLoader.LevelConfig config = levels.stream()
+                .filter(l -> l.id == levelId)
+                .findFirst()
+                .orElse(null);
+
+        if (config == null) {
+            System.err.println("Уровень с ID " + levelId + " не найден!");
+        }
+
+        return config;
     }
 }

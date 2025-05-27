@@ -11,11 +11,13 @@ public class LevelSelectWindow extends JFrame {
     private final GameManager gameManager;
     private List<LevelLoader.LevelConfig> levels;
     private final boolean[] unlockedLevels;
+    private final LevelLoader levelLoader;
 
     public LevelSelectWindow(GameManager gameManager) {
         this.gameManager = gameManager;
         this.levels = LevelLoader.loadLevels();
         this.unlockedLevels = initializeUnlockedLevels();
+        this.levelLoader = new LevelLoader(gameManager);
         setupWindow();
         initUI();
     }
@@ -103,7 +105,7 @@ public class LevelSelectWindow extends JFrame {
             button.setBackground(new Color(70, 70, 80));
             button.addActionListener(e -> {
                 dispose(); // Закрываем текущее окно
-                gameManager.startLevelFromJson(level.id);
+                levelLoader.startLevelFromJson(level.id);
             });
             numberLabel.setForeground(Color.WHITE);
             nameLabel.setForeground(Color.LIGHT_GRAY);

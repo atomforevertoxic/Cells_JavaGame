@@ -99,6 +99,7 @@ public class LevelModel {
     public List<Key> getKeys() { return Collections.unmodifiableList(keys); }
     public int getHexSize() { return hexSize; }
 
+
     public void movePlayerTo(AbstractCell cell)
     {
         player.Move(cell);
