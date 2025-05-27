@@ -4,7 +4,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.EventListener;
 
-public interface LevelCompletedListener extends EventListener {
+public interface ILevelCompletedListener extends EventListener {
 
     boolean fireGameRulesPassed(@NotNull ExitCellActionEvent event);
 

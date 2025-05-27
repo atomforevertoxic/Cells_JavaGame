@@ -9,7 +9,7 @@ import java.util.List;
 public class Level {
     private final LevelModel model;
     private final LevelView view;
-    private final LevelController controller;
+    private final ILevelController controller;
     private int number;
 
     public Level(int levelNumber, int rows, int cols,
@@ -27,7 +27,7 @@ public class Level {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.view = new LevelView(model, null, frame);
-        this.controller = new LevelController(model, view, gameManager);
+        this.controller = new ILevelController(model, view, gameManager);
 
         view.renderField(controller);
 
@@ -38,7 +38,7 @@ public class Level {
 
 
         model.getCell(startPosition.x, startPosition.y).ifPresent(cell -> {
-            if (cell instanceof Cell) ((Cell)cell).SetPlayer(model.getPlayer());
+            if (cell instanceof Cell) cell.SetPlayer(model.getPlayer());
             view.updateAllButtons();
             controller.enableAdjacentButtons(cell);
         });

@@ -3,20 +3,18 @@ package Scripts.Game;
 import Scripts.Cells.AbstractCell;
 import Scripts.Cells.Cell;
 import Scripts.Cells.ExitCell;
-import Scripts.Events.ExitCellActionEvent;
-import Scripts.Events.ExitCellActionListener;
-import Scripts.Events.LevelInputHandler;
+import Scripts.Interfaces.ILevelInputHandler;
 import Scripts.View.HexButton;
 
 import java.awt.*;
 import java.util.List;
 
-public class LevelController implements LevelInputHandler {
+public class ILevelController implements ILevelInputHandler {
     private final LevelModel model;
     private final LevelView view;
     private final GameManager gameManager;
 
-    public LevelController(LevelModel model, LevelView view, GameManager gameManager) {
+    public ILevelController(LevelModel model, LevelView view, GameManager gameManager) {
         this.model = model;
         this.view = view;
         this.gameManager = gameManager;

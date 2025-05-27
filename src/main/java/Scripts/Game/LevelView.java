@@ -3,7 +3,7 @@ package Scripts.Game;
 import Scripts.Cells.AbstractCell;
 import Scripts.Cells.Cell;
 import Scripts.Cells.ExitCell;
-import Scripts.Events.LevelInputHandler;
+import Scripts.Interfaces.ILevelInputHandler;
 import Scripts.View.HexButton;
 import javax.swing.*;
 import java.awt.*;
@@ -15,7 +15,7 @@ public class LevelView {
     private final LevelModel model;
     private JFrame levelFrame;
 
-    public LevelView(LevelModel model, LevelInputHandler inputHandler, JFrame levelFrame) {
+    public LevelView(LevelModel model, ILevelInputHandler inputHandler, JFrame levelFrame) {
         this.model = model;
         this.levelFrame = levelFrame;
         renderField(inputHandler);
@@ -27,7 +27,7 @@ public class LevelView {
         return Collections.unmodifiableMap(buttonMap);
     }
 
-    void renderField(LevelInputHandler inputHandler) {
+    void renderField(ILevelInputHandler inputHandler) {
         panel.removeAll();
         buttonMap.clear();
 
@@ -45,7 +45,7 @@ public class LevelView {
         return q + "," + r;
     }
 
-    private HexButton createHexButton(AbstractCell cell, LevelInputHandler inputHandler) {
+    private HexButton createHexButton(AbstractCell cell, ILevelInputHandler inputHandler) {
         Point center = model.calculatePixelPosition(cell);
         int btnSize = model.getHexSize() * 2;
         int x = 300 + center.x;

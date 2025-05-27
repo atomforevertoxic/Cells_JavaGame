@@ -1,19 +1,16 @@
 package Scripts.Game;
 
-import Scripts.Cells.ExitCell;
-import Scripts.Events.ExitCellActionEvent;
-import Scripts.Events.ExitCellActionListener;
+import Scripts.Events.IExitCellActionListener;
+import Scripts.Events.IWindowCreator;
 import Scripts.Events.LevelCompletedEvent;
-import Scripts.Events.LevelCompletedListener;
-import Scripts.Observers.ExitCellObserver;
+import Scripts.Events.ILevelCompletedListener;
+import Scripts.Observers.IExitCellObserver;
 import Scripts.Utils.LevelLoader;
 import Scripts.View.LevelSelectWindow;
 import Scripts.View.MainMenuWindow;
 import Scripts.View.ResultWindow;
-import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,8 +22,8 @@ public class GameManager {
     private boolean isGameRunning = true;
     private Level currentLevel;
 
-    private ExitCellObserver exitCellObserver = new ExitCellObserver(this);
-    private final List<LevelCompletedListener> levelCompletedListeners = new ArrayList<>();
+    private IExitCellObserver exitCellObserver = new IExitCellObserver(this);
+    private final List<ILevelCompletedListener> ILevelCompletedListeners = new ArrayList<>();
 
 
     public void setCurrentLevel(Level level)
@@ -34,7 +31,7 @@ public class GameManager {
         currentLevel = level;
     }
 
-    public ExitCellActionListener getExitCellObserver()
+    public IExitCellActionListener getExitCellObserver()
     {
         return exitCellObserver;
     }
@@ -58,7 +55,7 @@ public class GameManager {
     }
 
 
-    private void switchWindow(WindowCreator creator) {
+    private void switchWindow(IWindowCreator creator) {
         closeCurrentWindow();
         JFrame newWindow = creator.create();
         currentActiveWindow = newWindow;
@@ -105,7 +102,7 @@ public class GameManager {
 
     private void fireGameEvent(LevelCompletedEvent event) {
         // Оповещаем всех слушателей
-        levelCompletedListeners.forEach(listener -> listener.onGameAction(event));
+        ILevelCompletedListeners.forEach(listener -> listener.onGameAction(event));
     }
 
     private void showResultWindow(LevelCompletedEvent event) {
@@ -121,9 +118,4 @@ public class GameManager {
         event.setLevelCompleted(currentLevel.number());
     }
 
-
-    @FunctionalInterface
-    private interface WindowCreator {
-        JFrame create();
-    }
 }
