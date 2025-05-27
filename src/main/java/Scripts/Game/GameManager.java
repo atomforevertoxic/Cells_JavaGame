@@ -23,10 +23,16 @@ public class GameManager {
     private JFrame currentActiveWindow;
 
     private boolean isGameRunning = true;
-    private int currentLevel = 1;
+    private Level currentLevel;
 
     private ExitCellObserver exitCellObserver = new ExitCellObserver(this);
     private final List<LevelCompletedListener> levelCompletedListeners = new ArrayList<>();
+
+
+    public void setCurrentLevel(Level level)
+    {
+        currentLevel = level;
+    }
 
     public ExitCellActionListener getExitCellObserver()
     {
@@ -73,14 +79,8 @@ public class GameManager {
         //fire level completed
     }
 
-
-    public int getCurrentLevel() {
-        return currentLevel;
-    }
-
     public void startNextLevel() {
-        currentLevel++;
-        if (isLevelExists(currentLevel)) {
+        if (isLevelExists(currentLevel.number()+1)) {
             //startLevelFromJson(currentLevel);
         } else {
             JOptionPane.showMessageDialog(null,
@@ -97,7 +97,7 @@ public class GameManager {
     }
 
     public void handleLevelCompletion() {
-        LevelCompletedEvent event = LevelCompletedEvent.createVictoryEvent(this, currentLevel);
+        LevelCompletedEvent event = LevelCompletedEvent.createVictoryEvent(this, currentLevel.number());
 
         fireGameEvent(event);
         showResultWindow(event);
@@ -116,9 +116,9 @@ public class GameManager {
     }
 
     private void fireLevelEnded() {
-        LevelCompletedEvent event = LevelCompletedEvent.createVictoryEvent(this, currentLevel);
+        LevelCompletedEvent event = LevelCompletedEvent.createVictoryEvent(this, currentLevel.number());
 
-        event.setLevelCompleted(currentLevel);
+        event.setLevelCompleted(currentLevel.number());
     }
 
 

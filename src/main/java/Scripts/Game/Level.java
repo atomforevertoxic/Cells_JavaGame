@@ -20,9 +20,10 @@ public class Level {
                  GameManager gameManager) {
 
         number = levelNumber;
+        gameManager.setCurrentLevel(this);
         this.model = new LevelModel(rows, cols, wallPositions, keyPositions, startPosition, exitPosition);
 
-        JFrame frame = new JFrame("Hexagonal Level - Level " + gameManager.getCurrentLevel());
+        JFrame frame = new JFrame("Hexagonal Level - Level " + number);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.view = new LevelView(model, null, frame);
@@ -41,5 +42,10 @@ public class Level {
             view.updateAllButtons();
             controller.enableAdjacentButtons(cell);
         });
+    }
+
+    public int number()
+    {
+        return number;
     }
 }
