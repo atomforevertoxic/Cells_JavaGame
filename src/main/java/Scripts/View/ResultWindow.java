@@ -1,41 +1,44 @@
 package Scripts.View;
 
-import Scripts.Events.GameActionEvent;
+import Scripts.Events.LevelCompletedEvent;
+import Scripts.Game.GameManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 public class ResultWindow extends JFrame {
-    public ResultWindow(GameActionEvent event) {
+    private final int currentLevel;
+    private final GameManager gm = new GameManager();
+
+    public ResultWindow(LevelCompletedEvent event) {
+        this.currentLevel = event.getLevelCompleted();
         setupWindow(event);
         initUI(event);
     }
 
-    private void setupWindow(GameActionEvent event) {
-        setTitle(event.isVictory() ? "Победа!" : "Поражение");
+    private void setupWindow(LevelCompletedEvent event) {
+        setTitle("Победа!");
         setSize(600, 400);
         setLocationRelativeTo(null);
         setResizable(false);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         getContentPane().setBackground(new Color(30, 30, 35));
     }
 
-    private void initUI(GameActionEvent event) {
+    private void initUI(LevelCompletedEvent event) {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
         panel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
 
         // Заголовок
-        JLabel title = new JLabel(event.isVictory() ? "УРОВЕНЬ ПРОЙДЕН!" : "ПОРАЖЕНИЕ");
+        JLabel title = new JLabel("УРОВЕНЬ ПРОЙДЕН!");
         title.setFont(new Font("Roboto", Font.BOLD, 32));
-        title.setForeground(event.isVictory() ? new Color(100, 255, 100) : new Color(255, 100, 100));
+        title.setForeground(new Color(100, 255, 100));
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Информация об уровне
-        JLabel levelInfo = new JLabel("Уровень: " + event.getLevelCompleted()); //тут передается номер уровня!!
+        JLabel levelInfo = new JLabel("Уровень: " + currentLevel);
         levelInfo.setFont(new Font("Arial", Font.PLAIN, 20));
         levelInfo.setForeground(Color.WHITE);
         levelInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
@@ -53,6 +56,16 @@ public class ResultWindow extends JFrame {
 
         JButton nextButton = createActionButton("Следующий уровень");
         JButton menuButton = createActionButton("В меню");
+
+        nextButton.addActionListener(e -> {
+            dispose();
+            //gameManager.startNextLevel();
+        });
+
+        menuButton.addActionListener(e -> {
+            dispose();
+            //gameManager.openMainMenu();
+        });
 
         buttonPanel.add(nextButton);
         buttonPanel.add(menuButton);
@@ -74,7 +87,18 @@ public class ResultWindow extends JFrame {
         button.setFont(new Font("Arial", Font.BOLD, 16));
         button.setBackground(new Color(70, 70, 80));
         button.setForeground(Color.WHITE);
+        button.setFocusPainted(false);
         button.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
+
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(90, 90, 100));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(70, 70, 80));
+            }
+        });
+
         return button;
     }
 

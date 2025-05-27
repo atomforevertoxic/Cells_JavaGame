@@ -7,23 +7,33 @@ import java.util.List;
 
 public class ExitCellActionEvent extends EventObject
 {
-    private List<Key> _keys;
+    private List<Key> _levelKeys;
 
-    public void SetKeys(List<Key> keys)
+    public void setLevelKeys(List<Key> keys)
     {
-        _keys = keys;
+        _levelKeys = keys;
     }
 
-    public List<Key> GetKeys()
+    public List<Key> getLevelKeys()
     {
-        return _keys;
+        return _levelKeys;
     }
-    /**
-     * Constructs a prototypical Event.
-     *
-     * @param source the object on which the Event initially occurred
-     * @throws IllegalArgumentException if source is null
-     */
+
+
+    private List<Key> _collectedKeys;
+
+    public void setCollectedKeys(List<Key> keys)
+    {
+        _collectedKeys = keys;
+    }
+
+    public List<Key> getCollectedKeys()
+    {
+        return _collectedKeys;
+    }
+
+
+
     public ExitCellActionEvent(Object source) {
         super(source);
     }

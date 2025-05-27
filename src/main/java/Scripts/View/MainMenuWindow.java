@@ -55,7 +55,7 @@ public class MainMenuWindow extends JFrame {
         JLayeredPane layeredPane = new JLayeredPane();
         layeredPane.setPreferredSize(new Dimension(800, 600));
 
-        JLabel background = new JLabel(new ImageIcon("assets/hex_bg.png"));
+        JLabel background = new JLabel(new ImageIcon("assets/hex_bg.png")); //установить фото
         background.setBounds(0, 0, 800, 600);
 
         layeredPane.add(background, Integer.valueOf(0));

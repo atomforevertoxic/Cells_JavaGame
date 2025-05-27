@@ -13,9 +13,11 @@ public class LevelView {
     private final JPanel panel = new JPanel(null);
     private final Map<String, HexButton> buttonMap = new HashMap<>();
     private final LevelModel model;
+    private JFrame levelFrame;
 
-    public LevelView(LevelModel model, LevelInputHandler inputHandler) {
+    public LevelView(LevelModel model, LevelInputHandler inputHandler, JFrame levelFrame) {
         this.model = model;
+        this.levelFrame = levelFrame;
         renderField(inputHandler);
     }
 
@@ -114,4 +116,10 @@ public class LevelView {
         AbstractCell cell = model.getStartPosition();
         return buttonMap.get(getCellKey(cell.getQ(), cell.getR()));
     }
+
+    public void close()
+    {
+        levelFrame.dispose();
+    }
+
 }

@@ -19,22 +19,14 @@ public class Level {
                  GameManager gameManager) {
 
         this.model = new LevelModel(rows, cols, wallPositions, keyPositions, startPosition, exitPosition);
-        this.view = new LevelView(model, null);
-        this.controller = new LevelController(model, view, gameManager);
-
-        view.renderField(controller);
 
         JFrame frame = new JFrame("Hexagonal Level - Level " + gameManager.getCurrentLevel());
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
-        // Добавляем обработчик закрытия окна
-        frame.addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosed(java.awt.event.WindowEvent e) {
-                // При закрытии уровня возвращаемся в главное меню
-                gameManager.openMainMenu();
-            }
-        });
+        this.view = new LevelView(model, null, frame);
+        this.controller = new LevelController(model, view, gameManager);
+
+        view.renderField(controller);
 
         frame.setSize(1200, 800);
         frame.setResizable(false);

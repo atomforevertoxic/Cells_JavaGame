@@ -46,15 +46,15 @@ public class Player
         cell.SetPlayer(this);
     }
 
-    private void ResearchCell(AbstractCell cell)
-    {
-        if (cell instanceof Cell)
-        {
-            TakeKeyFromCell((Cell)cell);
-        }
-        else if (cell instanceof ExitCell)
-        {
-            ((ExitCell) cell).CheckGameRules(GetKeys());
-        }
-    }
+//    private void ResearchCell(AbstractCell cell)
+//    {
+//        if (cell instanceof Cell)
+//        {
+//            TakeKeyFromCell((Cell)cell);
+//        }
+//        else if (cell instanceof ExitCell)
+//        {
+//            ((ExitCell) cell).CheckGameRules(GetKeys());
+//        }
+//    }
 }

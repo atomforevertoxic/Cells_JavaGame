@@ -2,6 +2,7 @@ package Scripts.Cells;
 
 import Scripts.Events.ExitCellActionEvent;
 import Scripts.Events.ExitCellActionListener;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,20 +18,12 @@ public class ExitCell extends AbstractCell
     }
 
 
-    public void CheckGameRules(List<Key> playerKeys)
-    {
-        if (_levelKeys.size()!=playerKeys.size()) return;
-
-        for (Key keyToCheck : _levelKeys)
-        {
-            if (!playerKeys.contains(keyToCheck))    return;
-        }
-        fireGameRulePassed();
-    }
-
     //Уведомить игру что условия выполнены
 
     // -------------------- События --------------------
+
+
+
     private ArrayList<ExitCellActionListener> exitCellListListener = new ArrayList<>();
 
     public void addExitCellActionListener(ExitCellActionListener listener) {
@@ -41,11 +34,12 @@ public class ExitCell extends AbstractCell
         exitCellListListener.remove(listener);
     }
 
-    private void fireGameRulePassed() {
+    public void fireCheckLevelRules(List<Key> playerKeys) {
         for(ExitCellActionListener listener: exitCellListListener) {
             ExitCellActionEvent event = new ExitCellActionEvent(listener);
-            event.SetKeys(_levelKeys);
-            listener.fireGameRulesPassed(event);
+            event.setLevelKeys(_levelKeys);
+            event.setCollectedKeys(playerKeys);
+            listener.checkLevelRules(event);
         }
     }
 }

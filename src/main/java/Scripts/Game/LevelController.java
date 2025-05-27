@@ -44,7 +44,8 @@ public class LevelController implements LevelInputHandler {
             btn.setCharacter(' '); // очищает ячейку от символа в ней
         }
         else if (cell instanceof ExitCell exitCell) {
-            exitCell.CheckGameRules(model.getPlayer().GetKeys());
+            exitCell.fireCheckLevelRules(model.getPlayer().GetKeys());
+            //if (win) view.close();
         }
 
         updateViewByCell(btn);

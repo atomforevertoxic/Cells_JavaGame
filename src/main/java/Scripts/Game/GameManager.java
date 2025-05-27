@@ -1,12 +1,15 @@
 package Scripts.Game;
 
+import Scripts.Cells.ExitCell;
 import Scripts.Events.ExitCellActionEvent;
 import Scripts.Events.ExitCellActionListener;
-import Scripts.Events.GameActionEvent;
-import Scripts.Events.GameActionListener;
+import Scripts.Events.LevelCompletedEvent;
+import Scripts.Events.LevelCompletedListener;
+import Scripts.Observers.ExitCellObserver;
 import Scripts.Utils.LevelLoader;
 import Scripts.View.LevelSelectWindow;
 import Scripts.View.MainMenuWindow;
+import Scripts.View.ResultWindow;
 import org.jetbrains.annotations.NotNull;
 
 import javax.swing.*;
@@ -22,12 +25,12 @@ public class GameManager {
     private boolean isGameRunning = true;
     private int currentLevel = 1;
 
-    private final ExitCellObserver exitCellObserver = new ExitCellObserver();
-    private final List<GameActionListener> gameActionListeners = new ArrayList<>();
+    private ExitCellObserver exitCellObserver = new ExitCellObserver(this);
+    private final List<LevelCompletedListener> levelCompletedListeners = new ArrayList<>();
 
-    public ExitCellObserver getExitCellObserver()
+    public ExitCellActionListener getExitCellObserver()
     {
-        return exitCellObserver;
+        return (ExitCellActionListener) exitCellObserver;
     }
 
     public void startGame() {
@@ -115,40 +118,64 @@ public class GameManager {
         }
     }
 
-    public void setCurrentActiveWindow(JFrame window) {
-        this.currentActiveWindow = window;
-    }
 
-    public void endGame(boolean isVictory) {
-        if (!isGameRunning) return;
+    public void endCurrentLevel() {
         isGameRunning = false;
-        fireGameEnded(isVictory);
+        fireLevelEnded();
+        //fire level completed
     }
 
-    private void fireGameEnded(boolean isVictory) {
-        GameActionEvent event = isVictory
-                ? GameActionEvent.createVictoryEvent(this)
-                : GameActionEvent.createDefeatEvent(this);
-        event.setLevelCompleted(currentLevel);
-    }
 
     public int getCurrentLevel() {
         return currentLevel;
     }
 
+    public void startNextLevel() {
+        currentLevel++;
+        if (isLevelExists(currentLevel)) {
+            startLevelFromJson(currentLevel);
+        } else {
+            JOptionPane.showMessageDialog(null,
+                    "Поздравляем! Вы прошли все уровни!",
+                    "Игра завершена",
+                    JOptionPane.INFORMATION_MESSAGE);
+            openMainMenu();
+        }
+    }
+
+    private boolean isLevelExists(int levelId) {
+        List<LevelLoader.LevelConfig> levels = LevelLoader.loadLevels();
+        return levels != null && levels.stream().anyMatch(l -> l.id == levelId);
+    }
+
+    public void handleLevelCompletion() {
+        LevelCompletedEvent event = LevelCompletedEvent.createVictoryEvent(this, currentLevel);
+
+        fireGameEvent(event);
+        showResultWindow(event);
+    }
+
+    private void fireGameEvent(LevelCompletedEvent event) {
+        // Оповещаем всех слушателей
+        levelCompletedListeners.forEach(listener -> listener.onGameAction(event));
+    }
+
+    private void showResultWindow(LevelCompletedEvent event) {
+        SwingUtilities.invokeLater(() -> {
+            ResultWindow resultWindow = new ResultWindow(event);
+            resultWindow.showResult();
+        });
+    }
+
+    private void fireLevelEnded() {
+        LevelCompletedEvent event = LevelCompletedEvent.createVictoryEvent(this, currentLevel);
+
+        event.setLevelCompleted(currentLevel);
+    }
+
+
     @FunctionalInterface
     private interface WindowCreator {
         JFrame create();
-    }
-
-    public class ExitCellObserver implements ExitCellActionListener {
-        @Override
-        public boolean fireGameRulesPassed(@NotNull ExitCellActionEvent event) {
-            if (isGameRunning) {
-                endGame(true);
-                return true;
-            }
-            return false;
-        }
     }
 }
