@@ -7,11 +7,11 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
-public class IExitCellObserver implements IExitCellActionListener {
+public class ExitCellObserver implements IExitCellActionListener {
 
     private GameManager gameManager;
 
-    public IExitCellObserver(GameManager gm)
+    public ExitCellObserver(GameManager gm)
     {
         gameManager = gm;
     }

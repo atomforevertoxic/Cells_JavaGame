@@ -17,24 +17,20 @@ public class ExitCell extends AbstractCell
     }
 
 
-    //Уведомить игру что условия выполнены
-
     // -------------------- События --------------------
 
-
-
-    private ArrayList<IExitCellActionListener> exitCellListListener = new ArrayList<>();
+    private ArrayList<IExitCellActionListener> exitCellListener = new ArrayList<>();
 
     public void addExitCellActionListener(IExitCellActionListener listener) {
-        exitCellListListener.add(listener);
+        exitCellListener.add(listener);
     }
 
     public void removeExitCellActionListener(IExitCellActionListener listener) {
-        exitCellListListener.remove(listener);
+        exitCellListener.remove(listener);
     }
 
     public void fireCheckLevelRules(List<Key> playerKeys) {
-        for(IExitCellActionListener listener: exitCellListListener) {
+        for(IExitCellActionListener listener: exitCellListener) {
             ExitCellActionEvent event = new ExitCellActionEvent(listener);
             event.setLevelKeys(_levelKeys);
             event.setCollectedKeys(playerKeys);

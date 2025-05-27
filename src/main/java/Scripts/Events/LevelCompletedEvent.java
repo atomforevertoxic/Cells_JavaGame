@@ -5,18 +5,15 @@ import Scripts.View.ResultWindow;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import javax.swing.*;
 import java.util.EventObject;
 
 public class LevelCompletedEvent extends EventObject {
-    private String message = "";
+    private String message;
     private int levelCompleted;
-    private GameManager gameManager = new GameManager();
 
 
-    public LevelCompletedEvent(@NotNull Object source, int levelCompleted) {
-        super(source);
-        this.levelCompleted = levelCompleted;
-    }
+    public LevelCompletedEvent(@NotNull Object source) { super(source); }
 
     // ------------------ Getters and Setters ------------------
 
@@ -40,12 +37,6 @@ public class LevelCompletedEvent extends EventObject {
 
     public void setMessage(String message) {
         this.message = message;
-    }
-
-    public static LevelCompletedEvent createVictoryEvent(Object source, int levelCompleted) {
-        LevelCompletedEvent event = new LevelCompletedEvent(source, levelCompleted);
-        event.setMessage("Level " + event.levelCompleted + " completed!");
-        return event;
     }
 
 }

@@ -1,6 +1,7 @@
 package Scripts.Game;
 
 import Scripts.Cells.Cell;
+import Scripts.Observers.LevelCompletedObserver;
 
 import javax.swing.*;
 import java.awt.*;
@@ -9,7 +10,7 @@ import java.util.List;
 public class Level {
     private final LevelModel model;
     private final LevelView view;
-    private final ILevelController controller;
+    private final LevelController controller;
     private int number;
 
     public Level(int levelNumber, int rows, int cols,
@@ -27,7 +28,7 @@ public class Level {
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.view = new LevelView(model, null, frame);
-        this.controller = new ILevelController(model, view, gameManager);
+        this.controller = new LevelController(model, view, gameManager);
 
         view.renderField(controller);
 
@@ -42,6 +43,8 @@ public class Level {
             view.updateAllButtons();
             controller.enableAdjacentButtons(cell);
         });
+
+        gameManager.addLevelCompletedListeners(new LevelCompletedObserver());
     }
 
     public int number()

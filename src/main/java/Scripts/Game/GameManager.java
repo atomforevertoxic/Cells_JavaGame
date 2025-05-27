@@ -1,10 +1,8 @@
 package Scripts.Game;
 
-import Scripts.Events.IExitCellActionListener;
-import Scripts.Events.IWindowCreator;
-import Scripts.Events.LevelCompletedEvent;
-import Scripts.Events.ILevelCompletedListener;
-import Scripts.Observers.IExitCellObserver;
+import Scripts.Events.*;
+import Scripts.Interfaces.IWindowCreator;
+import Scripts.Observers.ExitCellObserver;
 import Scripts.Utils.LevelLoader;
 import Scripts.View.LevelSelectWindow;
 import Scripts.View.MainMenuWindow;
@@ -22,9 +20,8 @@ public class GameManager {
     private boolean isGameRunning = true;
     private Level currentLevel;
 
-    private IExitCellObserver exitCellObserver = new IExitCellObserver(this);
+    private ExitCellObserver exitCellObserver = new ExitCellObserver(this);
     private final List<ILevelCompletedListener> ILevelCompletedListeners = new ArrayList<>();
-
 
     public void setCurrentLevel(Level level)
     {
@@ -71,8 +68,8 @@ public class GameManager {
 
 
     public void endCurrentLevel() {
-        isGameRunning = false;
-        fireLevelEnded();
+        isGameRunning = false; // под вопросом. Возможно удалить
+        fireLevelCompleted();
         //fire level completed
     }
 
@@ -93,29 +90,28 @@ public class GameManager {
         return levels != null && levels.stream().anyMatch(l -> l.id == levelId);
     }
 
-    public void handleLevelCompletion() {
-        LevelCompletedEvent event = LevelCompletedEvent.createVictoryEvent(this, currentLevel.number());
 
-        fireGameEvent(event);
-        showResultWindow(event);
+
+    // -------------------- События --------------------
+
+    private ArrayList<ILevelCompletedListener> levelCompletedListeners = new ArrayList<>();
+
+    public void addLevelCompletedListeners(ILevelCompletedListener listener) {
+        levelCompletedListeners.add(listener);
     }
 
-    private void fireGameEvent(LevelCompletedEvent event) {
-        // Оповещаем всех слушателей
-        ILevelCompletedListeners.forEach(listener -> listener.onGameAction(event));
+    public void removeLevelCompletedListeners(ILevelCompletedListener listener) {
+        levelCompletedListeners.remove(listener);
     }
 
-    private void showResultWindow(LevelCompletedEvent event) {
-        SwingUtilities.invokeLater(() -> {
-            ResultWindow resultWindow = new ResultWindow(event);
-            resultWindow.showResult();
-        });
+    public void fireLevelCompleted() {
+        for(ILevelCompletedListener listener: levelCompletedListeners) {
+            LevelCompletedEvent event = new LevelCompletedEvent(listener);
+            event.setLevelCompleted(currentLevel.number());
+            event.setMessage("Level " + currentLevel.number() + " completed!");
+            listener.showResultWindow(event);
+        }
     }
 
-    private void fireLevelEnded() {
-        LevelCompletedEvent event = LevelCompletedEvent.createVictoryEvent(this, currentLevel.number());
-
-        event.setLevelCompleted(currentLevel.number());
-    }
 
 }

@@ -7,11 +7,9 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ResultWindow extends JFrame {
-    private final int currentLevel;
     private final GameManager gm = new GameManager();
 
     public ResultWindow(LevelCompletedEvent event) {
-        this.currentLevel = event.getLevelCompleted();
         setupWindow(event);
         initUI(event);
     }
@@ -38,7 +36,7 @@ public class ResultWindow extends JFrame {
         title.setAlignmentX(Component.CENTER_ALIGNMENT);
 
         // Информация об уровне
-        JLabel levelInfo = new JLabel("Уровень: " + currentLevel);
+        JLabel levelInfo = new JLabel("Уровень: " + event.getLevelCompleted());
         levelInfo.setFont(new Font("Arial", Font.PLAIN, 20));
         levelInfo.setForeground(Color.WHITE);
         levelInfo.setAlignmentX(Component.CENTER_ALIGNMENT);

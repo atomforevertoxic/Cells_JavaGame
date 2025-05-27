@@ -1,4 +1,4 @@
-package Scripts.Events;
+package Scripts.Interfaces;
 
 import javax.swing.*;
 

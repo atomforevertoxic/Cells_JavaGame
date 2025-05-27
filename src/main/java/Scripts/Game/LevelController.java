@@ -9,12 +9,12 @@ import Scripts.View.HexButton;
 import java.awt.*;
 import java.util.List;
 
-public class ILevelController implements ILevelInputHandler {
+public class LevelController implements ILevelInputHandler {
     private final LevelModel model;
     private final LevelView view;
     private final GameManager gameManager;
 
-    public ILevelController(LevelModel model, LevelView view, GameManager gameManager) {
+    public LevelController(LevelModel model, LevelView view, GameManager gameManager) {
         this.model = model;
         this.view = view;
         this.gameManager = gameManager;
