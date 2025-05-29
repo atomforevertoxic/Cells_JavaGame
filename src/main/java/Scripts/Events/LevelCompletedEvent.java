@@ -23,12 +23,6 @@ public class LevelCompletedEvent extends EventObject {
 
     public void setLevelCompleted(int levelCompleted) {
         this.levelCompleted = levelCompleted;
-        showResultWindow();
-    }
-
-    private void showResultWindow() {
-        ResultWindow resultWindow = new ResultWindow(this);
-        resultWindow.showResult();
     }
 
     public String getMessage() {

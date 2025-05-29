@@ -50,14 +50,14 @@ public class LevelLoader {
         }
     }
 
-    public void startLevelFromJson(int levelId) {
+    public Level startLevelFromJson(int levelId) {
         LevelConfig config = loadLevelConfig(levelId);
         if (config == null) {
             gameManager.openMainMenu(); // Возвращаем в меню при ошибке
-            return;
+            return null;
         }
 
-        new Level( config.id,
+        return new Level( config.id,
                 config.rows,
                 config.cols,
                 config.walls,

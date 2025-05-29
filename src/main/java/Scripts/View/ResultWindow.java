@@ -57,12 +57,12 @@ public class ResultWindow extends JFrame {
 
         nextButton.addActionListener(e -> {
             dispose();
-            //gameManager.startNextLevel();
+            gm.startLevel(event.getLevelCompleted()+1);
         });
 
         menuButton.addActionListener(e -> {
             dispose();
-            //gameManager.openMainMenu();
+            gm.openMainMenu();
         });
 
         buttonPanel.add(nextButton);

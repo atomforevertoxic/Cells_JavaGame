@@ -21,6 +21,7 @@ public class GameManager {
     private Level currentLevel;
 
     private ExitCellObserver exitCellObserver = new ExitCellObserver(this);
+    private LevelLoader levelLoader = new LevelLoader(this);
     private final List<ILevelCompletedListener> ILevelCompletedListeners = new ArrayList<>();
 
     public void setCurrentLevel(Level level)
@@ -73,9 +74,11 @@ public class GameManager {
         //fire level completed
     }
 
-    public void startNextLevel() {
-        if (isLevelExists(currentLevel.number()+1)) {
-            //startLevelFromJson(currentLevel);
+    public void startLevel(int level) {
+        closeCurrentWindow();
+        if (isLevelExists(level)) {
+            Level currentLevel = levelLoader.startLevelFromJson(level);
+            setCurrentLevel(currentLevel);
         } else {
             JOptionPane.showMessageDialog(null,
                     "Поздравляем! Вы прошли все уровни!",

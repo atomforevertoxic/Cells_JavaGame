@@ -6,5 +6,5 @@ import java.util.EventListener;
 
 public interface IExitCellActionListener extends EventListener
 {
-    void checkLevelRules(@NotNull ExitCellActionEvent event);
+    boolean checkLevelRules(@NotNull ExitCellActionEvent event);
 }

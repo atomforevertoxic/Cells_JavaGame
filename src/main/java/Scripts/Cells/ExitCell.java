@@ -29,12 +29,14 @@ public class ExitCell extends AbstractCell
         exitCellListener.remove(listener);
     }
 
-    public void fireCheckLevelRules(List<Key> playerKeys) {
+    public boolean fireCheckLevelRules(List<Key> playerKeys) {
+        boolean win = false;
         for(IExitCellActionListener listener: exitCellListener) {
             ExitCellActionEvent event = new ExitCellActionEvent(listener);
             event.setLevelKeys(_levelKeys);
             event.setCollectedKeys(playerKeys);
-            listener.checkLevelRules(event);
+            win = listener.checkLevelRules(event);
         }
+        return win;
     }
 }

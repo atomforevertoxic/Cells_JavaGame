@@ -18,16 +18,17 @@ public class ExitCellObserver implements IExitCellActionListener {
 
 
     @Override
-    public void checkLevelRules(@NotNull ExitCellActionEvent event) {
+    public boolean checkLevelRules(@NotNull ExitCellActionEvent event) {
         List<Key> levelKeys = event.getLevelKeys();
         List<Key> collectedKeys = event.getCollectedKeys();
-        if (levelKeys.size()!=collectedKeys.size()) return ;
+        if (levelKeys.size()!=collectedKeys.size()) return false;
 
         for (Key keyToCheck : levelKeys)
         {
-            if (!collectedKeys.contains(keyToCheck))    return ;
+            if (!collectedKeys.contains(keyToCheck))    return false;
         }
         gameManager.endCurrentLevel();
+        return true;
     }
 
 }
