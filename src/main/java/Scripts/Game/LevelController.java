@@ -44,6 +44,7 @@ public class LevelController implements ILevelInputHandler {
         else if (cell instanceof ExitCell exitCell) {
             boolean win = exitCell.fireCheckLevelRules(model.getPlayer().GetKeys());
             if (win) view.close();
+            return;
         }
 
         updateViewByCell(btn);

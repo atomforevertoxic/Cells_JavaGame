@@ -49,7 +49,7 @@ public class LevelView {
         Point center = model.calculatePixelPosition(cell);
         int btnSize = model.getHexSize() * 2;
         int x = 300 + center.x;
-        int y = 50 + center.y;
+        int y = 180 + center.y;
 
         HexButton btn = new HexButton(' ');
         btn.setBounds(x - btnSize/2, y - btnSize/2, btnSize, btnSize);

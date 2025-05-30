@@ -13,16 +13,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameManager {
+    private final boolean[] levelStates;
+
     private MainMenuWindow mainMenu;
     private LevelSelectWindow levelSelectWindow;
+
     private JFrame currentActiveWindow;
 
-    private boolean isGameRunning = true;
     private Level currentLevel;
 
     private ExitCellObserver exitCellObserver = new ExitCellObserver(this);
     private LevelLoader levelLoader = new LevelLoader(this);
     private final List<ILevelCompletedListener> ILevelCompletedListeners = new ArrayList<>();
+
+    public GameManager()
+    {
+        levelStates = new boolean[]{true, false, false, false, false};
+        levelSelectWindow = new LevelSelectWindow(this);
+    }
+
 
     public void setCurrentLevel(Level level)
     {
@@ -46,10 +55,7 @@ public class GameManager {
     }
 
     public void openLevelSelect() {
-        switchWindow(() -> {
-            levelSelectWindow = new LevelSelectWindow(this);
-            return levelSelectWindow;
-        });
+        switchWindow(() -> levelSelectWindow);
     }
 
 
@@ -69,7 +75,7 @@ public class GameManager {
 
 
     public void endCurrentLevel() {
-        isGameRunning = false; // под вопросом. Возможно удалить
+        unlockLevel(currentLevel.number());
         fireLevelCompleted();
         //fire level completed
     }
@@ -116,5 +122,17 @@ public class GameManager {
         }
     }
 
+    public void unlockLevel(int level)
+    {
+        if (level< levelStates.length)
+        {
+            levelStates[level] = true;
+        }
+    }
+
+    public boolean getLevelState(int levelNumber)
+    {
+        return levelStates[levelNumber];
+    }
 
 }

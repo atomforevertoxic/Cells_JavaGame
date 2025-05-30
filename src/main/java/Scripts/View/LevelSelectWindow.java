@@ -10,26 +10,14 @@ import java.util.List;
 public class LevelSelectWindow extends JFrame {
     private final GameManager gameManager;
     private List<LevelLoader.LevelConfig> levels;
-    private final boolean[] unlockedLevels;
     private final LevelLoader levelLoader;
 
     public LevelSelectWindow(GameManager gameManager) {
         this.gameManager = gameManager;
         this.levels = LevelLoader.loadLevels();
-        this.unlockedLevels = initializeUnlockedLevels();
         this.levelLoader = new LevelLoader(gameManager);
         setupWindow();
         initUI();
-    }
-
-    private boolean[] initializeUnlockedLevels() {
-        if (levels == null || levels.isEmpty()) {
-            return new boolean[0];
-        }
-
-        boolean[] unlocked = new boolean[levels.size()];
-        unlocked[0] = true; // Только первый уровень разблокирован
-        return unlocked;
     }
 
     private void setupWindow() {
@@ -59,7 +47,7 @@ public class LevelSelectWindow extends JFrame {
         if (levels != null) {
             for (int i = 0; i < levels.size(); i++) {
                 LevelLoader.LevelConfig level = levels.get(i);
-                JButton levelButton = createLevelButton(level, unlockedLevels[i]);
+                JButton levelButton = createLevelButton(level, gameManager.getLevelState(i));
                 levelsPanel.add(levelButton);
             }
         }
@@ -105,7 +93,7 @@ public class LevelSelectWindow extends JFrame {
             button.setBackground(new Color(70, 70, 80));
             button.addActionListener(e -> {
                 dispose(); // Закрываем текущее окно
-                levelLoader.startLevelFromJson(level.id);
+                levelLoader.startLevelFromJson(5); // level.id
             });
             numberLabel.setForeground(Color.WHITE);
             nameLabel.setForeground(Color.LIGHT_GRAY);
@@ -135,6 +123,7 @@ public class LevelSelectWindow extends JFrame {
         button.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
         button.setFocusPainted(false);
     }
+
 
     public void showWindow() {
         EventQueue.invokeLater(() -> setVisible(true));
