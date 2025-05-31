@@ -63,7 +63,7 @@ public class PickupTest
         Player player = new Player();
 
         Cell cell = new Cell();
-        cell.SetWall();
+        // cell.SetWall(); заменить на класс Wall
 
         player.TakeKeyFromCell(cell);
 

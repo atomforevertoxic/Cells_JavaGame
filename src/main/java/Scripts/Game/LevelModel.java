@@ -21,13 +21,15 @@ public class LevelModel {
                       List<Point> wallPositions,
                       List<Point> keyPositions,
                       Point startPosition,
-                      Point exitPosition) {
+                      Point exitPosition,
+                      Point teleportPosition) {
         this.rows = rows;
         this.cols = cols;
-        initializeField(wallPositions, keyPositions, startPosition, exitPosition);
+        initializeField(wallPositions, keyPositions, startPosition, exitPosition, teleportPosition);
     }
 
-    private void initializeField(List<Point> walls, List<Point> keys, Point start, Point exit) {
+    // Оптимизировать!!!!
+    private void initializeField(List<Point> walls, List<Point> keys, Point start, Point exit, Point teleport) {
 
         for (int r = 0; r < rows; r++) {
             for (int q = 0; q < cols; q++) {
@@ -36,22 +38,26 @@ public class LevelModel {
         }
 
 
-        placeObjects(walls, keys, start, exit);
+        placeObjects(walls, keys, start, exit, teleport);
         connectNeighbors();
     }
 
-    private void placeObjects(List<Point> walls, List<Point> keyPositions, Point start, Point exit) {
+    private void placeObjects(List<Point> walls, List<Point> keyPositions, Point start, Point exit, Point teleport) {
         for (int i = 0; i < field.size(); i++) {
             AbstractCell c = field.get(i);
             Point pos = new Point(c.getQ(), c.getR());
 
             if (walls.contains(pos)) {
-                c.SetWall();
+                Wall wall = new Wall(c);
+                field.set(i, wall);
             } else if (keyPositions.contains(pos)) {
                 setKeyCell((Cell)c);
             } else if (pos.equals(start)) {
-                ((Cell)c).SetPlayer(player);
+                c.SetPlayer(player);
                 startCell = c;
+            } else if (pos.equals(teleport)) {
+                TeleportCell teleportCell = new TeleportCell(c);
+                field.set(i ,teleportCell);
             } else if (pos.equals(exit)) {
                 ExitCell exitCell = new ExitCell(keys, c);
                 field.set(i, exitCell);

@@ -1,13 +1,12 @@
 package Scripts.Game;
 
-import Scripts.Cells.AbstractCell;
-import Scripts.Cells.Cell;
-import Scripts.Cells.ExitCell;
+import Scripts.Cells.*;
 import Scripts.Interfaces.ILevelInputHandler;
 import Scripts.View.HexButton;
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
+import java.util.List;
 
 public class LevelView {
     private final JPanel panel = new JPanel(null);
@@ -58,18 +57,41 @@ public class LevelView {
         return btn;
     }
 
-    public void setAllButtonsEnable(boolean activity) {
-        for (HexButton btn : buttonMap.values()) {
-            AbstractCell cell = getCellByButton(btn);
-            if (cell != null) {
-                btn.setEnabled(activity && shouldEnableButton(cell));
+    public void updateViewByCell(AbstractCell cell) {
+        setAllButtonsEnable(false);
+        updateAllButtons();
+        enableAdjacentButtons(cell);
+    }
+
+
+    private void enableAdjacentButtons(AbstractCell host) {
+        List<AbstractCell> neighbours = host.GetNeighbours();
+        for (AbstractCell neighbour : neighbours)
+        {
+            HexButton btn = getButtonMap().get(neighbour.getQ() + "," + neighbour.getR());
+
+            if (shouldEnableCell(neighbour))
+            {
+                btn.setEnabled(true);
+                btn.setBackground(Color.BLUE);
             }
         }
     }
 
-    private boolean shouldEnableButton(AbstractCell cell) {
-        return !(cell instanceof Cell && ((Cell)cell).getPassedInfo())
-                && !cell.IsWall();
+
+
+    private  void setAllButtonsEnable(boolean activity) {
+        for (HexButton btn : buttonMap.values()) {
+            AbstractCell cell = getCellByButton(btn);
+            if (cell != null) {
+                btn.setEnabled(activity && shouldEnableCell(cell));
+            }
+        }
+    }
+
+    private boolean shouldEnableCell(AbstractCell abstractCell) {
+        return abstractCell instanceof ExitCell ||
+                    (abstractCell instanceof Cell cell && !cell.getPassedInfo());
     }
 
 
@@ -89,10 +111,13 @@ public class LevelView {
         } else if (cell instanceof ExitCell) {
             btn.setBackground(Color.GREEN);
             btn.setCharacter('^');
-        } else if (cell.IsWall()) {
+        } else if (cell instanceof TeleportCell) {
+            btn.setBackground(Color.CYAN);
+        } else if (cell instanceof Wall) {
             btn.setBackground(Color.GRAY);
         } else if (cell instanceof Cell && ((Cell)cell).getPassedInfo()) {
             btn.setBackground(Color.LIGHT_GRAY); // Пройденные клетки
+            btn.setCharacter(' ');
         } else {
             btn.setBackground(Color.ORANGE);
             if (cell instanceof Cell && ((Cell)cell).GetKey() != null) {

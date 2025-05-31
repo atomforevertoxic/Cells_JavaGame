@@ -27,6 +27,7 @@ public class LevelLoader {
         public List<Point> keys;
         public Point start;
         public Point exit;
+        public Point teleport;
     }
 
     private final GameManager gameManager;
@@ -64,6 +65,7 @@ public class LevelLoader {
                 config.keys,
                 config.start,
                 config.exit,
+                config.teleport,
                 gameManager
         );
     }

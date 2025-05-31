@@ -52,17 +52,7 @@ public class AbstractCell
         return _player;
     }
 
-    public void SetWall()
-    {
-        _isWall = true;
-    }
-
-    public boolean IsWall()
-    {
-        return _isWall;
-    }
-
-
+    // Приглядеться!!!!
     public void SetNeighbour(AbstractCell neighbour)
     {
         if (!GetNeighbours().contains(neighbour))

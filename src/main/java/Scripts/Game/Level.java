@@ -18,11 +18,12 @@ public class Level {
                  List<Point> keyPositions,
                  Point startPosition,
                  Point exitPosition,
+                 Point teleportPosition,
                  GameManager gameManager) {
 
         number = levelNumber;
         gameManager.setCurrentLevel(this);
-        this.model = new LevelModel(rows, cols, wallPositions, keyPositions, startPosition, exitPosition);
+        this.model = new LevelModel(rows, cols, wallPositions, keyPositions, startPosition, exitPosition, teleportPosition);
 
         JFrame frame = new JFrame("Hexagonal Level - Level " + number);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -39,9 +40,8 @@ public class Level {
 
 
         model.getCell(startPosition.x, startPosition.y).ifPresent(cell -> {
-            if (cell instanceof Cell) cell.SetPlayer(model.getPlayer());
-            view.updateAllButtons();
-            controller.enableAdjacentButtons(cell);
+            cell.SetPlayer(model.getPlayer());
+            view.updateViewByCell(cell);
         });
 
         gameManager.addLevelCompletedListeners(new LevelCompletedObserver());
