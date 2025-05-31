@@ -100,11 +100,6 @@ public class LevelModel {
     public int getHexSize() { return hexSize; }
 
 
-    public void movePlayerTo(AbstractCell cell)
-    {
-        player.Move(cell);
-    }
-
     public AbstractCell getStartPosition()
     {
         return startCell;

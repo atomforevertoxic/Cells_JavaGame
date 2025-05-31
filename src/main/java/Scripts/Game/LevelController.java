@@ -4,6 +4,7 @@ import Scripts.Cells.AbstractCell;
 import Scripts.Cells.Cell;
 import Scripts.Cells.ExitCell;
 import Scripts.Interfaces.ILevelInputHandler;
+import Scripts.Player;
 import Scripts.View.HexButton;
 
 import java.awt.*;
@@ -36,25 +37,20 @@ public class LevelController implements ILevelInputHandler {
     public void handleCellClick(HexButton btn) {
         AbstractCell cell = view.getCellByButton(btn);
 
-        model.movePlayerTo(cell);
+        Player player = model.getPlayer();
+
+        player.Move(cell);
         if (cell instanceof Cell c) {
-            handleRegularCell(c);
+            player.TakeKeyFromCell(c);
             btn.setCharacter(' '); // очищает ячейку от символа в ней
+            c.setPassed();
         }
         else if (cell instanceof ExitCell exitCell) {
             boolean win = exitCell.fireCheckLevelRules(model.getPlayer().GetKeys());
             if (win) view.close();
-            return;
         }
 
         updateViewByCell(btn);
-    }
-
-    private void handleRegularCell(Cell cell) {
-        if (cell.GetKey() != null) {
-            model.getPlayer().TakeKeyFromCell(cell);
-        }
-        cell.setPassed();
     }
 
     private void updateViewByCell(HexButton btn) {

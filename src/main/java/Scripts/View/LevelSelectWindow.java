@@ -93,7 +93,7 @@ public class LevelSelectWindow extends JFrame {
             button.setBackground(new Color(70, 70, 80));
             button.addActionListener(e -> {
                 dispose(); // Закрываем текущее окно
-                levelLoader.startLevelFromJson(5); // level.id
+                levelLoader.startLevelFromJson(level.id);
             });
             numberLabel.setForeground(Color.WHITE);
             nameLabel.setForeground(Color.LIGHT_GRAY);
