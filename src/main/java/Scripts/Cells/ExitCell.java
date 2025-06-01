@@ -2,6 +2,8 @@ package Scripts.Cells;
 
 import Scripts.Events.ExitCellActionEvent;
 import Scripts.Events.IExitCellActionListener;
+import Scripts.Game.LevelModel;
+import Scripts.Player;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,5 +40,10 @@ public class ExitCell extends AbstractCell
             win = listener.checkLevelRules(event);
         }
         return win;
+    }
+
+    @Override
+    public boolean handlePlayerInteraction(Player player, LevelModel model) {
+        return fireCheckLevelRules(player.GetKeys());
     }
 }

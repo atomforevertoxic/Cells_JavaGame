@@ -40,13 +40,17 @@ public class LevelController implements ILevelInputHandler {
 
         Player player = model.getPlayer();
 
-        boolean win = player.researchCell(cell);
+        boolean win = researchCell(cell, player);
         if (win) view.close();
 
         view.updateViewByCell(cell);
     }
 
 
+    public boolean researchCell(AbstractCell cell, Player player) {
+        player.moveTo(cell);
+        return cell.handlePlayerInteraction(player, model);
+    }
 
 
 

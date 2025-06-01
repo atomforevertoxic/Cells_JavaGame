@@ -73,20 +73,30 @@ public class LevelModel {
 
     private void connectNeighbors() {
         for (AbstractCell cell : field) {
-            int q = cell.getQ();
-            int r = cell.getR();
+            connectWithNeighbours(cell);
+        }
+    }
 
-            for (Direction dir : Direction.values()) {
-                int nq = q + dir.getDQ();
-                int nr = r + dir.getDR();
+    private void connectWithNeighbours(AbstractCell cell)
+    {
+        int q = cell.getQ();
+        int r = cell.getR();
 
-                if (nq >= 0 && nq < cols && nr >= 0 && nr < rows) {
-                    getCell(nq, nr).ifPresent(cell::SetNeighbour);
-                }
+        for (Direction dir : Direction.values()) {
+            int nq = q + dir.getDQ();
+            int nr = r + dir.getDR();
+
+            if (nq >= 0 && nq < cols && nr >= 0 && nr < rows) {
+                getCell(nq, nr).ifPresent(cell::SetNeighbour);
             }
         }
     }
 
+    public void reconnectNeighbours(AbstractCell cell)
+    {
+        cell.GetNeighbours().clear();
+        connectWithNeighbours(cell);
+    }
     public Optional<AbstractCell> getCell(int q, int r) {
         return field.stream()
                 .filter(c -> c.getQ() == q && c.getR() == r)
@@ -98,7 +108,6 @@ public class LevelModel {
         double y = -hexSize * Math.sqrt(3) * (cell.getR() + cell.getQ() / 2.0) + offsetY;
         return new Point((int)x, (int)y);
     }
-
 
     public List<AbstractCell> getField() { return Collections.unmodifiableList(field); }
     public Player getPlayer() { return player; }

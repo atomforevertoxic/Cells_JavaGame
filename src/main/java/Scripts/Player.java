@@ -36,39 +36,15 @@ public class Player
         return _keys;
     }
 
-    public void Move(AbstractCell cell)
+    public void moveTo(AbstractCell cell)
     {
         if (_cell!=null) _cell.unsetPlayer();
         SetCell(cell);
         cell.SetPlayer(this);
     }
 
-    public boolean researchCell(AbstractCell cell)
-    {
-        boolean win = false;
 
-        Move(cell);
-        if (cell instanceof Cell c) {
-            handleRegularCell(c);
-        }
-//        else if (cell instanceof TeleportCell teleportCell)
-//        {
-//            for (AbstractCell neighbour: teleportCell.GetNeighbours())
-//            {
-//                if (!(neighbour.IsWall() && neighbour instanceof ExitCell && neighbour.))
-//                {
-//
-//                }
-//            }
-//
-//        }
-        else if (cell instanceof ExitCell exitCell) {
-            win = exitCell.fireCheckLevelRules(GetKeys());
-        }
-        return win;
-    }
-
-    private void handleRegularCell(Cell cell)
+    public void handleRegularCell(Cell cell)
     {
         TakeKeyFromCell(cell);
         cell.setPassed();

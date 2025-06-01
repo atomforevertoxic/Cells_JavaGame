@@ -1,11 +1,13 @@
 package Scripts.Cells;
 
+import Scripts.Game.LevelModel;
+import Scripts.Interfaces.IInteractable;
 import Scripts.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class AbstractCell
+public abstract class AbstractCell implements IInteractable
 {
 
     private int q; // смещение по горизонтали
@@ -62,6 +64,11 @@ public class AbstractCell
         }
     }
 
+    public boolean shouldEnableCell() {
+        return this instanceof ExitCell || this instanceof TeleportCell ||
+                (this instanceof Cell cell && !cell.getPassedInfo());
+    }
+
     public List<AbstractCell> GetNeighbours()
     {
         return _neighbours;
@@ -71,4 +78,6 @@ public class AbstractCell
     {
         return _neighbours.contains(cell);
     }
+
+    public abstract boolean handlePlayerInteraction(Player player, LevelModel model);
 }

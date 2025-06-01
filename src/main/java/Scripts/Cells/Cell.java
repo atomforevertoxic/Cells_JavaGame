@@ -1,5 +1,8 @@
 package Scripts.Cells;
 
+import Scripts.Game.LevelModel;
+import Scripts.Player;
+
 public class Cell extends AbstractCell
 {
     private Key _key;
@@ -41,5 +44,9 @@ public class Cell extends AbstractCell
         return _isPassed;
     }
 
-
+    @Override
+    public boolean handlePlayerInteraction(Player player, LevelModel model) {
+        player.handleRegularCell(this);
+        return false;
+    }
 }

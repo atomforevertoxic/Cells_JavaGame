@@ -70,7 +70,7 @@ public class LevelView {
         {
             HexButton btn = getButtonMap().get(neighbour.getQ() + "," + neighbour.getR());
 
-            if (shouldEnableCell(neighbour))
+            if (neighbour.shouldEnableCell())
             {
                 btn.setEnabled(true);
                 btn.setBackground(Color.BLUE);
@@ -84,15 +84,12 @@ public class LevelView {
         for (HexButton btn : buttonMap.values()) {
             AbstractCell cell = getCellByButton(btn);
             if (cell != null) {
-                btn.setEnabled(activity && shouldEnableCell(cell));
+                btn.setEnabled(activity && cell.shouldEnableCell());
             }
         }
     }
 
-    private boolean shouldEnableCell(AbstractCell abstractCell) {
-        return abstractCell instanceof ExitCell ||
-                    (abstractCell instanceof Cell cell && !cell.getPassedInfo());
-    }
+
 
 
 
@@ -113,6 +110,7 @@ public class LevelView {
             btn.setCharacter('^');
         } else if (cell instanceof TeleportCell) {
             btn.setBackground(Color.CYAN);
+            btn.setCharacter('O');
         } else if (cell instanceof Wall) {
             btn.setBackground(Color.GRAY);
         } else if (cell instanceof Cell && ((Cell)cell).getPassedInfo()) {
