@@ -76,7 +76,7 @@ public class GameManager {
         }
     }
 
-    private boolean isLevelExists(int levelId) {
+    public boolean isLevelExists(int levelId) {
         List<LevelLoader.LevelConfig> levels = LevelLoader.loadLevels();
         return levels != null && levels.stream().anyMatch(l -> l.id == levelId);
     }
