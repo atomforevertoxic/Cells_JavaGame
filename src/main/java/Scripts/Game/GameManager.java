@@ -7,6 +7,7 @@ import Scripts.Utils.LevelLoader;
 import Scripts.View.LevelSelectWindow;
 import Scripts.View.MainMenuWindow;
 import Scripts.View.ResultWindow;
+import org.example.Main;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -15,21 +16,16 @@ import java.util.List;
 public class GameManager {
     private final boolean[] levelStates;
 
-    private MainMenuWindow mainMenu;
-    private LevelSelectWindow levelSelectWindow;
-
-    private JFrame currentActiveWindow;
-
     private Level currentLevel;
 
     private ExitCellObserver exitCellObserver = new ExitCellObserver(this);
     private LevelLoader levelLoader = new LevelLoader(this);
-    private final List<ILevelCompletedListener> ILevelCompletedListeners = new ArrayList<>();
+    private GameView gameView = new GameView();
 
     public GameManager()
     {
+        // [TODO] сохранение прогресса пройденных уровней - потом переписать
         levelStates = new boolean[]{true, false, false, false, false};
-        levelSelectWindow = new LevelSelectWindow(this);
     }
 
 
@@ -48,40 +44,26 @@ public class GameManager {
     }
 
     public void openMainMenu() {
-        switchWindow(() -> {
-            mainMenu = new MainMenuWindow(this);
-            return mainMenu;
+        gameView.switchWindow(() -> {
+            return new MainMenuWindow(this);
         });
     }
 
     public void openLevelSelect() {
-        switchWindow(() -> levelSelectWindow);
+        gameView.switchWindow(() -> {
+            return new LevelSelectWindow(this);
+        });
     }
 
 
-    private void switchWindow(IWindowCreator creator) {
-        closeCurrentWindow();
-        JFrame newWindow = creator.create();
-        currentActiveWindow = newWindow;
-        newWindow.setVisible(true);
-    }
-
-    private void closeCurrentWindow() {
-        if (currentActiveWindow != null) {
-            currentActiveWindow.dispose();
-            currentActiveWindow = null;
-        }
-    }
 
 
     public void endCurrentLevel() {
         unlockLevel(currentLevel.number());
         fireLevelCompleted();
-        //fire level completed
     }
 
     public void startLevel(int level) {
-        closeCurrentWindow();
         if (isLevelExists(level)) {
             Level currentLevel = levelLoader.startLevelFromJson(level);
             setCurrentLevel(currentLevel);

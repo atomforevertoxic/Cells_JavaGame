@@ -51,4 +51,5 @@ public class Level {
     {
         return number;
     }
+    public LevelView getView() { return view;}
 }
