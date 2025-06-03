@@ -39,7 +39,10 @@ public class ExitTest {
 
     @Test
     public void testEnterWithoutKeys() {
-        boolean result = exitCell.handlePlayerInteraction(player, model);
+        Key key = new Key();
+        List<Key> keys= new ArrayList<Key>();
+        ExitCell tempExit = new ExitCell(keys, new Cell(6,6));
+        boolean result = tempExit.handlePlayerInteraction(player, model);
         assertFalse("Не должно быть победы без ключей", result);
         assertFalse("Не должно быть события победы", winEventFired);
     }

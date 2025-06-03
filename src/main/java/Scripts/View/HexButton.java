@@ -122,4 +122,6 @@ public class HexButton extends JButton {
     {
         character = ch;
     }
+
+    public char getCharacter() {  return character;}
 }
