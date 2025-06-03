@@ -53,7 +53,7 @@ public class LevelModel {
             } else if (keyPositions.contains(pos)) {
                 setKeyCell((Cell)c);
             } else if (pos.equals(start)) {
-                c.SetPlayer(player);
+                player.SetCell(c);
                 startCell = c;
             } else if (pos.equals(teleport)) {
                 TeleportCell teleportCell = new TeleportCell(c);

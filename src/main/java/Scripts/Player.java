@@ -15,6 +15,7 @@ public class Player
     public void SetCell(AbstractCell cell)
     {
         _cell = cell;
+        _cell.SetPlayer(this);
     }
 
     public AbstractCell GetCell()
