@@ -27,7 +27,7 @@ public class LevelView {
         return Collections.unmodifiableMap(buttonMap);
     }
 
-    void renderField(ILevelInputHandler inputHandler) {
+    public void renderField(ILevelInputHandler inputHandler) {
         panel.removeAll();
         buttonMap.clear();
 
