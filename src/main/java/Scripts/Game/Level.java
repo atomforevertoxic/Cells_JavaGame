@@ -41,7 +41,7 @@ public class Level {
 
         model.getCell(startPosition.x, startPosition.y).ifPresent(cell -> {
             cell.SetPlayer(model.getPlayer());
-            view.updateViewByCell(cell);
+            view.update(model.getPlayer());
         });
 
         gameManager.addLevelCompletedListeners(new LevelCompletedObserver());

@@ -2,6 +2,7 @@ package Scripts.Game;
 
 import Scripts.Cells.*;
 import Scripts.Interfaces.ILevelInputHandler;
+import Scripts.Player;
 import Scripts.View.HexButton;
 import javax.swing.*;
 import java.awt.*;
@@ -57,10 +58,10 @@ public class LevelView {
         return btn;
     }
 
-    public void updateViewByCell(AbstractCell cell) {
+    public void update(Player player) {
         setAllButtonsEnable(false);
         updateAllButtons();
-        enableAdjacentButtons(cell);
+        enableAdjacentButtons(player.GetCell());
     }
 
 

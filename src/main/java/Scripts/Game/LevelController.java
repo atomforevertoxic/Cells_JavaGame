@@ -43,7 +43,7 @@ public class LevelController implements ILevelInputHandler {
         boolean win = researchCell(cell, player);
         if (win) view.close();
 
-        view.updateViewByCell(cell);
+        view.update(player);
     }
 
 

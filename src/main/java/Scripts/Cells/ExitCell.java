@@ -8,7 +8,7 @@ import Scripts.Player;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExitCell extends AbstractCell
+public class ExitCell extends TeleportCell
 {
     private List<Key> _levelKeys;
 
@@ -44,6 +44,17 @@ public class ExitCell extends AbstractCell
 
     @Override
     public boolean handlePlayerInteraction(Player player, LevelModel model) {
-        return fireCheckLevelRules(player.GetKeys());
+        boolean win = fireCheckLevelRules(player.GetKeys());
+        if (win) return true;
+        else
+        {
+            AbstractCell newSpot = teleportToEnableNeighbour(model);
+            if (newSpot!=null)
+            {
+                player.moveTo(newSpot);
+                newSpot.handlePlayerInteraction(player, model);
+            }
+        }
+        return false;
     }
 }

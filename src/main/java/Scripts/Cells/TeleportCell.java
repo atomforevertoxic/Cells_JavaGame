@@ -29,13 +29,10 @@ public class TeleportCell extends AbstractCell
 
     @Override
     public boolean handlePlayerInteraction(Player player, LevelModel model) {
-        AbstractCell activeNeighbour = getFirstEnableNeighbour();
-        if (activeNeighbour!=null)
+        AbstractCell newSpot = teleportToEnableNeighbour(model);
+        if (newSpot!=null)
         {
-            this.swapWith(activeNeighbour);
-            model.reconnectNeighbours(this);
-            activeNeighbour.handlePlayerInteraction(player, model);
-            //player.handleRegularCell((Cell) activeNeighbour);
+            newSpot.handlePlayerInteraction(player, model);
         }
         return false;
     }
@@ -48,5 +45,17 @@ public class TeleportCell extends AbstractCell
             }
         }
         return null;
+    }
+
+    protected AbstractCell teleportToEnableNeighbour(LevelModel model)
+    {
+        AbstractCell activeNeighbour = getFirstEnableNeighbour();
+        if (activeNeighbour!=null)
+        {
+            this.swapWith(activeNeighbour);
+            model.reconnectNeighbours(activeNeighbour);
+            model.reconnectNeighbours(this  );
+        }
+        return activeNeighbour;
     }
 }
