@@ -52,20 +52,20 @@ public class ResultWindow extends JFrame {
         buttonPanel.setOpaque(false);
         buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
 
-        JButton nextButton = createActionButton("Следующий уровень");
+        //JButton nextButton = createActionButton("Следующий уровень");
         JButton menuButton = createActionButton("В меню");
 
-        nextButton.addActionListener(e -> {
-            dispose();
-            gm.startLevel(event.getLevelCompleted()+1);
-        });
+//        nextButton.addActionListener(e -> {
+//            dispose();
+//            gm.startLevel(event.getLevelCompleted()+1);
+//        });
 
         menuButton.addActionListener(e -> {
             dispose();
             gm.openMainMenu();
         });
 
-        buttonPanel.add(nextButton);
+        //buttonPanel.add(nextButton);
         buttonPanel.add(menuButton);
 
         panel.add(Box.createVerticalGlue());

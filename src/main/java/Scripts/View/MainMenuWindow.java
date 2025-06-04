@@ -43,8 +43,12 @@ public class MainMenuWindow extends JFrame {
         panel.add(title, gbc);
 
 
-        JButton levelSelectButton = createMenuButton("ВЫБОР УРОВНЯ");
-        levelSelectButton.addActionListener(e -> gameManager.openLevelSelect());
+//        JButton levelSelectButton = createMenuButton("ВЫБОР УРОВНЯ");
+//        levelSelectButton.addActionListener(e -> gameManager.openLevelSelect());
+//        panel.add(levelSelectButton, gbc);
+
+        JButton levelSelectButton = createMenuButton("НАЧАТЬ ИГРУ");
+        levelSelectButton.addActionListener(e -> gameManager.startLevel(1));
         panel.add(levelSelectButton, gbc);
 
 
