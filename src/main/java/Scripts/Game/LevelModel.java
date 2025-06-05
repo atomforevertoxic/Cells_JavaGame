@@ -17,6 +17,12 @@ public class LevelModel {
     private final int offsetY = 450;
     private AbstractCell startCell;
 
+    private final List<Point> wallPositions;
+    private final List<Point> keyPositions;
+    private final Point startPosition;
+    private final Point exitPosition;
+    private final Point teleportPosition;
+
     public LevelModel(int rows, int cols,
                       List<Point> wallPositions,
                       List<Point> keyPositions,
@@ -25,45 +31,50 @@ public class LevelModel {
                       Point teleportPosition) {
         this.rows = rows;
         this.cols = cols;
-        initializeField(wallPositions, keyPositions, startPosition, exitPosition, teleportPosition);
+        this.wallPositions = wallPositions;
+        this.keyPositions = keyPositions;
+        this.startPosition = startPosition;
+        this.exitPosition = exitPosition;
+        this.teleportPosition = teleportPosition;
+        initializeField();
     }
 
-    // Оптимизировать!!!!
-    private void initializeField(List<Point> walls, List<Point> keys, Point start, Point exit, Point teleport) {
+    private void initializeField() {
 
-        for (int r = 0; r < rows; r++) {
-            for (int q = 0; q < cols; q++) {
-                field.add(new Cell(q, r));
+        for (int r = 0; r < rows; r++)
+        {
+            for (int q = 0; q < cols; q++)
+            {
+                Point pos = new Point(q,r);
+
+                AbstractCell newCell = setRoleToCell(pos);
+
+                field.add(newCell);
             }
         }
 
-
-        placeObjects(walls, keys, start, exit, teleport);
         connectNeighbors();
     }
 
-    private void placeObjects(List<Point> walls, List<Point> keyPositions, Point start, Point exit, Point teleport) {
-        for (int i = 0; i < field.size(); i++) {
-            AbstractCell c = field.get(i);
-            Point pos = new Point(c.getQ(), c.getR());
-
-            if (walls.contains(pos)) {
-                Wall wall = new Wall(c);
-                field.set(i, wall);
-            } else if (keyPositions.contains(pos)) {
-                setKeyCell((Cell)c);
-            } else if (pos.equals(start)) {
-                player.SetCell(c);
-                startCell = c;
-            } else if (pos.equals(teleport)) {
-                TeleportCell teleportCell = new TeleportCell(c);
-                field.set(i ,teleportCell);
-            } else if (pos.equals(exit)) {
-                ExitCell exitCell = new ExitCell(keys, c);
-                field.set(i, exitCell);
-            }
+    private AbstractCell setRoleToCell(Point pos)
+    {
+        AbstractCell newCell = new Cell(pos);
+        if (wallPositions.contains(pos)) {
+             newCell = new Wall(pos);
+        } else if (keyPositions.contains(pos)) {
+            setKeyCell((Cell)newCell);
+        } else if (pos.equals(startPosition)) {
+            player.SetCell(newCell);
+            startCell = newCell;
+        } else if (pos.equals(teleportPosition)) {
+            newCell = new TeleportCell(pos);
+        } else if (pos.equals(exitPosition)) {
+            newCell = new ExitCell(keys, pos);
         }
+        return newCell;
     }
+
+
 
     private void setKeyCell(Cell cell) {
         Key key = new Key();

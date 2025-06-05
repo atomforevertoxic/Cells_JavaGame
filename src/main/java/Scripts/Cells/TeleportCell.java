@@ -2,6 +2,9 @@ package Scripts.Cells;
 
 import Scripts.Game.LevelModel;
 import Scripts.Player;
+import Scripts.View.HexButton;
+
+import java.awt.*;
 
 public class TeleportCell extends AbstractCell
 {
@@ -12,6 +15,10 @@ public class TeleportCell extends AbstractCell
 
     public TeleportCell(AbstractCell cell) {
         super(cell.getQ(), cell.getR());
+    }
+
+    public TeleportCell(Point pos) {
+        super(pos);
     }
 
 
@@ -35,6 +42,12 @@ public class TeleportCell extends AbstractCell
             newSpot.handlePlayerInteraction(player, model);
         }
         return false;
+    }
+
+    @Override
+    public void getButtonAppearance(HexButton btn) {
+        btn.setBackground(Color.CYAN);
+        btn.setCharacter('O');
     }
 
     private AbstractCell getFirstEnableNeighbour()

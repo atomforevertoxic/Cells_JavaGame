@@ -2,6 +2,9 @@ package Scripts.Cells;
 
 import Scripts.Game.LevelModel;
 import Scripts.Player;
+import Scripts.View.HexButton;
+
+import java.awt.*;
 
 public class Cell extends AbstractCell
 {
@@ -10,6 +13,10 @@ public class Cell extends AbstractCell
 
     public Cell(int q, int r) {
         super(q, r);
+    }
+
+    public Cell(Point pos) {
+        super(pos);
     }
 
     public boolean SetKey(Key key)
@@ -48,5 +55,22 @@ public class Cell extends AbstractCell
     public boolean handlePlayerInteraction(Player player, LevelModel model) {
         player.handleRegularCell(this);
         return false;
+    }
+
+    @Override
+    public void getButtonAppearance(HexButton btn) {
+        if (GetPlayer()!=null) btn.setBackground(Color.RED);
+        else if (getPassedInfo())
+        {
+            btn.setBackground(Color.LIGHT_GRAY); // Пройденные клетки
+            btn.setCharacter(' ');
+        }
+        else
+        {
+            btn.setBackground(Color.ORANGE);
+            if (GetKey() != null) {
+                btn.setCharacter('l');
+            }
+        }
     }
 }

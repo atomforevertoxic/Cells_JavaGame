@@ -65,6 +65,7 @@ public class GameManager {
 
     public void startLevel(int level) {
         if (isLevelExists(level)) {
+            gameView.closeCurrentWindow(); // возможно убрать, когда несколько уровней в игре будет
             Level currentLevel = levelLoader.startLevelFromJson(level);
             setCurrentLevel(currentLevel);
         } else {

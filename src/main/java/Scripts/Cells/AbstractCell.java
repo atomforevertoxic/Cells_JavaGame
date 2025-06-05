@@ -3,7 +3,9 @@ package Scripts.Cells;
 import Scripts.Game.LevelModel;
 import Scripts.Interfaces.IInteractable;
 import Scripts.Player;
+import Scripts.View.HexButton;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,6 +22,11 @@ public abstract class AbstractCell implements IInteractable
     public AbstractCell(int q, int r) {
         this.q = q;
         this.r = r;
+    }
+
+    public AbstractCell(Point pos) {
+        this.q = pos.x;
+        this.r = pos.y;
     }
 
     public int getQ() {
@@ -80,4 +87,6 @@ public abstract class AbstractCell implements IInteractable
     }
 
     public abstract boolean handlePlayerInteraction(Player player, LevelModel model);
+
+    public abstract void getButtonAppearance(HexButton btn);
 }

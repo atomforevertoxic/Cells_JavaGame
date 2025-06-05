@@ -4,7 +4,9 @@ import Scripts.Events.ExitCellActionEvent;
 import Scripts.Events.IExitCellActionListener;
 import Scripts.Game.LevelModel;
 import Scripts.Player;
+import Scripts.View.HexButton;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +24,12 @@ public class ExitCell extends TeleportCell
     // -------------------- События --------------------
 
     private ArrayList<IExitCellActionListener> exitCellListener = new ArrayList<>();
+
+    public ExitCell(List<Key> keys, Point pos)
+    {
+        super(pos);
+        _levelKeys = keys;
+    }
 
     public void addExitCellActionListener(IExitCellActionListener listener) {
         exitCellListener.add(listener);
@@ -41,6 +49,13 @@ public class ExitCell extends TeleportCell
         }
         return win;
     }
+
+    @Override
+    public void getButtonAppearance(HexButton btn) {
+        btn.setBackground(Color.GREEN);
+        btn.setCharacter('^');
+    }
+
 
     @Override
     public boolean handlePlayerInteraction(Player player, LevelModel model) {
