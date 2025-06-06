@@ -1,15 +1,9 @@
 package Scripts.Game;
 
-import Scripts.Cells.AbstractCell;
-import Scripts.Cells.Cell;
-import Scripts.Cells.ExitCell;
-import Scripts.Cells.TeleportCell;
+import Scripts.Cells.*;
 import Scripts.Interfaces.ILevelInputHandler;
 import Scripts.Player;
 import Scripts.View.HexButton;
-
-import java.awt.*;
-import java.util.List;
 
 public class LevelController implements ILevelInputHandler {
     private final LevelModel model;
@@ -40,14 +34,23 @@ public class LevelController implements ILevelInputHandler {
 
         Player player = model.getPlayer();
 
-        boolean win = researchCell(cell, player);
+        boolean win = false;
+        if (player.GetCell() instanceof VerticalTeleportCell vertCell && vertCell.isUpstairsNeighbourEnable())
+        {
+            win = vertCell.tryToLeaveCell(model, player);
+        }
+        else
+        {
+            win = researchCell(cell, player);
+        }
         if (win) view.close();
 
         view.update(player);
     }
 
 
-    public boolean researchCell(AbstractCell cell, Player player) {
+    public boolean researchCell(AbstractCell cell, Player player)
+    {
         player.moveTo(cell);
         return cell.handlePlayerInteraction(player, model);
     }

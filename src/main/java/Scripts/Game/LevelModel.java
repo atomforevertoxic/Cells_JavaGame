@@ -22,13 +22,15 @@ public class LevelModel {
     private final Point startPosition;
     private final Point exitPosition;
     private final Point teleportPosition;
+    private final Point vertTeleportPosition;
 
     public LevelModel(int rows, int cols,
                       List<Point> wallPositions,
                       List<Point> keyPositions,
                       Point startPosition,
                       Point exitPosition,
-                      Point teleportPosition) {
+                      Point teleportPosition,
+                      Point vertTeleportPosition) {
         this.rows = rows;
         this.cols = cols;
         this.wallPositions = wallPositions;
@@ -36,6 +38,7 @@ public class LevelModel {
         this.startPosition = startPosition;
         this.exitPosition = exitPosition;
         this.teleportPosition = teleportPosition;
+        this.vertTeleportPosition = vertTeleportPosition;
         initializeField();
     }
 
@@ -68,9 +71,12 @@ public class LevelModel {
             startCell = newCell;
         } else if (pos.equals(teleportPosition)) {
             newCell = new TeleportCell(pos);
+        } else if (pos.equals(vertTeleportPosition)) {
+            newCell = new VerticalTeleportCell(pos);
         } else if (pos.equals(exitPosition)) {
             newCell = new ExitCell(keys, pos);
         }
+
         return newCell;
     }
 

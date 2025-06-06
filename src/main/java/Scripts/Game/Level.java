@@ -19,11 +19,12 @@ public class Level {
                  Point startPosition,
                  Point exitPosition,
                  Point teleportPosition,
+                 Point vertTeleportPosition,
                  GameManager gameManager) {
 
         number = levelNumber;
         gameManager.setCurrentLevel(this);
-        this.model = new LevelModel(rows, cols, wallPositions, keyPositions, startPosition, exitPosition, teleportPosition);
+        this.model = new LevelModel(rows, cols, wallPositions, keyPositions, startPosition, exitPosition, teleportPosition, vertTeleportPosition);
 
         JFrame frame = new JFrame("Hexagonal Level - Level " + number);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);

@@ -28,6 +28,7 @@ public class LevelLoader {
         public Point start;
         public Point exit;
         public Point teleport;
+        public Point verticalTeleport;
     }
 
     private final GameManager gameManager;
@@ -66,6 +67,7 @@ public class LevelLoader {
                 config.start,
                 config.exit,
                 config.teleport,
+                config.verticalTeleport,
                 gameManager
         );
     }
