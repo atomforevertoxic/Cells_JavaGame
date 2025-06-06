@@ -50,7 +50,7 @@ public class TeleportCell extends AbstractCell
         btn.setCharacter('O');
     }
 
-    private AbstractCell getFirstEnableNeighbour()
+    protected AbstractCell getFirstEnableNeighbour()
     {
         for (AbstractCell neighbour : GetNeighbours()) {
             if (neighbour.shouldEnableCell()) {

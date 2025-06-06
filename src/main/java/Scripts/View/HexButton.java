@@ -15,7 +15,6 @@ import javax.swing.JButton;
 public class HexButton extends JButton {
     Polygon bounds;
     Character character;
-    Boolean clicked;
 
     AbstractCell _cell;
 
@@ -24,7 +23,6 @@ public class HexButton extends JButton {
         this.setBackground(Color.YELLOW);
         this.setForeground(Color.RED);
         this.character = character;
-        this.clicked = false;
         this.setOpaque(true);
         this.setBorderPainted(false);
         this.setContentAreaFilled(false);
@@ -82,19 +80,16 @@ public class HexButton extends JButton {
     @Override
     protected void paintComponent(Graphics graphics) {
 
-        // Draw the black border
         graphics.setColor(Color.BLACK);
         Polygon stroke = this.hexagon(getWidth(), getHeight(), 0.95);
         graphics.drawPolygon(stroke);
         graphics.fillPolygon(stroke);
 
-        // Draw the inside background
         Polygon inside = this.hexagon(getWidth(), getHeight(), 0.9);
         graphics.setColor(getBackground());
         graphics.drawPolygon(inside);
         graphics.fillPolygon(inside);
 
-        // Draw the label
         Font font = new Font("Arial", Font.BOLD, 64);
         graphics.setFont(font);
         graphics.setColor(getForeground());

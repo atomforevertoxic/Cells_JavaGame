@@ -26,7 +26,9 @@ public class Wall extends AbstractCell{
     }
 
     @Override
-    public void getButtonAppearance(HexButton btn) {
+    public void getButtonAppearance(HexButton btn)
+    {
         btn.setBackground(Color.GRAY);
+        btn.setCharacter(' ');
     }
 }

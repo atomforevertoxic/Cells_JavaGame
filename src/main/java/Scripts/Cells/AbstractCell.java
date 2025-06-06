@@ -13,7 +13,7 @@ public abstract class AbstractCell implements IInteractable
 {
 
     private int q; // смещение по горизонтали
-    private int r; // смещение по диагонали
+    private int r; // смещение по вертикали
 
     private Player _player;
     private boolean _isWall;

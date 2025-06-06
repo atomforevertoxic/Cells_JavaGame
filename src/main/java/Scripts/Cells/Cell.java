@@ -59,11 +59,11 @@ public class Cell extends AbstractCell
 
     @Override
     public void getButtonAppearance(HexButton btn) {
+        btn.setCharacter(' ');
         if (GetPlayer()!=null) btn.setBackground(Color.RED);
         else if (getPassedInfo())
         {
             btn.setBackground(Color.LIGHT_GRAY); // Пройденные клетки
-            btn.setCharacter(' ');
         }
         else
         {
