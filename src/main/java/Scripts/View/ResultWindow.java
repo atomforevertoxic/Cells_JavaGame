@@ -7,9 +7,10 @@ import javax.swing.*;
 import java.awt.*;
 
 public class ResultWindow extends JFrame {
-    private final GameManager gm = new GameManager();
+    private final GameManager gm;
 
-    public ResultWindow(LevelCompletedEvent event) {
+    public ResultWindow(LevelCompletedEvent event, GameManager gm) {
+        this.gm = gm;
         setupWindow(event);
         initUI(event);
     }

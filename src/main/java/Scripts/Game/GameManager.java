@@ -1,13 +1,10 @@
 package Scripts.Game;
 
 import Scripts.Events.*;
-import Scripts.Interfaces.IWindowCreator;
 import Scripts.Observers.ExitCellObserver;
 import Scripts.Utils.LevelLoader;
 import Scripts.View.LevelSelectWindow;
 import Scripts.View.MainMenuWindow;
-import Scripts.View.ResultWindow;
-import org.example.Main;
 
 import javax.swing.*;
 import java.util.ArrayList;
@@ -18,9 +15,9 @@ public class GameManager {
 
     private Level currentLevel;
 
-    private ExitCellObserver exitCellObserver = new ExitCellObserver(this);
-    private LevelLoader levelLoader = new LevelLoader(this);
-    private GameView gameView = new GameView();
+    private final ExitCellObserver exitCellObserver = new ExitCellObserver(this);
+    private final LevelLoader levelLoader = new LevelLoader(this);
+    private final GameView gameView = new GameView();
 
     public GameManager()
     {
@@ -85,7 +82,7 @@ public class GameManager {
 
     // -------------------- События --------------------
 
-    private ArrayList<ILevelCompletedListener> levelCompletedListeners = new ArrayList<>();
+    private final ArrayList<ILevelCompletedListener> levelCompletedListeners = new ArrayList<>();
 
     public void addLevelCompletedListeners(ILevelCompletedListener listener) {
         levelCompletedListeners.add(listener);
@@ -100,7 +97,7 @@ public class GameManager {
             LevelCompletedEvent event = new LevelCompletedEvent(listener);
             event.setLevelCompleted(currentLevel.number());
             event.setMessage("Level " + currentLevel.number() + " completed!");
-            listener.showResultWindow(event);
+            listener.showResultWindow(event, this);
         }
     }
 
