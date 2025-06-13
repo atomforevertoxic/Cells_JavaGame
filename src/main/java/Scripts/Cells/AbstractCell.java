@@ -14,8 +14,7 @@ public abstract class AbstractCell implements IInteractable
     private int r; // смещение по диагонали
 
     private Player _player;
-    private boolean _isWall;
-    private List<AbstractCell> _neighbours = new ArrayList<>();
+    private final List<AbstractCell> _neighbours = new ArrayList<>();
 
     public AbstractCell(int q, int r) {
         this.q = q;

@@ -1,6 +1,7 @@
 package Scripts.View;
 
 import Scripts.Cells.AbstractCell;
+import org.jetbrains.annotations.NotNull;
 
 import java.awt.Color;
 import java.awt.Dimension;
@@ -56,7 +57,7 @@ public class HexButton extends JButton {
     }
 
     @Override
-    public void setSize(Dimension d) {
+    public void setSize(@NotNull Dimension d) {
         super.setSize(d);
         this.calculateBounds();
     }
@@ -74,7 +75,7 @@ public class HexButton extends JButton {
     }
 
     @Override
-    public void setBounds(Rectangle r) {
+    public void setBounds(@NotNull Rectangle r) {
         super.setBounds(r);
         this.calculateBounds();
     }

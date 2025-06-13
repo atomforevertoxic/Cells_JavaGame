@@ -11,20 +11,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class GameManager {
-    private final boolean[] levelStates;
+    private final boolean[] levelStates = new boolean[]{true, false, false, false, false};
 
     private Level currentLevel;
 
     private final ExitCellObserver exitCellObserver = new ExitCellObserver(this);
     private final LevelLoader levelLoader = new LevelLoader(this);
     private final GameView gameView = new GameView();
-
-    public GameManager()
-    {
-        // [TODO] сохранение прогресса пройденных уровней - потом переписать
-        levelStates = new boolean[]{true, false, false, false, false};
-    }
-
 
     public void setCurrentLevel(Level level)
     {
@@ -41,18 +34,12 @@ public class GameManager {
     }
 
     public void openMainMenu() {
-        gameView.switchWindow(() -> {
-            return new MainMenuWindow(this);
-        });
+        gameView.switchWindow(() -> new MainMenuWindow(this));
     }
 
     public void openLevelSelect() {
-        gameView.switchWindow(() -> {
-            return new LevelSelectWindow(this);
-        });
+        gameView.switchWindow(() -> new LevelSelectWindow(this));
     }
-
-
 
 
     public void endCurrentLevel() {
@@ -69,7 +56,7 @@ public class GameManager {
                     "Поздравляем! Вы прошли все уровни!",
                     "Игра завершена",
                     JOptionPane.INFORMATION_MESSAGE);
-            openMainMenu();
+            //openMainMenu();
         }
     }
 

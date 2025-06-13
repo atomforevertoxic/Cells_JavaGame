@@ -9,7 +9,7 @@ import java.util.List;
 
 public class ExitCellObserver implements IExitCellActionListener {
 
-    private GameManager gameManager;
+    private final GameManager gameManager;
 
     public ExitCellObserver(GameManager gm)
     {

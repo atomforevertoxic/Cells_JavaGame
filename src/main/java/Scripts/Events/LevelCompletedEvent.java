@@ -1,11 +1,7 @@
 package Scripts.Events;
 
-import Scripts.Game.GameManager;
-import Scripts.View.ResultWindow;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import javax.swing.*;
 import java.util.EventObject;
 
 public class LevelCompletedEvent extends EventObject {

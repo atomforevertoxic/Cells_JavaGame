@@ -4,8 +4,7 @@ import Scripts.Game.GameManager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+
 
 public class MainMenuWindow extends JFrame {
     private final GameManager gameManager;
@@ -44,12 +43,12 @@ public class MainMenuWindow extends JFrame {
 
 
         JButton levelSelectButton = createMenuButton("ВЫБОР УРОВНЯ");
-        levelSelectButton.addActionListener(e -> gameManager.openLevelSelect());
+        levelSelectButton.addActionListener(_ -> gameManager.openLevelSelect());
         panel.add(levelSelectButton, gbc);
 
 
         JButton exitButton = createMenuButton("ВЫХОД");
-        exitButton.addActionListener(e -> System.exit(0));
+        exitButton.addActionListener(_ -> System.exit(0));
         panel.add(exitButton, gbc);
 
         JLayeredPane layeredPane = new JLayeredPane();
@@ -87,7 +86,4 @@ public class MainMenuWindow extends JFrame {
         return button;
     }
 
-    public void showWindow() {
-        EventQueue.invokeLater(() -> setVisible(true));
-    }
 }

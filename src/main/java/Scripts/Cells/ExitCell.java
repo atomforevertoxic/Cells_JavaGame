@@ -10,7 +10,7 @@ import java.util.List;
 
 public class ExitCell extends TeleportCell
 {
-    private List<Key> _levelKeys;
+    private final List<Key> _levelKeys;
 
     public ExitCell(List<Key> levelKeys, AbstractCell cell)
     {
@@ -21,7 +21,7 @@ public class ExitCell extends TeleportCell
 
     // -------------------- События --------------------
 
-    private ArrayList<IExitCellActionListener> exitCellListener = new ArrayList<>();
+    private final ArrayList<IExitCellActionListener> exitCellListener = new ArrayList<>();
 
     public void addExitCellActionListener(IExitCellActionListener listener) {
         exitCellListener.add(listener);

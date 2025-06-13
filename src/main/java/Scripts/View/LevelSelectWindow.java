@@ -9,7 +9,7 @@ import java.util.List;
 
 public class LevelSelectWindow extends JFrame {
     private final GameManager gameManager;
-    private List<LevelLoader.LevelConfig> levels;
+    private final List<LevelLoader.LevelConfig> levels;
     private final LevelLoader levelLoader;
 
     public LevelSelectWindow(GameManager gameManager) {
@@ -54,7 +54,7 @@ public class LevelSelectWindow extends JFrame {
 
         // Кнопка "Назад"
         JButton backButton = new JButton("Назад");
-        backButton.addActionListener(e -> {
+        backButton.addActionListener(_ -> {
             dispose();
             gameManager.openMainMenu();
         });
@@ -91,7 +91,7 @@ public class LevelSelectWindow extends JFrame {
 
         if (unlocked) {
             button.setBackground(new Color(70, 70, 80));
-            button.addActionListener(e -> {
+            button.addActionListener(_ -> {
                 dispose(); // Закрываем текущее окно
                 levelLoader.startLevelFromJson(level.id);
             });
@@ -124,8 +124,4 @@ public class LevelSelectWindow extends JFrame {
         button.setFocusPainted(false);
     }
 
-
-    public void showWindow() {
-        EventQueue.invokeLater(() -> setVisible(true));
-    }
 }

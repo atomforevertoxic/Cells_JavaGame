@@ -1,15 +1,10 @@
 package Scripts.Game;
 
 import Scripts.Cells.AbstractCell;
-import Scripts.Cells.Cell;
 import Scripts.Cells.ExitCell;
-import Scripts.Cells.TeleportCell;
 import Scripts.Interfaces.ILevelInputHandler;
 import Scripts.Player;
 import Scripts.View.HexButton;
-
-import java.awt.*;
-import java.util.List;
 
 public class LevelController implements ILevelInputHandler {
     private final LevelModel model;
@@ -27,11 +22,9 @@ public class LevelController implements ILevelInputHandler {
     private void setupExitCellListeners() {
         model.getField().stream()
                 .filter(cell -> cell instanceof ExitCell)
-                .forEach(cell -> {
-                    ((ExitCell)cell).addExitCellActionListener(
-                            gameManager.getExitCellObserver()
-                    );
-                });
+                .forEach(cell -> ((ExitCell)cell).addExitCellActionListener(
+                        gameManager.getExitCellObserver()
+                ));
     }
 
     @Override

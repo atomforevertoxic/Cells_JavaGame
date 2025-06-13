@@ -17,6 +17,9 @@ public class ResultWindow extends JFrame {
 
     private void setupWindow(LevelCompletedEvent event) {
         setTitle("Победа!");
+
+        // расширение для event-информации
+
         setSize(600, 400);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -56,12 +59,12 @@ public class ResultWindow extends JFrame {
         JButton nextButton = createActionButton("Следующий уровень");
         JButton menuButton = createActionButton("В меню");
 
-        nextButton.addActionListener(e -> {
+        nextButton.addActionListener(_ -> {
             dispose();
             gm.startLevel(event.getLevelCompleted()+1);
         });
 
-        menuButton.addActionListener(e -> {
+        menuButton.addActionListener(_ -> {
             dispose();
             gm.openMainMenu();
         });

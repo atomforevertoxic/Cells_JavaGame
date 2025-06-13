@@ -3,7 +3,6 @@ package Scripts.Observers;
 import Scripts.Events.ILevelCompletedListener;
 import Scripts.Events.LevelCompletedEvent;
 import Scripts.Game.GameManager;
-import Scripts.View.LevelSelectWindow;
 import Scripts.View.ResultWindow;
 import org.jetbrains.annotations.NotNull;
 

@@ -13,7 +13,7 @@ public class LevelView {
     private final JPanel panel = new JPanel(null);
     private final Map<String, HexButton> buttonMap = new HashMap<>();
     private final LevelModel model;
-    private JFrame levelFrame;
+    private final JFrame levelFrame;
 
     public LevelView(LevelModel model, ILevelInputHandler inputHandler, JFrame levelFrame) {
         this.model = model;
@@ -54,7 +54,7 @@ public class LevelView {
         HexButton btn = new HexButton(' ');
         btn.setBounds(x - btnSize/2, y - btnSize/2, btnSize, btnSize);
         updateButtonAppearance(btn, cell);
-        btn.addActionListener(e -> inputHandler.handleCellClick(btn));
+        btn.addActionListener(_ -> inputHandler.handleCellClick(btn));
         return btn;
     }
 

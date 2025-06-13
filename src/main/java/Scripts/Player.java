@@ -9,7 +9,7 @@ public class Player
 {
     private AbstractCell _cell;
 
-    private List<Key> _keys = new ArrayList<Key>();
+    private final List<Key> _keys = new ArrayList<>();
 
 
     public void SetCell(AbstractCell cell)
