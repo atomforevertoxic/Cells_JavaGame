@@ -4,7 +4,9 @@ import Scripts.Events.ExitCellActionEvent;
 import Scripts.Events.IExitCellActionListener;
 import Scripts.Game.LevelModel;
 import Scripts.Player;
+import Scripts.View.HexButton;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,5 +58,10 @@ public class ExitCell extends TeleportCell
             }
         }
         return false;
+    }
+    @Override
+    public void getButtonAppearance(HexButton btn) {
+        btn.setBackground(Color.GREEN);
+        btn.setCharacter('^');
     }
 }

@@ -2,6 +2,9 @@ package Scripts.Cells;
 
 import Scripts.Game.LevelModel;
 import Scripts.Player;
+import Scripts.View.HexButton;
+
+import java.awt.*;
 
 public class Cell extends AbstractCell
 {
@@ -49,4 +52,23 @@ public class Cell extends AbstractCell
         player.handleRegularCell(this);
         return false;
     }
+
+    @Override
+    public void getButtonAppearance(HexButton btn) {
+        btn.setCharacter(' ');
+        if (GetPlayer()!=null) btn.setBackground(Color.RED);
+        else if (getPassedInfo())
+        {
+            btn.setBackground(Color.LIGHT_GRAY);
+        }
+        else
+        {
+            btn.setBackground(Color.ORANGE);
+            if (GetKey() != null) {
+                btn.setCharacter('l');
+            }
+        }
+    }
+
+
 }

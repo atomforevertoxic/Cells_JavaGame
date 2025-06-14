@@ -3,6 +3,7 @@ package Scripts.Cells;
 import Scripts.Game.LevelModel;
 import Scripts.Interfaces.IInteractable;
 import Scripts.Player;
+import Scripts.View.HexButton;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -79,4 +80,5 @@ public abstract class AbstractCell implements IInteractable
     }
 
     public abstract boolean handlePlayerInteraction(Player player, LevelModel model);
+    public abstract void getButtonAppearance(HexButton btn);
 }

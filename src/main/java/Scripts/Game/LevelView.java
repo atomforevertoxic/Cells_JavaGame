@@ -103,26 +103,7 @@ public class LevelView {
 
     public void updateButtonAppearance(HexButton btn, AbstractCell cell) {
         btn.setEnabled(false);
-
-        if (cell.GetPlayer() != null) {
-            btn.setBackground(Color.RED);
-        } else if (cell instanceof ExitCell) {
-            btn.setBackground(Color.GREEN);
-            btn.setCharacter('^');
-        } else if (cell instanceof TeleportCell) {
-            btn.setBackground(Color.CYAN);
-            btn.setCharacter('O');
-        } else if (cell instanceof Wall) {
-            btn.setBackground(Color.GRAY);
-        } else if (cell instanceof Cell && ((Cell)cell).getPassedInfo()) {
-            btn.setBackground(Color.LIGHT_GRAY); // Пройденные клетки
-            btn.setCharacter(' ');
-        } else {
-            btn.setBackground(Color.ORANGE);
-            if (cell instanceof Cell && ((Cell)cell).GetKey() != null) {
-                btn.setCharacter('l');
-            }
-        }
+        cell.getButtonAppearance(btn);
     }
 
     public AbstractCell getCellByButton(HexButton btn) {
