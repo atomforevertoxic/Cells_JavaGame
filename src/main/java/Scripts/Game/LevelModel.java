@@ -97,6 +97,7 @@ public class LevelModel {
         cell.GetNeighbours().clear();
         connectWithNeighbours(cell);
     }
+
     public Optional<AbstractCell> getCell(int q, int r) {
         return field.stream()
                 .filter(c -> c.getQ() == q && c.getR() == r)

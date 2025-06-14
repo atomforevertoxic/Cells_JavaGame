@@ -3,6 +3,8 @@ package Scripts.Cells;
 import Scripts.Game.LevelModel;
 import Scripts.Player;
 
+import java.util.List;
+
 public class TeleportCell extends AbstractCell
 {
 
@@ -53,9 +55,17 @@ public class TeleportCell extends AbstractCell
         if (activeNeighbour!=null)
         {
             this.swapWith(activeNeighbour);
-            model.reconnectNeighbours(activeNeighbour);
+            reconnectAllEnvironment(this.GetNeighbours(), model);
             model.reconnectNeighbours(this  );
         }
         return activeNeighbour;
+    }
+
+    private void reconnectAllEnvironment(List<AbstractCell> environment, LevelModel model)
+    {
+        for (AbstractCell cell : environment)
+        {
+            model.reconnectNeighbours(cell);
+        }
     }
 }
