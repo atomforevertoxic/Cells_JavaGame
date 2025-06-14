@@ -6,7 +6,6 @@ import Scripts.Utils.LevelLoader;
 import Scripts.View.LevelSelectWindow;
 import Scripts.View.MainMenuWindow;
 
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -48,23 +47,14 @@ public class GameManager {
     }
 
     public void startLevel(int level) {
-        if (isLevelExists(level)) {
-            Level currentLevel = levelLoader.startLevelFromJson(level);
-            setCurrentLevel(currentLevel);
-        } else {
-            JOptionPane.showMessageDialog(null,
-                    "Поздравляем! Вы прошли все уровни!",
-                    "Игра завершена",
-                    JOptionPane.INFORMATION_MESSAGE);
-            //openMainMenu();
-        }
+        Level currentLevel = levelLoader.startLevelFromJson(level);
+        setCurrentLevel(currentLevel);
     }
 
     public boolean isLevelExists(int levelId) {
         List<LevelLoader.LevelConfig> levels = LevelLoader.loadLevels();
         return levels != null && levels.stream().anyMatch(l -> l.id == levelId);
     }
-
 
 
     // -------------------- События --------------------

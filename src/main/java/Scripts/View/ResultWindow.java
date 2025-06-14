@@ -8,18 +8,24 @@ import java.awt.*;
 
 public class ResultWindow extends JFrame {
     private final GameManager gm;
-
+    private final LevelCompletedEvent event;
     public ResultWindow(LevelCompletedEvent event, GameManager gm) {
         this.gm = gm;
-        setupWindow(event);
-        initUI(event);
+        this.event = event;
+
+        setupWindow();
+
+        if (isGameOver()) { initGameOver(); }
+        else { initUI(); }
     }
 
-    private void setupWindow(LevelCompletedEvent event) {
+    private boolean isGameOver()
+    {
+        return !gm.isLevelExists((event.getLevelCompleted()+1));
+    }
+
+    private void setupWindow() {
         setTitle("Победа!");
-
-        // расширение для event-информации
-
         setSize(600, 400);
         setLocationRelativeTo(null);
         setResizable(false);
@@ -27,7 +33,7 @@ public class ResultWindow extends JFrame {
         getContentPane().setBackground(new Color(30, 30, 35));
     }
 
-    private void initUI(LevelCompletedEvent event) {
+    private void initUI() {
         JPanel panel = new JPanel();
         panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
         panel.setOpaque(false);
@@ -106,5 +112,57 @@ public class ResultWindow extends JFrame {
 
     public void showResult() {
         EventQueue.invokeLater(() -> setVisible(true));
+    }
+
+    private void initGameOver()
+    {
+        JPanel panel = new JPanel();
+        panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+        panel.setOpaque(false);
+        panel.setBorder(BorderFactory.createEmptyBorder(40, 40, 40, 40));
+
+        // Заголовок
+        JLabel title = new JLabel("ВСЕ УРОВНИ ПРОЙДЕНЫ!!!");
+        title.setFont(new Font("Roboto", Font.BOLD, 32));
+        title.setForeground(new Color(100, 255, 100));
+        title.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Информация об уровне
+        JLabel levelInfo = new JLabel("Уровень: " + event.getLevelCompleted());
+        levelInfo.setFont(new Font("Arial", Font.PLAIN, 20));
+        levelInfo.setForeground(Color.WHITE);
+        levelInfo.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Сообщение
+        JLabel message = new JLabel(event.getMessage());
+        message.setFont(new Font("Arial", Font.ITALIC, 16));
+        message.setForeground(Color.LIGHT_GRAY);
+        message.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Кнопки
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setOpaque(false);
+        buttonPanel.setLayout(new FlowLayout(FlowLayout.CENTER, 20, 0));
+
+        JButton menuButton = createActionButton("В меню");
+
+
+        menuButton.addActionListener(_ -> {
+            dispose();
+            gm.openMainMenu();
+        });
+
+        buttonPanel.add(menuButton);
+
+        panel.add(Box.createVerticalGlue());
+        panel.add(title);
+        panel.add(Box.createRigidArea(new Dimension(0, 20)));
+        panel.add(levelInfo);
+        panel.add(Box.createRigidArea(new Dimension(0, 10)));
+        panel.add(message);
+        panel.add(Box.createVerticalGlue());
+        panel.add(buttonPanel);
+
+        add(panel);
     }
 }

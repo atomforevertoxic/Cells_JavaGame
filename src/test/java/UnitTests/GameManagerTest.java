@@ -3,14 +3,10 @@ package UnitTests;
 import Scripts.Events.ILevelCompletedListener;
 import Scripts.Events.LevelCompletedEvent;
 import Scripts.Game.GameManager;
-import Scripts.Game.GameView;
 import Scripts.Game.Level;
-import Scripts.Interfaces.IWindowCreator;
-import Scripts.View.MainMenuWindow;
-import Scripts.View.LevelSelectWindow;
+import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import javax.swing.*;
 
 import java.awt.*;
 import java.util.ArrayList;
@@ -27,8 +23,9 @@ public class GameManagerTest {
         public boolean wasCalled = false;
         public LevelCompletedEvent receivedEvent;
 
+
         @Override
-        public void showResultWindow(LevelCompletedEvent event) {
+        public void showResultWindow(@NotNull LevelCompletedEvent event, GameManager gm) {
             wasCalled = true;
             receivedEvent = event;
         }
