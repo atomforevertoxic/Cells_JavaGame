@@ -11,7 +11,7 @@ public class Level {
     private final LevelView view;
     private final int number;
 
-    public Level(int levelNumber, int rows, int cols,
+    public Level(int levelNumber, String name, int rows, int cols,
                  List<Point> wallPositions,
                  List<Point> keyPositions,
                  Point startPosition,
@@ -19,11 +19,11 @@ public class Level {
                  Point teleportPosition,
                  GameManager gameManager) {
 
-        number = levelNumber;
+        number = levelNumber+1;
         gameManager.setCurrentLevel(this);
         this.model = new LevelModel(rows, cols, wallPositions, keyPositions, startPosition, exitPosition, teleportPosition);
 
-        JFrame frame = new JFrame("Hexagonal Level - Level " + number);
+        JFrame frame = new JFrame(name + " - Level " + number);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
         this.view = new LevelView(model, null, frame);
@@ -41,8 +41,6 @@ public class Level {
             cell.SetPlayer(model.getPlayer());
             view.update(model.getPlayer());
         });
-
-        gameManager.addLevelCompletedListeners(new LevelCompletedObserver());
     }
 
     public int number()

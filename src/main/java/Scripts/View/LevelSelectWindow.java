@@ -47,7 +47,7 @@ public class LevelSelectWindow extends JFrame {
         if (levels != null) {
             for (int i = 0; i < levels.size(); i++) {
                 LevelLoader.LevelConfig level = levels.get(i);
-                JButton levelButton = createLevelButton(level, gameManager.getLevelState(i));
+                JButton levelButton = createLevelButton(level, gameManager.isLevelUnlocked(i));
                 levelsPanel.add(levelButton);
             }
         }
@@ -79,7 +79,7 @@ public class LevelSelectWindow extends JFrame {
         JPanel infoPanel = new JPanel(new BorderLayout());
         infoPanel.setOpaque(false);
 
-        JLabel numberLabel = new JLabel(String.valueOf(level.id), SwingConstants.CENTER);
+        JLabel numberLabel = new JLabel(String.valueOf(level.id+1), SwingConstants.CENTER);
         numberLabel.setFont(new Font("Roboto", Font.BOLD, 48));
 
         JLabel nameLabel = new JLabel(level.name, SwingConstants.CENTER);

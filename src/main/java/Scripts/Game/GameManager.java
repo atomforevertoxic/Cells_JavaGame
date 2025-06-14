@@ -2,21 +2,29 @@ package Scripts.Game;
 
 import Scripts.Events.*;
 import Scripts.Observers.ExitCellObserver;
+import Scripts.Observers.LevelCompletedObserver;
 import Scripts.Utils.LevelLoader;
 import Scripts.View.LevelSelectWindow;
 import Scripts.View.MainMenuWindow;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class GameManager {
-    private final boolean[] levelStates = new boolean[]{true, false, false, false, false};
-
+    private final LevelProgressService progressService;
     private Level currentLevel;
 
     private final ExitCellObserver exitCellObserver = new ExitCellObserver(this);
     private final LevelLoader levelLoader = new LevelLoader(this);
     private final GameView gameView = new GameView();
+
+    public GameManager() {
+        int totalLevels = Objects.requireNonNull(LevelLoader.loadLevels()).size();
+        this.progressService = new LevelProgressService(totalLevels, true);
+        addLevelCompletedListeners(new LevelCompletedObserver());
+    }
+
 
     public void setCurrentLevel(Level level)
     {
@@ -42,8 +50,16 @@ public class GameManager {
 
 
     public void endCurrentLevel() {
-        unlockLevel(currentLevel.number());
+        progressService.completeLevel(currentLevel.number()-1);
         fireLevelCompleted();
+    }
+
+    public boolean isLevelUnlocked(int levelId) {
+        return progressService.isLevelUnlocked(levelId);
+    }
+
+    public void unlockLevel(int levelId) {
+        progressService.completeLevel(levelId-1);
     }
 
     public void startLevel(int level) {
@@ -76,19 +92,6 @@ public class GameManager {
             event.setMessage("Level " + currentLevel.number() + " completed!");
             listener.showResultWindow(event, this);
         }
-    }
-
-    public void unlockLevel(int level)
-    {
-        if (level< levelStates.length)
-        {
-            levelStates[level] = true;
-        }
-    }
-
-    public boolean getLevelState(int levelNumber)
-    {
-        return levelStates[levelNumber];
     }
 
 }

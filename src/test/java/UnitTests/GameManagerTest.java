@@ -47,17 +47,17 @@ public class GameManagerTest {
     @Test
     public void testInitialization() {
         assertNotNull(gameManager, "GameManager должен быть инициализирован");
-        assertFalse(gameManager.getLevelState(1), "Уровень 1 должен быть заблокирован при инициализации");
-        assertTrue(gameManager.getLevelState(0), "Уровень 0 должен быть разблокирован при инициализации");
+        assertFalse(gameManager.isLevelUnlocked(1), "Уровень 1 должен быть заблокирован при инициализации");
+        assertTrue(gameManager.isLevelUnlocked(0), "Уровень 0 должен быть разблокирован при инициализации");
     }
 
 
 
     @Test
     public void testUnlockLevel() {
-        assertFalse(gameManager.getLevelState(1), "Уровень 1 должен быть заблокирован изначально");
+        assertFalse(gameManager.isLevelUnlocked(1), "Уровень 1 должен быть заблокирован изначально");
         gameManager.unlockLevel(1);
-        assertTrue(gameManager.getLevelState(1), "Уровень 1 должен быть разблокирован после вызова unlockLevel");
+        assertTrue(gameManager.isLevelUnlocked(1), "Уровень 1 должен быть разблокирован после вызова unlockLevel");
     }
 
     @Test
@@ -67,7 +67,7 @@ public class GameManagerTest {
         List<Point> keys = List.of(new Point(1, 1));
         Point start = new Point(0, 0);
         Point exit = new Point(2, 2);
-        Level testLevel = new Level(1, 3, 3, walls, keys, start, exit, null, gameManager);
+        Level testLevel = new Level(0, "1", 3, 3, walls, keys, start, exit, null, gameManager);
         gameManager.setCurrentLevel(testLevel);
 
 
@@ -76,7 +76,7 @@ public class GameManagerTest {
         assertTrue(testListener.wasCalled, "Слушатель должен получить событие завершения уровня");
         assertEquals(1, testListener.receivedEvent.getLevelCompleted(),
                 "Событие должно содержать номер завершенного уровня");
-        assertTrue(gameManager.getLevelState(1),
+        assertTrue(gameManager.isLevelUnlocked(1),
                 "Уровень 1 должен быть разблокирован после завершения");
     }
 
@@ -92,7 +92,7 @@ public class GameManagerTest {
         Point start = new Point(0, 0);
         Point exit = new Point(2, 2);
 
-        Level testLevel = new Level(2, 3, 3, walls, keys, start, exit, null, gameManager);
+        Level testLevel = new Level(2, "1", 3, 3, walls, keys, start, exit, null, gameManager);
         gameManager.setCurrentLevel(testLevel);
         gameManager.endCurrentLevel();
 

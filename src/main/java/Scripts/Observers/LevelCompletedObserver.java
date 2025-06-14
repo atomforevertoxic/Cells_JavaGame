@@ -10,7 +10,6 @@ import javax.swing.*;
 
 public class LevelCompletedObserver implements ILevelCompletedListener
 {
-
     public void showResultWindow(@NotNull LevelCompletedEvent event, GameManager gm) {
         SwingUtilities.invokeLater(() -> {
             ResultWindow resultWindow = new ResultWindow(event, gm);

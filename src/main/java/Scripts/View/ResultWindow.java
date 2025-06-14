@@ -21,7 +21,7 @@ public class ResultWindow extends JFrame {
 
     private boolean isGameOver()
     {
-        return !gm.isLevelExists((event.getLevelCompleted()+1));
+        return !gm.isLevelExists((event.getLevelCompleted()));
     }
 
     private void setupWindow() {
@@ -67,7 +67,7 @@ public class ResultWindow extends JFrame {
 
         nextButton.addActionListener(_ -> {
             dispose();
-            gm.startLevel(event.getLevelCompleted()+1);
+            gm.startLevel(event.getLevelCompleted());
         });
 
         menuButton.addActionListener(_ -> {
@@ -108,10 +108,6 @@ public class ResultWindow extends JFrame {
         });
 
         return button;
-    }
-
-    public void showResult() {
-        EventQueue.invokeLater(() -> setVisible(true));
     }
 
     private void initGameOver()
@@ -164,5 +160,8 @@ public class ResultWindow extends JFrame {
         panel.add(buttonPanel);
 
         add(panel);
+    }
+    public void showResult() {
+        EventQueue.invokeLater(() -> setVisible(true));
     }
 }

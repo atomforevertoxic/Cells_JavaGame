@@ -50,7 +50,7 @@ public class LevelModel {
             if (walls.contains(pos)) {
                 Wall wall = new Wall(c);
                 field.set(i, wall);
-            } else if (keyPositions.contains(pos)) {
+            } else if (keyPositions!=null && keyPositions.contains(pos)) {
                 setKeyCell((Cell)c);
             } else if (pos.equals(start)) {
                 player.SetCell(c);

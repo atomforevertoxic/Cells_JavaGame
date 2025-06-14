@@ -52,22 +52,20 @@ public class LevelLoader {
     }
 
     public Level startLevelFromJson(int levelId) {
-        LevelConfig config = loadLevelConfig(levelId);
-        if (config == null) {
-            gameManager.openMainMenu(); // Возвращаем в меню при ошибке
+        if (!gameManager.isLevelUnlocked(levelId)) {
+            gameManager.openMainMenu();
             return null;
         }
 
-        return new Level( config.id,
-                config.rows,
-                config.cols,
-                config.walls,
-                config.keys,
-                config.start,
-                config.exit,
-                config.teleport,
-                gameManager
-        );
+        LevelConfig config = loadLevelConfig(levelId);
+        if (config == null) {
+            gameManager.openMainMenu();
+            return null;
+        }
+
+        return new Level(config.id, config.name, config.rows, config.cols,
+                config.walls, config.keys, config.start,
+                config.exit, config.teleport, gameManager);
     }
 
     private LevelConfig loadLevelConfig(int levelId) {
