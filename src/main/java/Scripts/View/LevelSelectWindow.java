@@ -62,6 +62,7 @@ public class LevelSelectWindow extends JFrame {
 
         JPanel bottomPanel = new JPanel();
         bottomPanel.setOpaque(false);
+        bottomPanel.setBorder(BorderFactory.createEmptyBorder(18, 0, 0, 0));
         bottomPanel.add(backButton);
 
         mainPanel.add(title, BorderLayout.NORTH);
