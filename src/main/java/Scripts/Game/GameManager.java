@@ -63,8 +63,8 @@ public class GameManager {
     }
 
     public void startLevel(int level) {
-        Level currentLevel = levelLoader.startLevelFromJson(level);
-        setCurrentLevel(currentLevel);
+        Level newLevel = levelLoader.startLevelFromJson(level);
+        setCurrentLevel(newLevel);
     }
 
     public boolean isLevelExists(int levelId) {
