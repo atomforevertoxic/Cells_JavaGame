@@ -123,6 +123,15 @@ public class LevelSelectWindow extends JFrame {
         button.setBackground(new Color(60, 60, 70));
         button.setBorder(BorderFactory.createEmptyBorder(10, 25, 10, 25));
         button.setFocusPainted(false);
+        
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(90, 90, 100));
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                button.setBackground(new Color(70, 70, 80));
+            }
+        });
     }
 
 }
