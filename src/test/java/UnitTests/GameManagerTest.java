@@ -67,7 +67,7 @@ public class GameManagerTest {
         List<Point> keys = List.of(new Point(1, 1));
         Point start = new Point(0, 0);
         Point exit = new Point(2, 2);
-        Level testLevel = new Level(0, "1", 3, 3, walls, keys, start, exit, null, gameManager);
+        Level testLevel = new Level(0, "1", 3, 3, walls, keys, start, exit, null, 0,0,gameManager);
         gameManager.setCurrentLevel(testLevel);
 
 
@@ -92,7 +92,7 @@ public class GameManagerTest {
         Point start = new Point(0, 0);
         Point exit = new Point(2, 2);
 
-        Level testLevel = new Level(2, "1", 3, 3, walls, keys, start, exit, null, gameManager);
+        Level testLevel = new Level(2, "1", 3, 3, walls, keys, start, exit, null, 0,0,gameManager);
         gameManager.setCurrentLevel(testLevel);
         gameManager.endCurrentLevel();
 

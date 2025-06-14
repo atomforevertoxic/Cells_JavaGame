@@ -12,14 +12,15 @@ public class Level {
     private final LevelView view;
     private final int number;
     private final GameManager gameManager;
-    private final JFrame frame;  // Делаем final, так как инициализируем один раз
+    private final JFrame frame;
 
     public Level(int levelNumber, String name, int rows, int cols,
                  List<Point> wallPositions,
                  List<Point> keyPositions,
                  Point startPosition,
                  Point exitPosition,
-                 Point teleportPosition,
+                 List<Point> teleportPositions,
+                 int xOffset, int yOffset,
                  GameManager gameManager) {
 
         this.number = levelNumber + 1;
@@ -27,7 +28,7 @@ public class Level {
         gameManager.setCurrentLevel(this);
 
         this.model = new LevelModel(rows, cols, wallPositions, keyPositions,
-                startPosition, exitPosition, teleportPosition);
+                startPosition, exitPosition, teleportPositions);
 
         this.frame = new JFrame(name + " - Level " + number);
         frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -40,7 +41,7 @@ public class Level {
         );
         frame.setJMenuBar(menuBar);
 
-        this.view = new LevelView(model, null, frame);
+        this.view = new LevelView(model, null, frame, xOffset, yOffset);
         LevelController controller = new LevelController(model, view, gameManager);
 
         view.renderField(controller);

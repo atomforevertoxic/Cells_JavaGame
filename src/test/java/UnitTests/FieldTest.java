@@ -18,7 +18,7 @@ public class FieldTest {
     public void setUp() {
         player = new Player();
         model = new LevelModel(5, 5, new ArrayList<>(), new ArrayList<>(),
-                new Point(0, 0), new Point(1, 1), new Point(2, 2));
+                new Point(0, 0), new Point(1, 1), List.of(new Point(2, 2)));
     }
 
     @Test

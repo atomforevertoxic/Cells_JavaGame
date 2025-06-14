@@ -14,10 +14,14 @@ public class LevelView {
     private final Map<String, HexButton> buttonMap = new HashMap<>();
     private final LevelModel model;
     private final JFrame levelFrame;
+    private int xOffset = 0;
+    private int yOffset = 0;
 
-    public LevelView(LevelModel model, ILevelInputHandler inputHandler, JFrame levelFrame) {
+    public LevelView(LevelModel model, ILevelInputHandler inputHandler, JFrame levelFrame, int xOffset, int yOffset) {
         this.model = model;
         this.levelFrame = levelFrame;
+        this.xOffset = xOffset;
+        this.yOffset = yOffset;
         renderField(inputHandler);
     }
 
@@ -48,8 +52,8 @@ public class LevelView {
     private HexButton createHexButton(AbstractCell cell, ILevelInputHandler inputHandler) {
         Point center = model.calculatePixelPosition(cell);
         int btnSize = model.getHexSize() * 2;
-        int x = 300 + center.x;
-        int y = 180 + center.y;
+        int x = xOffset + center.x;
+        int y = yOffset + center.y;
 
         HexButton btn = new HexButton(' ');
         btn.setBounds(x - btnSize/2, y - btnSize/2, btnSize, btnSize);
@@ -80,7 +84,6 @@ public class LevelView {
     }
 
 
-
     private  void setAllButtonsEnable(boolean activity) {
         for (HexButton btn : buttonMap.values()) {
             AbstractCell cell = getCellByButton(btn);
@@ -89,9 +92,6 @@ public class LevelView {
             }
         }
     }
-
-
-
 
 
     public void updateAllButtons() {

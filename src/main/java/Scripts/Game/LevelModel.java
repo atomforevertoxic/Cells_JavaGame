@@ -22,14 +22,14 @@ public class LevelModel {
                       List<Point> keyPositions,
                       Point startPosition,
                       Point exitPosition,
-                      Point teleportPosition) {
+                      List<Point> teleportPositions) {
         this.rows = rows;
         this.cols = cols;
-        initializeField(wallPositions, keyPositions, startPosition, exitPosition, teleportPosition);
+        initializeField(wallPositions, keyPositions, startPosition, exitPosition, teleportPositions);
     }
 
     // Оптимизировать!!!!
-    private void initializeField(List<Point> walls, List<Point> keys, Point start, Point exit, Point teleport) {
+    private void initializeField(List<Point> walls, List<Point> keys, Point start, Point exit, List<Point> teleports) {
 
         for (int r = 0; r < rows; r++) {
             for (int q = 0; q < cols; q++) {
@@ -38,16 +38,16 @@ public class LevelModel {
         }
 
 
-        placeObjects(walls, keys, start, exit, teleport);
+        placeObjects(walls, keys, start, exit, teleports);
         connectNeighbors();
     }
 
-    private void placeObjects(List<Point> walls, List<Point> keyPositions, Point start, Point exit, Point teleport) {
+    private void placeObjects(List<Point> walls, List<Point> keyPositions, Point start, Point exit, List<Point> teleports) {
         for (int i = 0; i < field.size(); i++) {
             AbstractCell c = field.get(i);
             Point pos = new Point(c.getQ(), c.getR());
 
-            if (walls.contains(pos)) {
+            if (walls!=null && walls.contains(pos)) {
                 Wall wall = new Wall(c);
                 field.set(i, wall);
             } else if (keyPositions!=null && keyPositions.contains(pos)) {
@@ -55,7 +55,7 @@ public class LevelModel {
             } else if (pos.equals(start)) {
                 player.SetCell(c);
                 startCell = c;
-            } else if (pos.equals(teleport)) {
+            } else if (teleports!=null && teleports.contains(pos)) {
                 TeleportCell teleportCell = new TeleportCell(c);
                 field.set(i ,teleportCell);
             } else if (pos.equals(exit)) {

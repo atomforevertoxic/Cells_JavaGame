@@ -41,19 +41,19 @@ public class LevelViewTest {
     List<Point> keys = List.of(new Point(0, 1));
     Point start = new Point(0, 0);
     Point exit = new Point(2, 2);
-    Point teleport = new Point(1, 1);
+    List<Point> teleports = List.of(new Point(1, 1));
 
     @BeforeEach
     public void setUp() {
 
 
-        levelModel = new LevelModel(TEST_ROWS, TEST_COLS, walls, keys, start, exit, teleport);
+        levelModel = new LevelModel(TEST_ROWS, TEST_COLS, walls, keys, start, exit, teleports);
 
 
         testFrame = new JFrame();
         testInputHandler = new TestInputHandler();
 
-        levelView = new LevelView(levelModel, testInputHandler, testFrame);
+        levelView = new LevelView(levelModel, testInputHandler, testFrame,0,0);
     }
 
     @Test

@@ -29,9 +29,9 @@ public class LevelControllerTest {
 
         testFrame = new JFrame();
         gameManager = new GameManager();
-        level = new Level(1,"1", 3, 3, walls, keys, start, exit, null, gameManager);
+        level = new Level(1,"1", 3, 3, walls, keys, start, exit, null,0,0, gameManager);
         model = new LevelModel(3, 3, walls, keys, start, exit, null);
-        view = new LevelView(model, null, testFrame);
+        view = new LevelView(model, null, testFrame,0,0);
         controller = new LevelController(model, view, gameManager);
     }
 

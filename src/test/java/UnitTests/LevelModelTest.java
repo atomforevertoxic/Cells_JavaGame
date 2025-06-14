@@ -20,9 +20,10 @@ public class LevelModelTest {
         List<Point> keys = List.of(new Point(0, 1));
         Point start = new Point(0, 0);
         Point exit = new Point(2, 2);
-        Point teleport = new Point(1, 0);
+        List<Point> teleports = List.of(new Point(1, 0));
 
-        model = new LevelModel(TEST_ROWS, TEST_COLS, walls, keys, start, exit, teleport);
+
+        model = new LevelModel(TEST_ROWS, TEST_COLS, walls, keys, start, exit, teleports);
     }
 
     @Test

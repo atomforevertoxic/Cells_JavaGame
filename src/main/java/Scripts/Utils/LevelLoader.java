@@ -27,7 +27,9 @@ public class LevelLoader {
         public List<Point> keys;
         public Point start;
         public Point exit;
-        public Point teleport;
+        public List<Point> teleports;
+        public int xOffset;
+        public int yOffset;
     }
 
     private final GameManager gameManager;
@@ -65,7 +67,7 @@ public class LevelLoader {
 
         return new Level(config.id, config.name, config.rows, config.cols,
                 config.walls, config.keys, config.start,
-                config.exit, config.teleport, gameManager);
+                config.exit, config.teleports, config.xOffset, config.yOffset, gameManager);
     }
 
     private LevelConfig loadLevelConfig(int levelId) {
